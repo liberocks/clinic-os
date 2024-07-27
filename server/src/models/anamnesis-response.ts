@@ -2,7 +2,7 @@ import { BaseEntity, Customer, Order } from "@medusajs/medusa";
 
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 
-import type { AnamnesisResponseItem } from "src/types/anamnesis";
+import type { AnamnesisResponseItem } from "../types/anamnesis";
 import { AnamnesisForm } from "./anamnesis-form";
 
 @Entity()

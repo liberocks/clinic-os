@@ -1,6 +1,6 @@
 import { BaseEntity } from "@medusajs/medusa";
 
-import { Column, Entity, Index, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 
 import { AnamnesisResponse } from "./anamnesis-response";
 import { AnamnesisSection } from "./anamnesis-section";

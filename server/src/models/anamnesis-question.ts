@@ -5,8 +5,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import {
 	type AnamnesisQuestionOption,
 	AnamnesisQuestionType,
-} from "src/types/anamnesis";
-
+} from "../types/anamnesis";
 import { AnamnesisSection } from "./anamnesis-section";
 
 @Entity()
