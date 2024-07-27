@@ -1,11 +1,19 @@
 import { BaseEntity } from "@medusajs/medusa";
 
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+	Column,
+	Entity,
+	Index,
+	JoinColumn,
+	ManyToOne,
+	OneToMany,
+} from "typeorm";
 
 import { AnamnesisForm } from "./anamnesis-form";
 import { AnamnesisQuestion } from "./anamnesis-question";
 
 @Entity()
+@Index("idx_anamnesis_section_form_id", ["form_id"])
 export class AnamnesisSection extends BaseEntity {
 	@Column()
 	form_id: string;

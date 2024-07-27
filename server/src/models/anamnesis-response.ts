@@ -1,11 +1,14 @@
-import { BaseEntity } from "@medusajs/medusa";
+import { BaseEntity, Customer, Order } from "@medusajs/medusa";
 
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 
 import type { AnamnesisResponseItem } from "src/types/anamnesis";
 import { AnamnesisForm } from "./anamnesis-form";
 
 @Entity()
+@Index("idx_anamnesis_response_form_id", ["form_id"])
+@Index("idx_anamnesis_response_customer_id", ["customer_id"])
+@Index("idx_anamnesis_response_order_id", ["order_id"])
 export class AnamnesisResponse extends BaseEntity {
 	@Column()
 	customer_id: string;
@@ -43,4 +46,12 @@ export class AnamnesisResponse extends BaseEntity {
 	)
 	@JoinColumn({ name: "form_id" })
 	form: AnamnesisForm;
+
+	@ManyToOne(() => Customer)
+	@JoinColumn({ name: "customer_id" })
+	customer: Customer;
+
+	@ManyToOne(() => Order)
+	@JoinColumn({ name: "order_id" })
+	order: Order;
 }
