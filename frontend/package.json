@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "format": "find src -name \"*.ts\" -exec biome check --write {} + && find src -name \"*.tsx\" -exec biome check --write {} +",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npx http-server ./dist"
   },
   "dependencies": {
     "react": "^18.3.1",
