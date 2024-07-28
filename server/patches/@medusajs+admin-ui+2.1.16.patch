@@ -1,5 +1,1740 @@
+diff --git a/node_modules/@medusajs/admin-ui/ui/index.html b/node_modules/@medusajs/admin-ui/ui/index.html
+index 75ecf10..00ec657 100644
+--- a/node_modules/@medusajs/admin-ui/ui/index.html
++++ b/node_modules/@medusajs/admin-ui/ui/index.html
+@@ -4,7 +4,7 @@
+     <meta charset="UTF-8" />
+     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Medusa</title>
++    <title>Clinic OS</title>
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/ar/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/ar/translation.json
+index 5f41c93..b858a38 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/ar/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/ar/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "تم تحديث تفضيلاتك بنجاح",
+   "analytics-preferences-error": "حدث خطأ",
+   "analytics-preferences-help-us-get-better": "ساعدنا في التحسن",
+-  "analytics-preferences-disclaimer": "لإنشاء أكثر تجربة تجارة إلكترونية شيقة، نود الحصول على رؤى حول كيفية استخدامك لـ Medusa. تسمح لنا رؤى المستخدمين ببناء منتج أفضل وأكثر جاذبية وأكثر قابلية للاستخدام. نحن نجمع البيانات فقط لتحسين المنتجات. اقرأ البيانات التي نجمعها في",
++  "analytics-preferences-disclaimer": "لإنشاء أكثر تجربة تجارة إلكترونية شيقة، نود الحصول على رؤى حول كيفية استخدامك لـ Clinic OS. تسمح لنا رؤى المستخدمين ببناء منتج أفضل وأكثر جاذبية وأكثر قابلية للاستخدام. نحن نجمع البيانات فقط لتحسين المنتجات. اقرأ البيانات التي نجمعها في",
+   "analytics-preferences-documentation": "وثائقنا",
+   "analytics-preferences-please-enter-a-valid-email": "الرجاء إدخال بريد إلكتروني صالح",
+   "analytics-preferences-continue": "استمر",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "إلغاء",
+   "invite-modal-invite": "دعوة",
+   "login-card-no-match": "هذه البيانات غير مطابقة لسجلاتنا.",
+-  "login-card-log-in-to-medusa": "تسجيل الدخول إلى Medusa",
++  "login-card-log-in-to-medusa": "تسجيل الدخول إلى Clinic OS",
+   "login-card-email": "البريد الإلكتروني",
+   "login-card-password": "كلمة المرور",
+   "login-card-forgot-your-password": "هل نسيت كلمة المرور؟",
+@@ -228,7 +228,7 @@
+   "sidebar-orders": "الطلبات",
+   "sidebar-products": "المنتجات",
+   "sidebar-categories": "الفئات",
+-  "sidebar-customers": "العملاء",
++  "sidebar-patients": "العملاء",
+   "sidebar-inventory": "المخزون",
+   "sidebar-discounts": "الخصومات",
+   "sidebar-gift-cards": "بطاقات الهدايا",
+@@ -530,7 +530,7 @@
+   "search-modal-to-select-and": "للتحديد، و",
+   "search-modal-to-search-anytime": "للبحث في أي وقت",
+   "templates-settings": "الإعدادات",
+-  "templates-manage-the-settings-for-your-medusa-store": "إدارة إعدادات متجر Medusa الخاص بك",
++  "templates-manage-the-settings-for-your-medusa-store": "إدارة إعدادات متجر Clinic OS الخاص بك",
+   "transfer-orders-modal-info": "معلومات",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "العميل هو بالفعل مالك الطلب",
+   "transfer-orders-modal-success": "نجاح",
+@@ -893,7 +893,7 @@
+   "gift-cards-create-publish": "إنشاء ونشر",
+   "gift-cards-successfully-updated-gift-card": "تم تحديث بطاقة الهدايا بنجاح",
+   "gift-cards-gift-cards": "بطاقات الهدايا",
+-  "gift-cards-manage": "إدارة بطاقات الهدايا لمتجرك Medusa",
++  "gift-cards-manage": "إدارة بطاقات الهدايا لمتجرك Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "هل أنت مستعد لبيع أول بطاقة هدايا؟",
+   "gift-cards-no-gift-card-has-been-added-yet": "لم يتم إضافة بطاقات هدايا بعد.",
+   "gift-cards-history": "السجل",
+@@ -1132,7 +1132,7 @@
+   "refund-error": "حدث خطأ",
+   "refund-create-a-refund": "إنشاء استرداد",
+   "refund-attention": "انتباه!",
+-  "refund-system-payment-disclaimer": "واحد أو أكثر من مدفوعاتك هو دفع نظام. كن على دراية بأن التقاط واسترداد الأموال لا يتم التعامل معها من قِبل Medusa بالنسبة لمثل هذه المدفوعات.",
++  "refund-system-payment-disclaimer": "واحد أو أكثر من مدفوعاتك هو دفع نظام. كن على دراية بأن التقاط واسترداد الأموال لا يتم التعامل معها من قِبل Clinic OS بالنسبة لمثل هذه المدفوعات.",
+   "refund-details": "التفاصيل",
+   "refund-cannot-refund-more-than-the-orders-net-total": "لا يمكن استرداد أكثر من إجمالي صافي الطلب.",
+   "refund-discount": "خصم",
+@@ -1702,7 +1702,7 @@
+   "settings-manage-your-business-details": "أدر تفاصيل عملك",
+   "settings-general": "عام",
+   "settings-store-name": "اسم المتجر",
+-  "settings-medusa-store": "متجر Medusa",
++  "settings-medusa-store": "متجر Clinic OS",
+   "settings-advanced-settings": "الإعدادات المتقدمة",
+   "settings-swap-link-template": "قالب رابط المبادلة",
+   "settings-draft-order-link-template": "قالب رابط مسودة الطلب",
+@@ -1716,14 +1716,14 @@
+   "edit-user-information-submit-and-close": "إرسال وإغلاق",
+   "personal-information-back-to-settings": "العودة إلى الإعدادات",
+   "personal-information-personal-information": "المعلومات الشخصية",
+-  "personal-information-manage-your-medusa-profile": "أدر ملفك الشخصي في Medusa",
++  "personal-information-manage-your-medusa-profile": "أدر ملفك الشخصي في Clinic OS",
+   "personal-information-language-settings-title": "اللغة",
+-  "personal-information-language-settings-description": "عدِّل لغة Medusa Admin",
++  "personal-information-language-settings-description": "عدِّل لغة Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "ساعدنا في الترجمة",
+   "personal-information-usage-insights-title": "معلومات الاستخدام",
+   "usage-insights-disabled": "معطل",
+   "usage-insights-active": "نشط",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "شارك معلومات الاستخدام وساعدنا على تحسين Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "شارك معلومات الاستخدام وساعدنا على تحسين Clinic OS",
+   "usage-insights-edit-preferences": "تعديل التفضيلات",
+   "usage-insights-success": "نجاح",
+   "usage-insights-your-information-was-successfully-updated": "تم تحديث معلوماتك بنجاح",
+@@ -1890,7 +1890,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "تم تحديث إعدادات ضريبة المنطقة بنجاح",
+   "taxes-tax-provider": "مزود الضريبة",
+   "taxes-calculate-taxes-automatically": "حساب الضرائب تلقائياً؟",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "عند التحقق سيقوم Medusa تلقائيًا بتطبيق حسابات الضريبة على عربات التسوق في هذه المنطقة. عند عدم التحقق ، سيتعين عليك حساب الضرائب يدويًا عند الخروج. توصى الضرائب اليدوية إذا كنت تستخدم مزود ضريبة خارجي لتجنب تنفيذ الكثير من الطلبات",
++  "taxes-automatically-apply-tax-calculations-to-carts": "عند التحقق سيقوم Clinic OS تلقائيًا بتطبيق حسابات الضريبة على عربات التسوق في هذه المنطقة. عند عدم التحقق ، سيتعين عليك حساب الضرائب يدويًا عند الخروج. توصى الضرائب اليدوية إذا كنت تستخدم مزود ضريبة خارجي لتجنب تنفيذ الكثير من الطلبات",
+   "taxes-apply-tax-to-gift-cards": "تطبيق الضريبة على بطاقات الهدايا؟",
+   "taxes-apply-taxes-to-gift-cards": "عند التحقق ، سيتم تطبيق الضرائب على بطاقات الهدايا عند الخروج. في بعض البلدان ، تتطلب لوائح الضريبة تطبيق الضرائب على بطاقات الهدايا عند الشراء.",
+   "taxes-search-products": "البحث عن منتجات..",
+@@ -1913,7 +1913,7 @@
+   "users-invite-users": "دعوة مستخدمين",
+   "users-back-to-settings": "العودة إلى الإعدادات",
+   "users-the-team": "الفريق",
+-  "users-manage-users-of-your-medusa-store": "أدِر مستخدمي متجر Medusa الخاص بك",
++  "users-manage-users-of-your-medusa-store": "أدِر مستخدمي متجر Clinic OS الخاص بك",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/bg/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/bg/translation.json
+index 4c1d81b..1c2f85e 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/bg/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/bg/translation.json
+@@ -23,7 +23,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Вашите предпочитания бяха успешно актуализирани",
+   "analytics-preferences-error": "Грешка",
+   "analytics-preferences-help-us-get-better": "Помогнете ни да станем по-добри",
+-  "analytics-preferences-disclaimer": "За да създадем най-завладяващото изживяване в електронната търговия, бихме искали да получим представа как използвате Medusa. Прозренията на потребителите ни позволяват да създаваме по-добри, по-ангажиращи и по-използваеми продукти. Ние събираме данни само за подобряване на продукта. Прочетете какви данни събираме в нашата",
++  "analytics-preferences-disclaimer": "За да създадем най-завладяващото изживяване в електронната търговия, бихме искали да получим представа как използвате Clinic OS. Прозренията на потребителите ни позволяват да създаваме по-добри, по-ангажиращи и по-използваеми продукти. Ние събираме данни само за подобряване на продукта. Прочетете какви данни събираме в нашата",
+   "analytics-preferences-documentation": "документация",
+   "analytics-preferences-please-enter-a-valid-email": "Моля въведи валиден имейл",
+   "analytics-preferences-continue": "Продължи",
+@@ -114,7 +114,7 @@
+   "invite-modal-cancel": "Отказ",
+   "invite-modal-invite": "Покани",
+   "login-card-no-match": "Тези идентификационни данни не съответстват на нашите записи.",
+-  "login-card-log-in-to-medusa": "Влезте в Medusa",
++  "login-card-log-in-to-medusa": "Влезте в Clinic OS",
+   "login-card-email": "Имейл",
+   "login-card-password": "Парола",
+   "login-card-forgot-your-password": "Забравена парола?",
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "Поръчки",
+   "sidebar-products": "Продукти",
+   "sidebar-categories": "Категории",
+-  "sidebar-customers": "Клиенти",
++  "sidebar-patients": "Клиенти",
+   "sidebar-inventory": "Инвентар",
+   "sidebar-discounts": "Отстъпки",
+   "sidebar-gift-cards": "Ваучери за намаление",
+@@ -543,7 +543,7 @@
+   "search-modal-to-select-and": "за избор и",
+   "search-modal-to-search-anytime": "за търсене по всяко време",
+   "templates-settings": "Настройки",
+-  "templates-manage-the-settings-for-your-medusa-store": "Управление на настройките за вашия магазин Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Управление на настройките за вашия магазин Clinic OS",
+   "transfer-orders-modal-info": "Информация",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Клиентът вече е собственик на поръчката",
+   "transfer-orders-modal-success": "Успех",
+@@ -906,7 +906,7 @@
+   "gift-cards-create-publish": "Създай и Публикувай",
+   "gift-cards-successfully-updated-gift-card": "Успешно актуализирана подаръчна карта",
+   "gift-cards-gift-cards": "Подаръчни карти",
+-  "gift-cards-manage": "Управлявайте подаръчните карти на вашия Medusa магазин",
++  "gift-cards-manage": "Управлявайте подаръчните карти на вашия Clinic OS магазин",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Готови ли сте да продадете първата си подаръчна карта?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Все още не е добавена подаръчна карта.",
+   "gift-cards-history": "История",
+@@ -1145,7 +1145,7 @@
+   "refund-error": "Грешка",
+   "refund-create-a-refund": "Създайте възстановяване",
+   "refund-attention": "Внимание!",
+-  "refund-system-payment-disclaimer": "Едно или повече от вашите плащания са системни плащания. Имайте предвид, че за такива плащания заявките за потвърждение и възстановяване не се обработват от Medusa.",
++  "refund-system-payment-disclaimer": "Едно или повече от вашите плащания са системни плащания. Имайте предвид, че за такива плащания заявките за потвърждение и възстановяване не се обработват от Clinic OS.",
+   "refund-details": "Детайли",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Не може да се възстанови повече от чистата сума на поръчката.",
+   "refund-discount": "Отстъпка",
+@@ -1982,7 +1982,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Данъчните настройки за региона бяха успешно актуализирани.",
+   "taxes-tax-provider": "Данъчен доставчик",
+   "taxes-calculate-taxes-automatically": "Изчисляване на данъците автоматично?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "При маркиране Medusa автоматично ще прилага данъчни изчисления към кошници в тази област. При немаркиране трябва ръчно да изчислите данъците при плащане. Ръчните данъци се препоръчват при използване на данъчен доставчик от трета страна, за да се избегне извършването на твърде много заявки.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "При маркиране Clinic OS автоматично ще прилага данъчни изчисления към кошници в тази област. При немаркиране трябва ръчно да изчислите данъците при плащане. Ръчните данъци се препоръчват при използване на данъчен доставчик от трета страна, за да се избегне извършването на твърде много заявки.",
+   "taxes-apply-tax-to-gift-cards": "Прилагане на данък върху подаръчни карти?",
+   "taxes-apply-taxes-to-gift-cards": "При маркиране данъците ще се прилагат към подаръчни картове при плащане. В някои страни данъчното законодателство изисква данъците да се прилагат към подаръчни картове при покупка.",
+   "taxes-search-products": "Търсене на продукти...",
+@@ -2005,7 +2005,7 @@
+   "users-invite-users": "Поканете потребители",
+   "users-back-to-settings": "Назад към настройките",
+   "users-the-team": "Екипът",
+-  "users-manage-users-of-your-medusa-store": "Управлявайте потребителите на вашия Medusa",
++  "users-manage-users-of-your-medusa-store": "Управлявайте потребителите на вашия Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/bs/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/bs/translation.json
+index 027511b..149c508 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/bs/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/bs/translation.json
+@@ -241,7 +241,7 @@
+     "sidebar-orders": "Narudžbe",
+     "sidebar-products": "Proizvodi",
+     "sidebar-categories": "Kategorije",
+-    "sidebar-customers": "Kupci",
++    "sidebar-patients": "Kupci",
+     "sidebar-inventory": "Inventar",
+     "sidebar-discounts": "Popusti",
+     "sidebar-gift-cards": "Poklon kartice",
+@@ -543,7 +543,7 @@
+     "search-modal-to-select-and": "da biste odabrali i",
+     "search-modal-to-search-anytime": "za pretragu u bilo kojem trenutku",
+     "templates-settings": "Postavke",
+-    "templates-manage-the-settings-for-your-medusa-store": "Upravljajte postavkama za svoju Medusa trgovinu",
++    "templates-manage-the-settings-for-your-medusa-store": "Upravljajte postavkama za svoju Clinic OS trgovinu",
+     "transfer-orders-modal-info": "Informacije",
+     "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Kupac je već vlasnik narudžbe",
+     "transfer-orders-modal-success": "Uspjeh",
+@@ -906,7 +906,7 @@
+     "gift-cards-create-publish": "Stvori i objavi",
+     "gift-cards-successfully-updated-gift-card": "Poklon kartica je uspješno ažuriran",
+     "gift-cards-gift-cards": "Poklon kartice",
+-    "gift-cards-manage": "Upravljajte poklon karticama svoje Medusa trgovine",
++    "gift-cards-manage": "Upravljajte poklon karticama svoje Clinic OS trgovine",
+     "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Spremni ste prodati svoju prvu poklon karticu?",
+     "gift-cards-no-gift-card-has-been-added-yet": "Nijedna poklon kartica još nije dodana.",
+     "gift-cards-history": "Historija",
+@@ -1794,7 +1794,7 @@
+     "settings-manage-your-business-details": "Upravljajte pojedinostima o vašem poslovanju",
+     "settings-general": "Općenito",
+     "settings-store-name": "Naziv trgovine",
+-    "settings-medusa-store": "Medusa trgovina",
++    "settings-medusa-store": "Clinic OS trgovina",
+     "settings-advanced-settings": "Napredne postavke",
+     "settings-swap-link-template": "Predložak poveznice za zamjene",
+     "settings-draft-order-link-template": "Predložak poveznice za skice narudžbi",
+@@ -1808,14 +1808,14 @@
+     "edit-user-information-submit-and-close": "Pošalji i zatvori",
+     "personal-information-back-to-settings": "Nazad na postavke",
+     "personal-information-personal-information": "Osobni podaci",
+-    "personal-information-manage-your-Medusa-profile": "Upravljajte svojim Medusa profilom",
++    "personal-information-manage-your-Clinic OS-profile": "Upravljajte svojim Clinic OS profilom",
+     "personal-information-language-settings-title": "Jezik",
+-    "personal-information-language-settings-description": "Prilagodite jezik Medusa Admina",
++    "personal-information-language-settings-description": "Prilagodite jezik Clinic OS Admina",
+     "personal-information-language-settings-help-us-translate": "Pomozite nam prevesti",
+     "personal-information-usage-insights-title": "Prikazi upotrebe",
+     "usage-insights-disabled": "Onemogućeno",
+     "usage-insights-active": "Aktivno",
+-    "usage-insights-share-usage-insights-and-help-us-improve-Medusa": "Podijelite prikaze upotrebe i pomozite nam poboljšati Medusu",
++    "usage-insights-share-usage-insights-and-help-us-improve-Clinic OS": "Podijelite prikaze upotrebe i pomozite nam poboljšati Medusu",
+     "usage-insights-edit-preferences": "Uredi postavke",
+     "usage-insights-success": "Uspjeh",
+     "usage-insights-your-information-was-successfully-updated": "Vaši podaci uspješno su ažurirani",
+@@ -1982,7 +1982,7 @@
+     "taxes-region-tax-settings-were-successfully-updated": "Postavke poreza za regiju uspješno su ažurirane.",
+     "taxes-tax-provider": "Porezni pružatelj",
+     "taxes-calculate-taxes-automatically": "Automatski izračunavati poreze?",
+-    "taxes-automatically-apply-tax-calculations-to-carts": "Kad je označeno, Medusa će automatski primjenjivati izračune poreza na košarice u ovoj regiji. Ako nije označeno, poreze ćete morati ručno izračunavati pri naplati. Ručni porezi se preporučuju ako koristite pružatelja treće strane kako biste izbjegli previše zahtjeva.",
++    "taxes-automatically-apply-tax-calculations-to-carts": "Kad je označeno, Clinic OS će automatski primjenjivati izračune poreza na košarice u ovoj regiji. Ako nije označeno, poreze ćete morati ručno izračunavati pri naplati. Ručni porezi se preporučuju ako koristite pružatelja treće strane kako biste izbjegli previše zahtjeva.",
+     "taxes-apply-tax-to-gift-cards": "Primjenjivati porez na poklon kartice?",
+     "taxes-apply-taxes-to-gift-cards": "Kada je označeno, porezi će se primjenjivati na poklon kartice pri naplati. U nekim zemljama porezni propisi zahtijevaju da se porezi primjenjuju na poklon kartice pri kupnji.",
+     "taxes-search-products": "Pretraži proizvode...",
+@@ -2005,7 +2005,7 @@
+     "users-invite-users": "Pozovi korisnike",
+     "users-back-to-settings": "Nazad na postavke",
+     "users-the-team": "Tim",
+-    "users-manage-users-of-your-medusa-store": "Upravljajte korisnicima svoje Medusa trgovine",
++    "users-manage-users-of-your-medusa-store": "Upravljajte korisnicima svoje Clinic OS trgovine",
+     "users-count_one": "{{count}}",
+     "users-count_other": "{{count}}"
+   }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/cs/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/cs/translation.json
+index fbef07a..f68d587 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/cs/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/cs/translation.json
+@@ -684,7 +684,7 @@
+   "gift-cards-gift-card-details": "Podrobnosti o dárkové kartě",
+   "gift-cards-gift-cards": "Dárkové karty",
+   "gift-cards-history": "Historie",
+-  "gift-cards-manage": "Správa dárkových karet vašeho obchodu Medusa",
++  "gift-cards-manage": "Správa dárkových karet vašeho obchodu Clinic OS",
+   "gift-cards-name": "Název",
+   "gift-cards-no-gift-card-has-been-added-yet": "Zatím nebyla přidána žádná dárková karta.",
+   "gift-cards-please-add-at-least-one-denomination": "Přidejte prosím alespoň jedno označení",
+@@ -783,7 +783,7 @@
+   "location-card-success": "Úspěšně uloženo",
+   "login-card-email": "E-mail",
+   "login-card-forgot-your-password": "Zapomněli jste heslo?",
+-  "login-card-log-in-to-medusa": "Přihlášení k Medusa",
++  "login-card-log-in-to-medusa": "Přihlášení k Clinic OS",
+   "login-card-no-match": "Tato pověření neodpovídají našim záznamům.",
+   "login-card-password": "Heslo",
+   "manage-back-to-gift-cards": "Zpět na dárkové karty",
+@@ -986,10 +986,10 @@
+   "pages-success": "Úspěšně dokončeno",
+   "pages-these-publishable-keys-will-allow-you-to-authenticate-api-requests": "Tyto publikovatelné klíče vám umožní ověřovat požadavky API.",
+   "personal-information-back-to-settings": "Zpět do nastavení",
+-  "personal-information-language-settings-description": "Nastavení jazyka Medusa Admin",
++  "personal-information-language-settings-description": "Nastavení jazyka Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Pomozte nám překládat",
+   "personal-information-language-settings-title": "Jazyk",
+-  "personal-information-manage-your-medusa-profile": "Správa profilu Medusa",
++  "personal-information-manage-your-medusa-profile": "Správa profilu Clinic OS",
+   "personal-information-personal-information": "Osobní údaje",
+   "personal-information-usage-insights-title": "Poznatky o používání",
+   "price-list-add-products-modal-back-button": "Zpět",
+@@ -1342,7 +1342,7 @@
+   "refund-send-notifications": "Odesílání oznámení",
+   "refund-success": "Úspěšně refundováno",
+   "refund-successfully-refunded-order": "Úspěšně vrácená objednávka",
+-  "refund-system-payment-disclaimer": "Jedna nebo více vašich plateb je systémovou platbou. Uvědomte si, že Medusa nezpracovává zachycení a vrácení takových plateb.",
++  "refund-system-payment-disclaimer": "Jedna nebo více vašich plateb je systémovou platbou. Uvědomte si, že Clinic OS nezpracovává zachycení a vrácení takových plateb.",
+   "region-form-choose-countries": "Výběr zemí",
+   "region-form-choose-currency": "Výběr měny",
+   "region-form-choose-fulfillment-providers": "Vyberte si poskytovatele plnění...",
+@@ -1589,7 +1589,7 @@
+   "settings-manage-the-general-settings-for-your-store": "Správa obecných nastavení vašeho obchodu",
+   "settings-manage-the-settings-for-your-store-apos-s-extensions": "Správa nastavení rozšíření obchodu",
+   "settings-manage-your-business-details": "Správa obchodních údajů",
+-  "settings-medusa-store": "Medusa Store",
++  "settings-medusa-store": "Clinic OS Store",
+   "settings-save": "Uložit",
+   "settings-store-details": "Podrobnosti o obchodu",
+   "settings-store-name": "Název obchodu",
+@@ -1663,7 +1663,7 @@
+   "shipping-options-shipping-options": "Možnosti přepravy",
+   "shipping-options-success": "Dokončeno",
+   "sidebar-categories": "Kategorie",
+-  "sidebar-customers": "Zákazníci",
++  "sidebar-patients": "Zákazníci",
+   "sidebar-discounts": "Slevy",
+   "sidebar-gift-cards": "Dárkové karty",
+   "sidebar-inventory": "Inventura",
+@@ -1759,7 +1759,7 @@
+   "taxes-applies-to-shipping-option-with-count_other": "Platí pro {{count}} přepravní možnostWithCount",
+   "taxes-apply-tax-to-gift-cards": "Uplatnit daň na dárkové karty?",
+   "taxes-apply-taxes-to-gift-cards": "Pokud je zaškrtnuto, daně se na dárkové karty uplatní při placení. V některých zemích je podle daňových předpisů nutné dárkové karty při nákupu zdanit.",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Pokud je zaškrtnuto, Medusa automaticky použije výpočet daně na vozíky v této oblasti. Pokud není zaškrtnuto, budete muset daně vypočítat ručně při placení. Pokud používáte poskytovatele daní třetí strany, doporučujeme ruční výběr daní, abyste se vyhnuli provádění příliš mnoha požadavků.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Pokud je zaškrtnuto, Clinic OS automaticky použije výpočet daně na vozíky v této oblasti. Pokud není zaškrtnuto, budete muset daně vypočítat ručně při placení. Pokud používáte poskytovatele daní třetí strany, doporučujeme ruční výběr daní, abyste se vyhnuli provádění příliš mnoha požadavků.",
+   "taxes-back": "Zpět",
+   "taxes-back-to-settings": "Zpět na nastavení",
+   "taxes-calculate-taxes-automatically": "Vypočítat daně automaticky?",
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/de/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/de/translation.json
+index fca38ba..50996ab 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/de/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/de/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Ihre Einstellungen wurden erfolgreich aktualisiert",
+   "analytics-preferences-error": "Fehler",
+   "analytics-preferences-help-us-get-better": "Helfen Sie uns, besser zu werden",
+-  "analytics-preferences-disclaimer": "Um ein möglichst überzeugendes E-Commerce-Erlebnis zu schaffen, möchten wir Einblicke in Ihre Nutzung von Medusa gewinnen. Die Erkenntnisse der Nutzer ermöglichen es uns, bessere, ansprechendere und benutzerfreundlichere Produkte zu entwickeln. Wir sammeln Daten nur für Produktverbesserungen. Lesen Sie, welche Daten wir sammeln in unserem",
++  "analytics-preferences-disclaimer": "Um ein möglichst überzeugendes E-Commerce-Erlebnis zu schaffen, möchten wir Einblicke in Ihre Nutzung von Clinic OS gewinnen. Die Erkenntnisse der Nutzer ermöglichen es uns, bessere, ansprechendere und benutzerfreundlichere Produkte zu entwickeln. Wir sammeln Daten nur für Produktverbesserungen. Lesen Sie, welche Daten wir sammeln in unserem",
+   "analytics-preferences-documentation": "Dokumentation",
+   "analytics-preferences-please-enter-a-valid-email": "Bitte geben Sie eine gültige E-Mail ein",
+   "analytics-preferences-continue": "Weiter",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Abbrechen",
+   "invite-modal-invite": "Einladen",
+   "login-card-no-match": "Diese Angaben stimmen nicht mit unseren Unterlagen überein",
+-  "login-card-log-in-to-medusa": "Bei Medusa anmelden",
++  "login-card-log-in-to-medusa": "Bei Clinic OS anmelden",
+   "login-card-email": "E-Mail",
+   "login-card-password": "Kennwort",
+   "login-card-forgot-your-password": "Haben Sie Ihr Passwort vergessen?",
+@@ -233,7 +233,7 @@
+   "sidebar-orders": "Aufträge",
+   "sidebar-products": "Produkte",
+   "sidebar-categories": "Kategorien",
+-  "sidebar-customers": "Kunden",
++  "sidebar-patients": "Kunden",
+   "sidebar-inventory": "Bestandsaufnahme",
+   "sidebar-discounts": "Ermäßigungen",
+   "sidebar-gift-cards": "Gutscheine",
+@@ -535,7 +535,7 @@
+   "search-modal-to-select-and": "auswählen, und",
+   "search-modal-to-search-anytime": "jederzeit zu suchen",
+   "templates-settings": "Einstellungen",
+-  "templates-manage-the-settings-for-your-medusa-store": "Verwalten Sie die Einstellungen für Ihren Medusa-Shop",
++  "templates-manage-the-settings-for-your-medusa-store": "Verwalten Sie die Einstellungen für Ihren Clinic OS-Shop",
+   "transfer-orders-modal-info": "Info",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Der Kunde ist bereits Eigentümer der Bestellung",
+   "transfer-orders-modal-success": "Erfolg",
+@@ -898,7 +898,7 @@
+   "gift-cards-create-publish": "Erstellen und veröffentlichen",
+   "gift-cards-successfully-updated-gift-card": "Gutschein erfolgreich aktualisiert",
+   "gift-cards-gift-cards": "Gutscheine",
+-  "gift-cards-manage": "Verwalten Sie die Gutscheine Ihres Medusa-Geschäfts",
++  "gift-cards-manage": "Verwalten Sie die Gutscheine Ihres Clinic OS-Geschäfts",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Sind Sie bereit, Ihre erste Gutschein zu verkaufen?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Es wurde noch keine Gutschein hinzugefügt",
+   "gift-cards-history": "Geschichte",
+@@ -1137,7 +1137,7 @@
+   "refund-error": "Fehler",
+   "refund-create-a-refund": "Erstattung erstellen",
+   "refund-attention": "Achtung!",
+-  "refund-system-payment-disclaimer": "Eine oder mehrere Ihrer Zahlungen ist eine Systemzahlung. Beachten Sie, dass Erfassungen und Rückerstattungen für solche Zahlungen nicht von Medusa bearbeitet werden",
++  "refund-system-payment-disclaimer": "Eine oder mehrere Ihrer Zahlungen ist eine Systemzahlung. Beachten Sie, dass Erfassungen und Rückerstattungen für solche Zahlungen nicht von Clinic OS bearbeitet werden",
+   "refund-details": "Einzelheiten",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Kann nicht mehr als den Nettobetrag der Bestellung erstatten.",
+   "refund-discount": "Rabatt",
+@@ -1707,7 +1707,7 @@
+   "settings-manage-your-business-details": "Verwalten Sie Ihre Unternehmensdaten",
+   "settings-general": "Allgemein",
+   "settings-store-name": "Name des Geschäfts",
+-  "settings-medusa-store": "Medusa Store",
++  "settings-medusa-store": "Clinic OS Store",
+   "settings-advanced-settings": "Erweiterte Einstellungen",
+   "settings-swap-link-template": "Tauschlink-Vorlage",
+   "settings-draft-order-link-template": "Vorlage für den Link zum Entwurf einer Bestellung",
+@@ -1721,14 +1721,14 @@
+   "edit-user-information-submit-and-close": "Einreichen und schließen",
+   "personal-information-back-to-settings": "Zurück zu den Einstellungen",
+   "personal-information-personal-information": "Persönliche Informationen",
+-  "personal-information-manage-your-medusa-profile": "Verwalten Sie Ihr Medusa-Profil",
++  "personal-information-manage-your-medusa-profile": "Verwalten Sie Ihr Clinic OS-Profil",
+   "personal-information-language-settings-title": "Sprache",
+-  "personal-information-language-settings-description": "Passen Sie die Sprache von Medusa Admin an",
++  "personal-information-language-settings-description": "Passen Sie die Sprache von Clinic OS Admin an",
+   "personal-information-language-settings-help-us-translate": "Helfen Sie uns übersetzen",
+   "personal-information-usage-insights-title": "Einblicke in die Nutzung",
+   "usage-insights-disabled": "Deaktiviert",
+   "usage-insights-active": "Aktiv",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Teilen Sie Ihre Erkenntnisse über die Nutzung und helfen Sie uns, Medusa zu verbessern",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Teilen Sie Ihre Erkenntnisse über die Nutzung und helfen Sie uns, Clinic OS zu verbessern",
+   "usage-insights-edit-preferences": "Einstellungen bearbeiten",
+   "usage-insights-success": "Erfolg",
+   "usage-insights-your-information-was-successfully-updated": "Ihre Informationen wurden erfolgreich aktualisiert",
+@@ -1895,7 +1895,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Die Steuereinstellungen für die Region wurden erfolgreich aktualisiert",
+   "taxes-tax-provider": "Steueranbieter",
+   "taxes-calculate-taxes-automatically": "Steuern automatisch berechnen?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Wenn diese Option aktiviert ist, wendet Medusa automatisch Steuerberechnungen auf Warenkörbe in dieser Region an. Wenn es nicht angekreuzt ist, müssen Sie die Steuern beim Checkout manuell berechnen. Manuelle Steuerberechnungen werden empfohlen, wenn Sie einen Drittanbieter für Steuern verwenden, um zu viele Anfragen zu vermeiden",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Wenn diese Option aktiviert ist, wendet Clinic OS automatisch Steuerberechnungen auf Warenkörbe in dieser Region an. Wenn es nicht angekreuzt ist, müssen Sie die Steuern beim Checkout manuell berechnen. Manuelle Steuerberechnungen werden empfohlen, wenn Sie einen Drittanbieter für Steuern verwenden, um zu viele Anfragen zu vermeiden",
+   "taxes-apply-tax-to-gift-cards": "Steuer auf Gutscheine?",
+   "taxes-apply-taxes-to-gift-cards": "Wenn diese Option angekreuzt ist, werden die Steuern auf Gutscheine an der Kasse erhoben. In einigen Ländern verlangen die Steuervorschriften, dass die Steuern auf Gutscheine beim Kauf erhoben werden.",
+   "taxes-search-products": "Produkte suchen...",
+@@ -1918,7 +1918,7 @@
+   "users-invite-users": "Benutzer einladen",
+   "users-back-to-settings": "Zurück zu den Einstellungen",
+   "users-the-team": "Das Team",
+-  "users-manage-users-of-your-medusa-store": "Verwalten Sie die Benutzer Ihres Medusa Stores",
++  "users-manage-users-of-your-medusa-store": "Verwalten Sie die Benutzer Ihres Clinic OS Stores",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/en/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/en/translation.json
+index 7eae69f..f73f71f 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/en/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/en/translation.json
+@@ -23,7 +23,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Your preferences were successfully updated",
+   "analytics-preferences-error": "Error",
+   "analytics-preferences-help-us-get-better": "Help us get better",
+-  "analytics-preferences-disclaimer": "To create the most compelling e-commerce experience we would like to gain insights in how you use Medusa. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our",
++  "analytics-preferences-disclaimer": "To create the most compelling e-commerce experience we would like to gain insights in how you use Clinic OS. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our",
+   "analytics-preferences-documentation": "documentation",
+   "analytics-preferences-please-enter-a-valid-email": "Please enter a valid email",
+   "analytics-preferences-continue": "Continue",
+@@ -114,7 +114,7 @@
+   "invite-modal-cancel": "Cancel",
+   "invite-modal-invite": "Invite",
+   "login-card-no-match": "These credentials do not match our records.",
+-  "login-card-log-in-to-medusa": "Log in to Medusa",
++  "login-card-log-in-to-medusa": "Log in to Clinic OS",
+   "login-card-email": "Email",
+   "login-card-password": "Password",
+   "login-card-forgot-your-password": "Forgot your password?",
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "Orders",
+   "sidebar-products": "Products",
+   "sidebar-categories": "Categories",
+-  "sidebar-customers": "Customers",
++  "sidebar-patients": "Patients",
+   "sidebar-inventory": "Inventory",
+   "sidebar-discounts": "Discounts",
+   "sidebar-gift-cards": "Gift Cards",
+@@ -543,7 +543,7 @@
+   "search-modal-to-select-and": "to select, and",
+   "search-modal-to-search-anytime": "to search anytime",
+   "templates-settings": "Settings",
+-  "templates-manage-the-settings-for-your-medusa-store": "Manage the settings for your Medusa store",
++  "templates-manage-the-settings-for-your-medusa-store": "Manage the settings for your Clinic OS store",
+   "transfer-orders-modal-info": "Info",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Customer is already the owner of the order",
+   "transfer-orders-modal-success": "Success",
+@@ -906,7 +906,7 @@
+   "gift-cards-create-publish": "Create & Publish",
+   "gift-cards-successfully-updated-gift-card": "Successfully updated Gift Card",
+   "gift-cards-gift-cards": "Gift Cards",
+-  "gift-cards-manage": "Manage the Gift Cards of your Medusa store",
++  "gift-cards-manage": "Manage the Gift Cards of your Clinic OS store",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Are you ready to sell your first Gift Card?",
+   "gift-cards-no-gift-card-has-been-added-yet": "No Gift Card has been added yet.",
+   "gift-cards-history": "History",
+@@ -1145,7 +1145,7 @@
+   "refund-error": "Error",
+   "refund-create-a-refund": "Create a refund",
+   "refund-attention": "Attention!",
+-  "refund-system-payment-disclaimer": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
++  "refund-system-payment-disclaimer": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Clinic OS for such payments.",
+   "refund-details": "Details",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Cannot refund more than the order's net total.",
+   "refund-discount": "Discount",
+@@ -1794,7 +1794,7 @@
+   "settings-manage-your-business-details": "Manage your business details",
+   "settings-general": "General",
+   "settings-store-name": "Store name",
+-  "settings-medusa-store": "Medusa Store",
++  "settings-medusa-store": "Clinic OS Store",
+   "settings-advanced-settings": "Advanced settings",
+   "settings-swap-link-template": "Swap link template",
+   "settings-draft-order-link-template": "Draft order link template",
+@@ -1808,14 +1808,14 @@
+   "edit-user-information-submit-and-close": "Submit and close",
+   "personal-information-back-to-settings": "Back to Settings",
+   "personal-information-personal-information": "Personal information",
+-  "personal-information-manage-your-medusa-profile": "Manage your Medusa profile",
++  "personal-information-manage-your-medusa-profile": "Manage your Clinic OS profile",
+   "personal-information-language-settings-title": "Language",
+-  "personal-information-language-settings-description": "Adjust the language of Medusa Admin",
++  "personal-information-language-settings-description": "Adjust the language of Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Help us translate",
+   "personal-information-usage-insights-title": "Usage insights",
+   "usage-insights-disabled": "Disabled",
+   "usage-insights-active": "Active",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Share usage insights and help us improve Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Share usage insights and help us improve Clinic OS",
+   "usage-insights-edit-preferences": "Edit preferences",
+   "usage-insights-success": "Success",
+   "usage-insights-your-information-was-successfully-updated": "Your information was successfully updated",
+@@ -1982,7 +1982,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Region tax settings were successfully updated.",
+   "taxes-tax-provider": "Tax Provider",
+   "taxes-calculate-taxes-automatically": "Calculate taxes automatically?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "When checked Medusa will automatically apply tax calculations to Carts in this Region. When unchecked you will have to manually compute taxes at checkout. Manual taxes are recommended if using a 3rd party tax provider to avoid performing too many requests",
++  "taxes-automatically-apply-tax-calculations-to-carts": "When checked Clinic OS will automatically apply tax calculations to Carts in this Region. When unchecked you will have to manually compute taxes at checkout. Manual taxes are recommended if using a 3rd party tax provider to avoid performing too many requests",
+   "taxes-apply-tax-to-gift-cards": "Apply tax to gift cards?",
+   "taxes-apply-taxes-to-gift-cards": "When checked taxes will be applied to gift cards on checkout. In some contries tax regulations require that taxes are applied to gift cards on purchase.",
+   "taxes-search-products": "Search Products..",
+@@ -2005,7 +2005,7 @@
+   "users-invite-users": "Invite Users",
+   "users-back-to-settings": "Back to settings",
+   "users-the-team": "The Team",
+-  "users-manage-users-of-your-medusa-store": "Manage users of your Medusa Store",
++  "users-manage-users-of-your-medusa-store": "Manage users of your Clinic OS Store",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/es/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/es/translation.json
+index bcd7d33..ffd4aaa 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/es/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/es/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Tus preferencias se actualizaron correctamente",
+   "analytics-preferences-error": "Error",
+   "analytics-preferences-help-us-get-better": "Ayúdanos a mejorar",
+-  "analytics-preferences-disclaimer": "Para crear una experiencia de e-commerce irresistible nos gustaría obtener información sobre cómo utilizas Medusa. La información de uso nos permite construir productos mejores, más atractivos y más utilizables. Solo recolectamos información para mejorar el producto. Lee la información que recolectamos en nuestra",
++  "analytics-preferences-disclaimer": "Para crear una experiencia de e-commerce irresistible nos gustaría obtener información sobre cómo utilizas Clinic OS. La información de uso nos permite construir productos mejores, más atractivos y más utilizables. Solo recolectamos información para mejorar el producto. Lee la información que recolectamos en nuestra",
+   "analytics-preferences-documentation": "documentación",
+   "analytics-preferences-please-enter-a-valid-email": "Por favor, introduce un correo válido",
+   "analytics-preferences-continue": "Continuar",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Cancelar",
+   "invite-modal-invite": "Invitar",
+   "login-card-no-match": "Estas credenciales no coinciden con nuestros registros.",
+-  "login-card-log-in-to-medusa": "Acceder a Medusa",
++  "login-card-log-in-to-medusa": "Acceder a Clinic OS",
+   "login-card-email": "Correo electrónico",
+   "login-card-password": "Contraseña",
+   "login-card-forgot-your-password": "¿Olvidaste tu contraseña?",
+@@ -233,7 +233,7 @@
+   "sidebar-orders": "Pedidos",
+   "sidebar-products": "Productos",
+   "sidebar-categories": "Categorías",
+-  "sidebar-customers": "Clientes",
++  "sidebar-patients": "Clientes",
+   "sidebar-inventory": "Inventario",
+   "sidebar-discounts": "Descuentos",
+   "sidebar-gift-cards": "Tarjetas de Regalo",
+@@ -535,7 +535,7 @@
+   "search-modal-to-select-and": "para seleccionar, y",
+   "search-modal-to-search-anytime": "para buscar en cualquier momento",
+   "templates-settings": "Configuración",
+-  "templates-manage-the-settings-for-your-medusa-store": "Administra la configuración de tu tienda en Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Administra la configuración de tu tienda en Clinic OS",
+   "transfer-orders-modal-info": "Info",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "El cliente ya es el dueño del pedido",
+   "transfer-orders-modal-success": "Éxito",
+@@ -898,7 +898,7 @@
+   "gift-cards-create-publish": "Crear y publicar",
+   "gift-cards-successfully-updated-gift-card": "Tarjeta de Regalo actualizada correctamente",
+   "gift-cards-gift-cards": "Tarjetas de Regalo",
+-  "gift-cards-manage": "Administra las Tarjetas de Regalo en tu tienda de Medusa",
++  "gift-cards-manage": "Administra las Tarjetas de Regalo en tu tienda de Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "¿Preparado para vender tu primer Tarjeta de Regalo?",
+   "gift-cards-no-gift-card-has-been-added-yet": "No se ha añadido una Tarjeta de Regalo todavía.",
+   "gift-cards-history": "Historial",
+@@ -1137,7 +1137,7 @@
+   "refund-error": "Error",
+   "refund-create-a-refund": "Create a refund",
+   "refund-attention": "¡Atención!",
+-  "refund-system-payment-disclaimer": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
++  "refund-system-payment-disclaimer": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Clinic OS for such payments.",
+   "refund-details": "Detalles",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Cannot refund more than the order's net total.",
+   "refund-discount": "Descuento",
+@@ -1707,7 +1707,7 @@
+   "settings-manage-your-business-details": "Maneja los detalles de tu negocio",
+   "settings-general": "General",
+   "settings-store-name": "Nombre de la tienda",
+-  "settings-medusa-store": "Tienda Medusa",
++  "settings-medusa-store": "Tienda Clinic OS",
+   "settings-advanced-settings": "Ajustes avanzados",
+   "settings-swap-link-template": "Cambiar plantilla de enlace",
+   "settings-draft-order-link-template": "Generar borrador de plantilla de enlace",
+@@ -1721,14 +1721,14 @@
+   "edit-user-information-submit-and-close": "Enviar y cerrar",
+   "personal-information-back-to-settings": "Volver a Ajustes",
+   "personal-information-personal-information": "Información personal",
+-  "personal-information-manage-your-medusa-profile": "Maneja tu perfil de Medusa",
++  "personal-information-manage-your-medusa-profile": "Maneja tu perfil de Clinic OS",
+   "personal-information-language-settings-title": "Idioma",
+-  "personal-information-language-settings-description": "Ajusta el idioma de tu panel administrativo en Medusa",
++  "personal-information-language-settings-description": "Ajusta el idioma de tu panel administrativo en Clinic OS",
+   "personal-information-language-settings-help-us-translate": "Ayúdanos a traducir",
+   "personal-information-usage-insights-title": "Información de uso",
+   "usage-insights-disabled": "Deshabilitado",
+   "usage-insights-active": "Activo",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Compartir información de uso para ayudar a mejorar Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Compartir información de uso para ayudar a mejorar Clinic OS",
+   "usage-insights-edit-preferences": "Editar preferencias",
+   "usage-insights-success": "Éxito",
+   "usage-insights-your-information-was-successfully-updated": "Tu información fue actualizada correctamente",
+@@ -1895,7 +1895,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Ajustes de impuestos regionales actualizados correctamente.",
+   "taxes-tax-provider": "Proveedor de impuestos",
+   "taxes-calculate-taxes-automatically": "¿Calcular impuestos automáticamente?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Si se habilita, Medusa automáticamente aplicará cálculos de impuestos a los Carritos de compra en esta Región. Si se deshabilita, deberás calcular los impuestos manualmente antes del pago. Se recomiendan los impuestos manuales si utilizas un proveedor de impuestos externo para evitar hacer demasiadas solicitudes",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Si se habilita, Clinic OS automáticamente aplicará cálculos de impuestos a los Carritos de compra en esta Región. Si se deshabilita, deberás calcular los impuestos manualmente antes del pago. Se recomiendan los impuestos manuales si utilizas un proveedor de impuestos externo para evitar hacer demasiadas solicitudes",
+   "taxes-apply-tax-to-gift-cards": "¿Aplicar Impuestos a las Tarjetas de Regalo?",
+   "taxes-apply-taxes-to-gift-cards": "Sí se habilita, se aplicarán impuestos a las tarjetas de regalo durante el pago. En algunos países, se requiere aplicar impuestos al adquirir tarjetas de regalo.",
+   "taxes-search-products": "Buscar Productos..",
+@@ -1918,7 +1918,7 @@
+   "users-invite-users": "Invitar Usuarios",
+   "users-back-to-settings": "Volver a Ajustes",
+   "users-the-team": "El Equipo",
+-  "users-manage-users-of-your-medusa-store": "Administrar usuarios de tu Tienda Medusa",
++  "users-manage-users-of-your-medusa-store": "Administrar usuarios de tu Tienda Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/fr/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/fr/translation.json
+index 3f960f9..a796f0b 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/fr/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/fr/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Vos préférences ont été mises à jour avec succès",
+   "analytics-preferences-error": "Erreur",
+   "analytics-preferences-help-us-get-better": "Aidez-nous à nous améliorer",
+-  "analytics-preferences-disclaimer": "Pour créer la meilleure expérience de commerce en ligne possible, nous aimerions obtenir des informations sur la manière dont vous utilisez Medusa. Les informations sur les utilisateurs nous permettent de construire de meilleurs produits, plus engageants et plus faciles d'utilisation. Nous ne collectons des données que pour améliorer le produit. Lisez quelles données nous recueillons dans notre",
++  "analytics-preferences-disclaimer": "Pour créer la meilleure expérience de commerce en ligne possible, nous aimerions obtenir des informations sur la manière dont vous utilisez Clinic OS. Les informations sur les utilisateurs nous permettent de construire de meilleurs produits, plus engageants et plus faciles d'utilisation. Nous ne collectons des données que pour améliorer le produit. Lisez quelles données nous recueillons dans notre",
+   "analytics-preferences-documentation": "documentation",
+   "analytics-preferences-please-enter-a-valid-email": "Veuillez entrer une adresse e-mail valide",
+   "analytics-preferences-continue": "Continuer",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Annuler",
+   "invite-modal-invite": "Inviter",
+   "login-card-no-match": "Ces identifiants ne correspondent pas à nos enregistrements.",
+-  "login-card-log-in-to-medusa": "Connectez-vous à Medusa",
++  "login-card-log-in-to-medusa": "Connectez-vous à Clinic OS",
+   "login-card-email": "E-mail",
+   "login-card-password": "Mot de passe",
+   "login-card-forgot-your-password": "Mot de passe oublié ?",
+@@ -233,7 +233,7 @@
+   "sidebar-orders": "Commandes",
+   "sidebar-products": "Produits",
+   "sidebar-categories": "Catégories",
+-  "sidebar-customers": "Clients",
++  "sidebar-patients": "Clients",
+   "sidebar-inventory": "Inventaire",
+   "sidebar-discounts": "Réductions",
+   "sidebar-gift-cards": "Cartes-cadeaux",
+@@ -535,7 +535,7 @@
+   "search-modal-to-select-and": "pour sélectionner, et",
+   "search-modal-to-search-anytime": "pour rechercher à tout moment",
+   "templates-settings": "Paramètres",
+-  "templates-manage-the-settings-for-your-medusa-store": "Gérez les paramètres de votre magasin Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Gérez les paramètres de votre magasin Clinic OS",
+   "transfer-orders-modal-info": "Info",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Le client est déjà propriétaire de la commande",
+   "transfer-orders-modal-success": "Succès",
+@@ -898,7 +898,7 @@
+   "gift-cards-create-publish": "Créer et publier",
+   "gift-cards-successfully-updated-gift-card": "La carte-cadeau a été mise à jour avec succès",
+   "gift-cards-gift-cards": "Cartes-cadeaux",
+-  "gift-cards-manage": "Gérez les cartes-cadeaux de votre magasin Medusa",
++  "gift-cards-manage": "Gérez les cartes-cadeaux de votre magasin Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Êtes-vous prêt à vendre votre première carte-cadeau ?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Aucune carte-cadeau n'a encore été ajoutée.",
+   "gift-cards-history": "Historique",
+@@ -1137,7 +1137,7 @@
+   "refund-error": "Erreur",
+   "refund-create-a-refund": "Créer un remboursement",
+   "refund-attention": "Attention !",
+-  "refund-system-payment-disclaimer": "Un ou plusieurs de vos paiements sont des paiements système. Soyez conscient que les captures et les remboursements ne sont pas gérés par Medusa pour de tels paiements.",
++  "refund-system-payment-disclaimer": "Un ou plusieurs de vos paiements sont des paiements système. Soyez conscient que les captures et les remboursements ne sont pas gérés par Clinic OS pour de tels paiements.",
+   "refund-details": "Détails",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Impossible de rembourser plus que le total net de la commande.",
+   "refund-discount": "Remise",
+@@ -1707,7 +1707,7 @@
+   "settings-manage-your-business-details": "Gérez les détails de votre entreprise",
+   "settings-general": "Général",
+   "settings-store-name": "Nom du magasin",
+-  "settings-medusa-store": "Magasin Medusa",
++  "settings-medusa-store": "Magasin Clinic OS",
+   "settings-advanced-settings": "Paramètres avancés",
+   "settings-swap-link-template": "Modèle de lien d'échange",
+   "settings-draft-order-link-template": "Modèle de lien de commande en attente",
+@@ -1721,14 +1721,14 @@
+   "edit-user-information-submit-and-close": "Soumettre et fermer",
+   "personal-information-back-to-settings": "Retour aux paramètres",
+   "personal-information-personal-information": "Informations personnelles",
+-  "personal-information-manage-your-medusa-profile": "Gérez votre profil Medusa",
++  "personal-information-manage-your-medusa-profile": "Gérez votre profil Clinic OS",
+   "personal-information-language-settings-title": "Langue",
+-  "personal-information-language-settings-description": "Ajustez la langue de Medusa Admin",
++  "personal-information-language-settings-description": "Ajustez la langue de Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Aidez-nous à traduire",
+   "personal-information-usage-insights-title": "Informations sur l'utilisation",
+   "usage-insights-disabled": "Désactivé",
+   "usage-insights-active": "Actif",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Partagez les informations sur l'utilisation et aidez-nous à améliorer Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Partagez les informations sur l'utilisation et aidez-nous à améliorer Clinic OS",
+   "usage-insights-edit-preferences": "Modifier les préférences",
+   "usage-insights-success": "Succès",
+   "usage-insights-your-information-was-successfully-updated": "Vos informations ont été mises à jour avec succès",
+@@ -1895,7 +1895,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Les paramètres de taxe de la région ont été mis à jour avec succès.",
+   "taxes-tax-provider": "Fournisseur de taxe",
+   "taxes-calculate-taxes-automatically": "Calculer automatiquement les taxes ?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Lorsqu'il est activé, Medusa appliquera automatiquement les calculs de taxe aux paniers dans cette région. Lorsqu'il est désactivé, vous devrez calculer manuellement les taxes lors du paiement. Les taxes manuelles sont recommandées si vous utilisez un fournisseur de taxe tiers pour éviter de nombreuses demandes.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Lorsqu'il est activé, Clinic OS appliquera automatiquement les calculs de taxe aux paniers dans cette région. Lorsqu'il est désactivé, vous devrez calculer manuellement les taxes lors du paiement. Les taxes manuelles sont recommandées si vous utilisez un fournisseur de taxe tiers pour éviter de nombreuses demandes.",
+   "taxes-apply-tax-to-gift-cards": "Appliquer la taxe aux cartes-cadeaux ?",
+   "taxes-apply-taxes-to-gift-cards": "Lorsqu'il est activé, les taxes seront appliquées aux cartes-cadeaux lors du paiement. Dans certains pays, la réglementation fiscale exige que les taxes soient appliquées aux cartes-cadeaux à l'achat.",
+   "taxes-search-products": "Rechercher des produits...",
+@@ -1918,7 +1918,7 @@
+   "users-invite-users": "Inviter des utilisateurs",
+   "users-back-to-settings": "Retour aux paramètres",
+   "users-the-team": "L'équipe",
+-  "users-manage-users-of-your-medusa-store": "Gérer les utilisateurs de votre magasin Medusa",
++  "users-manage-users-of-your-medusa-store": "Gérer les utilisateurs de votre magasin Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/hi/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/hi/translation.json
+index 9a83926..cbc2243 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/hi/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/hi/translation.json
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "ऑर्डर",
+   "sidebar-products": "उत्पाद",
+   "sidebar-categories": "श्रेणियाँ",
+-  "sidebar-customers": "ग्राहक",
++  "sidebar-patients": "ग्राहक",
+   "sidebar-inventory": "भंडार",
+   "sidebar-discounts": "छूट",
+   "sidebar-gift-cards": "उपहार कार्ड",
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/hr/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/hr/translation.json
+index 535938b..115c531 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/hr/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/hr/translation.json
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "Narudžbe",
+   "sidebar-products": "Proizvodi",
+   "sidebar-categories": "Kategorije",
+-  "sidebar-customers": "Kupci",
++  "sidebar-patients": "Kupci",
+   "sidebar-inventory": "Inventar",
+   "sidebar-discounts": "Popusti",
+   "sidebar-gift-cards": "Poklon kartice",
+@@ -543,7 +543,7 @@
+   "search-modal-to-select-and": "da biste odabrali i",
+   "search-modal-to-search-anytime": "za pretragu u bilo kojem trenutku",
+   "templates-settings": "Postavke",
+-  "templates-manage-the-settings-for-your-medusa-store": "Upravljajte postavkama za svoju Medusa trgovinu",
++  "templates-manage-the-settings-for-your-medusa-store": "Upravljajte postavkama za svoju Clinic OS trgovinu",
+   "transfer-orders-modal-info": "Informacije",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Kupac je već vlasnik narudžbe",
+   "transfer-orders-modal-success": "Uspjeh",
+@@ -906,7 +906,7 @@
+   "gift-cards-create-publish": "Stvori i objavi",
+   "gift-cards-successfully-updated-gift-card": "Poklon kartica je uspješno ažuriran",
+   "gift-cards-gift-cards": "Poklon kartice",
+-  "gift-cards-manage": "Upravljajte poklon karticama svoje Medusa trgovine",
++  "gift-cards-manage": "Upravljajte poklon karticama svoje Clinic OS trgovine",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Spremni ste prodati svoju prvu poklon karticu?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Nijedna poklon kartica još nije dodana.",
+   "gift-cards-history": "Povijest",
+@@ -1794,7 +1794,7 @@
+   "settings-manage-your-business-details": "Upravljajte pojedinostima o vašem poslovanju",
+   "settings-general": "Općenito",
+   "settings-store-name": "Naziv trgovine",
+-  "settings-medusa-store": "Medusa trgovina",
++  "settings-medusa-store": "Clinic OS trgovina",
+   "settings-advanced-settings": "Napredne postavke",
+   "settings-swap-link-template": "Predložak poveznice za zamjene",
+   "settings-draft-order-link-template": "Predložak poveznice za skice narudžbi",
+@@ -1808,14 +1808,14 @@
+   "edit-user-information-submit-and-close": "Pošalji i zatvori",
+   "personal-information-back-to-settings": "Natrag na postavke",
+   "personal-information-personal-information": "Osobni podatci",
+-  "personal-information-manage-your-Medusa-profile": "Upravljajte svojim Medusa profilom",
++  "personal-information-manage-your-Clinic OS-profile": "Upravljajte svojim Clinic OS profilom",
+   "personal-information-language-settings-title": "Jezik",
+-  "personal-information-language-settings-description": "Prilagodite jezik Medusa Admina",
++  "personal-information-language-settings-description": "Prilagodite jezik Clinic OS Admina",
+   "personal-information-language-settings-help-us-translate": "Pomozite nam prevesti",
+   "personal-information-usage-insights-title": "Prikazi upotrebe",
+   "usage-insights-disabled": "Onemogućeno",
+   "usage-insights-active": "Aktivno",
+-  "usage-insights-share-usage-insights-and-help-us-improve-Medusa": "Podijelite prikaze upotrebe i pomozite nam poboljšati Medusu",
++  "usage-insights-share-usage-insights-and-help-us-improve-Clinic OS": "Podijelite prikaze upotrebe i pomozite nam poboljšati Medusu",
+   "usage-insights-edit-preferences": "Uredi postavke",
+   "usage-insights-success": "Uspjeh",
+   "usage-insights-your-information-was-successfully-updated": "Vaši podatci uspješno su ažurirani",
+@@ -1982,7 +1982,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Postavke poreza za regiju uspješno su ažurirane.",
+   "taxes-tax-provider": "Porezni pružatelj",
+   "taxes-calculate-taxes-automatically": "Automatski izračunavati poreze?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Kad je označeno, Medusa će automatski primjenjivati izračune poreza na košarice u ovoj regiji. Ako nije označeno, poreze ćete morati ručno izračunavati pri naplati. Ručni porezi se preporučuju ako koristite pružatelja treće strane kako biste izbjegli previše zahtjeva.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Kad je označeno, Clinic OS će automatski primjenjivati izračune poreza na košarice u ovoj regiji. Ako nije označeno, poreze ćete morati ručno izračunavati pri naplati. Ručni porezi se preporučuju ako koristite pružatelja treće strane kako biste izbjegli previše zahtjeva.",
+   "taxes-apply-tax-to-gift-cards": "Primjenjivati porez na poklon kartice?",
+   "taxes-apply-taxes-to-gift-cards": "Kada je označeno, porezi će se primjenjivati na poklon kartice pri naplati. U nekim zemljama porezni propisi zahtijevaju da se porezi primjenjuju na poklon kartice pri kupnji.",
+   "taxes-search-products": "Pretraži proizvode...",
+@@ -2005,7 +2005,7 @@
+   "users-invite-users": "Pozovi korisnike",
+   "users-back-to-settings": "Natrag na postavke",
+   "users-the-team": "Tim",
+-  "users-manage-users-of-your-medusa-store": "Upravljajte korisnicima svoje Medusa trgovine",
++  "users-manage-users-of-your-medusa-store": "Upravljajte korisnicima svoje Clinic OS trgovine",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/it/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/it/translation.json
+index 842e3cb..c2584df 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/it/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/it/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Le tue preferenze sono state aggiornate con successo",
+   "analytics-preferences-error": "Errore",
+   "analytics-preferences-help-us-get-better": "Aiutaci a migliorare",
+-  "analytics-preferences-disclaimer": "Per creare l'esperienza di e-commerce più coinvolgente, desideriamo ottenere informazioni su come utilizzi Medusa. Le informazioni degli utenti ci consentono di costruire prodotti migliori, più coinvolgenti e più utilizzabili. Raccogliamo dati solo per migliorare il prodotto. Leggi quali dati raccogliamo nella nostra",
++  "analytics-preferences-disclaimer": "Per creare l'esperienza di e-commerce più coinvolgente, desideriamo ottenere informazioni su come utilizzi Clinic OS. Le informazioni degli utenti ci consentono di costruire prodotti migliori, più coinvolgenti e più utilizzabili. Raccogliamo dati solo per migliorare il prodotto. Leggi quali dati raccogliamo nella nostra",
+   "analytics-preferences-documentation": "documentazione",
+   "analytics-preferences-please-enter-a-valid-email": "Inserisci un indirizzo email valido",
+   "analytics-preferences-continue": "Continua",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Annulla",
+   "invite-modal-invite": "Invita",
+   "login-card-no-match": "Queste credenziali non corrispondono ai nostri record.",
+-  "login-card-log-in-to-medusa": "Accedi a Medusa",
++  "login-card-log-in-to-medusa": "Accedi a Clinic OS",
+   "login-card-email": "Email",
+   "login-card-password": "Password",
+   "login-card-forgot-your-password": "Hai dimenticato la password?",
+@@ -233,7 +233,7 @@
+   "sidebar-orders": "Ordini",
+   "sidebar-products": "Prodotti",
+   "sidebar-categories": "Categorie",
+-  "sidebar-customers": "Clienti",
++  "sidebar-patients": "Clienti",
+   "sidebar-inventory": "Inventario",
+   "sidebar-discounts": "Sconti",
+   "sidebar-gift-cards": "Buoni Regalo",
+@@ -535,7 +535,7 @@
+   "search-modal-to-select-and": "per selezionare e",
+   "search-modal-to-search-anytime": "per cercare in qualsiasi momento",
+   "templates-settings": "Impostazioni",
+-  "templates-manage-the-settings-for-your-medusa-store": "Gestisci le impostazioni per il tuo negozio Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Gestisci le impostazioni per il tuo negozio Clinic OS",
+   "transfer-orders-modal-info": "Info",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Il cliente è già il proprietario dell'ordine",
+   "transfer-orders-modal-success": "Successo",
+@@ -896,7 +896,7 @@
+   "gift-cards-create-publish": "Crea e Pubblica",
+   "gift-cards-successfully-updated-gift-card": "Carta Regalo aggiornata con successo",
+   "gift-cards-gift-cards": "Carte Regalo",
+-  "gift-cards-manage": "Gestisci le Carte Regalo del tuo negozio Medusa",
++  "gift-cards-manage": "Gestisci le Carte Regalo del tuo negozio Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Sei pronto per vendere la tua prima Carta Regalo?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Nessuna Carta Regalo è stata ancora aggiunta.",
+   "gift-cards-history": "Cronologia",
+@@ -1135,7 +1135,7 @@
+   "refund-error": "Errore",
+   "refund-create-a-refund": "Crea un rimborso",
+   "refund-attention": "Attenzione!",
+-  "refund-system-payment-disclaimer": "Uno o più dei tuoi pagamenti sono pagamenti di sistema. Sii consapevole che registrazioni e rimborsi non sono gestiti da Medusa per tali pagamenti.",
++  "refund-system-payment-disclaimer": "Uno o più dei tuoi pagamenti sono pagamenti di sistema. Sii consapevole che registrazioni e rimborsi non sono gestiti da Clinic OS per tali pagamenti.",
+   "refund-details": "Dettagli",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Non puoi rimborsare più del totale netto dell'ordine.",
+   "refund-discount": "Sconto",
+@@ -1705,7 +1705,7 @@
+   "settings-manage-your-business-details": "Gestisci i dettagli della tua attività",
+   "settings-general": "Generali",
+   "settings-store-name": "Nome del negozio",
+-  "settings-medusa-store": "Negozio Medusa",
++  "settings-medusa-store": "Negozio Clinic OS",
+   "settings-advanced-settings": "Impostazioni avanzate",
+   "settings-swap-link-template": "Modello di link di scambio",
+   "settings-draft-order-link-template": "Modello di link per ordini in sospeso",
+@@ -1719,14 +1719,14 @@
+   "edit-user-information-submit-and-close": "Invia e chiudi",
+   "personal-information-back-to-settings": "Torna alle Impostazioni",
+   "personal-information-personal-information": "Informazioni personali",
+-  "personal-information-manage-your-medusa-profile": "Gestisci il tuo profilo Medusa",
++  "personal-information-manage-your-medusa-profile": "Gestisci il tuo profilo Clinic OS",
+   "personal-information-language-settings-title": "Lingua",
+-  "personal-information-language-settings-description": "Regola la lingua di Medusa Admin",
++  "personal-information-language-settings-description": "Regola la lingua di Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Aiutaci a tradurre",
+   "personal-information-usage-insights-title": "Analisi dell'uso",
+   "usage-insights-disabled": "Disabilitato",
+   "usage-insights-active": "Attivo",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Condividi le analisi dell'uso e aiutaci a migliorare Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Condividi le analisi dell'uso e aiutaci a migliorare Clinic OS",
+   "usage-insights-edit-preferences": "Modifica le preferenze",
+   "usage-insights-success": "Successo",
+   "usage-insights-your-information-was-successfully-updated": "Le tue informazioni sono state aggiornate con successo",
+@@ -1893,7 +1893,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Le impostazioni fiscali della regione sono state aggiornate con successo.",
+   "taxes-tax-provider": "Provider Fiscale",
+   "taxes-calculate-taxes-automatically": "Calcolare le tasse automaticamente?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Quando selezionato, Medusa applicherà automaticamente i calcoli delle tasse ai carrelli in questa regione. Quando deselezionato, dovrai calcolare manualmente le tasse al momento del pagamento. Le tasse manuali sono consigliate se si utilizza un provider fiscale di terze parti per evitare di effettuare troppe richieste.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Quando selezionato, Clinic OS applicherà automaticamente i calcoli delle tasse ai carrelli in questa regione. Quando deselezionato, dovrai calcolare manualmente le tasse al momento del pagamento. Le tasse manuali sono consigliate se si utilizza un provider fiscale di terze parti per evitare di effettuare troppe richieste.",
+   "taxes-apply-tax-to-gift-cards": "Applicare le tasse alle gift card?",
+   "taxes-apply-taxes-to-gift-cards": "Quando selezionato, le tasse saranno applicate alle gift card al momento del pagamento. In alcuni paesi, le normative fiscali richiedono che le tasse siano applicate all'acquisto delle gift card.",
+   "taxes-search-products": "Cerca Prodotti...",
+@@ -1916,7 +1916,7 @@
+   "users-invite-users": "Invita Utenti",
+   "users-back-to-settings": "Torna alle impostazioni",
+   "users-the-team": "Il Team",
+-  "users-manage-users-of-your-medusa-store": "Gestisci gli utenti del tuo Negozio Medusa",
++  "users-manage-users-of-your-medusa-store": "Gestisci gli utenti del tuo Negozio Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/ja/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/ja/translation.json
+index 46fb0b4..5f147a1 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/ja/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/ja/translation.json
+@@ -23,7 +23,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "設定が正常に更新されました",
+   "analytics-preferences-error": "エラー",
+   "analytics-preferences-help-us-get-better": "私たちがよりよくなる手助けをしてください",
+-  "analytics-preferences-disclaimer": "Medusaの使用方法を知ることで、より魅力的なEC体験を作りたいと考えています。ユーザーのインサイトは、より良い、より魅力的で使いやすい製品を作るために役立ちます。製品の改善のためにのみデータを収集しています。私たちが収集するデータについては、私たちの〔ドキュメント〕をお読みください",
++  "analytics-preferences-disclaimer": "Clinic OSの使用方法を知ることで、より魅力的なEC体験を作りたいと考えています。ユーザーのインサイトは、より良い、より魅力的で使いやすい製品を作るために役立ちます。製品の改善のためにのみデータを収集しています。私たちが収集するデータについては、私たちの〔ドキュメント〕をお読みください",
+   "analytics-preferences-documentation": "有効なメールアドレスを入力してください",
+   "analytics-preferences-please-enter-a-valid-email": "続ける",
+   "analytics-preferences-continue": "通貨",
+@@ -113,7 +113,7 @@
+   "invite-modal-cancel": "キャンセル",
+   "invite-modal-invite": "招待する",
+   "login-card-no-match": "これらの資格情報は当社の記録と一致しません。",
+-  "login-card-log-in-to-medusa": "Medusaにログインする",
++  "login-card-log-in-to-medusa": "Clinic OSにログインする",
+   "login-card-email": "メール",
+   "login-card-password": "パスワード",
+   "login-card-forgot-your-password": "パスワードをお忘れですか？",
+@@ -240,7 +240,7 @@
+   "sidebar-orders": "注文",
+   "sidebar-products": "製品",
+   "sidebar-categories": "カテゴリー",
+-  "sidebar-customers": "顧客",
++  "sidebar-patients": "顧客",
+   "sidebar-inventory": "在庫",
+   "sidebar-discounts": "割引",
+   "sidebar-gift-cards": "ギフトカード",
+@@ -542,7 +542,7 @@
+   "search-modal-to-select-and": "選択する",
+   "search-modal-to-search-anytime": "いつでも検索する",
+   "templates-settings": "設定",
+-  "templates-manage-the-settings-for-your-medusa-store": "Medusaストアの設定を管理する",
++  "templates-manage-the-settings-for-your-medusa-store": "Clinic OSストアの設定を管理する",
+   "transfer-orders-modal-info": "情報",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "顧客はすでに注文の所有者です",
+   "transfer-orders-modal-success": "成功",
+@@ -903,7 +903,7 @@
+   "gift-cards-create-publish": "作成＆公開",
+   "gift-cards-successfully-updated-gift-card": "ギフトカードが正常に更新されました",
+   "gift-cards-gift-cards": "ギフトカード",
+-  "gift-cards-manage": "自分のMedusaストアのギフトカードを管理する",
++  "gift-cards-manage": "自分のClinic OSストアのギフトカードを管理する",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "最初のギフトカードを販売する準備はできていますか？",
+   "gift-cards-no-gift-card-has-been-added-yet": "まだギフトカードは追加されていません。",
+   "gift-cards-history": "履歴",
+@@ -1142,7 +1142,7 @@
+   "refund-error": "エラー",
+   "refund-create-a-refund": "返金を作成する",
+   "refund-attention": "注意！",
+-  "refund-system-payment-disclaimer": "一つ以上の支払いがシステム支払いです。このような支払いについては、キャプチャや返金はMedusaで処理されませんのでご注意ください。",
++  "refund-system-payment-disclaimer": "一つ以上の支払いがシステム支払いです。このような支払いについては、キャプチャや返金はClinic OSで処理されませんのでご注意ください。",
+   "refund-details": "詳細",
+   "refund-cannot-refund-more-than-the-orders-net-total": "注文の純合計を超える返金はできません。",
+   "refund-discount": "割引",
+@@ -1804,14 +1804,14 @@
+   "edit-user-information-submit-and-close": "提出して閉じる",
+   "personal-information-back-to-settings": "設定に戻る",
+   "personal-information-personal-information": "個人情報",
+-  "personal-information-manage-your-medusa-profile": "Medusaのプロフィールを管理する",
++  "personal-information-manage-your-medusa-profile": "Clinic OSのプロフィールを管理する",
+   "personal-information-language-settings-title": "言語",
+-  "personal-information-language-settings-description": "Medusa Adminの言語を調整する",
++  "personal-information-language-settings-description": "Clinic OS Adminの言語を調整する",
+   "personal-information-language-settings-help-us-translate": "翻訳を手伝ってください",
+   "personal-information-usage-insights-title": "使用状況の洞察",
+   "usage-insights-disabled": "無効",
+   "usage-insights-active": "有効",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "使用状況の洞察を共有し、Medusaを改善するのに役立てる",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "使用状況の洞察を共有し、Clinic OSを改善するのに役立てる",
+   "usage-insights-edit-preferences": "環境設定を編集する",
+   "usage-insights-success": "成功",
+   "usage-insights-your-information-was-successfully-updated": "情報が正常に更新されました",
+@@ -1977,7 +1977,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "地域税の設定が正常に更新されました。",
+   "taxes-tax-provider": "税プロバイダ",
+   "taxes-calculate-taxes-automatically": "税を自動的に計算しますか？",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Medusaがこの地域のカートに税計算を自動的に適用します。チェックを外すと、レジで手動で税を計算する必要があります。3rdパーティの税プロバイダを使用している場合は、多くのリクエストを行わないために手動税計算が推奨されます。",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Clinic OSがこの地域のカートに税計算を自動的に適用します。チェックを外すと、レジで手動で税を計算する必要があります。3rdパーティの税プロバイダを使用している場合は、多くのリクエストを行わないために手動税計算が推奨されます。",
+   "taxes-apply-tax-to-gift-cards": "ギフトカードに税を適用しますか？",
+   "taxes-apply-taxes-to-gift-cards": "チェックを入れると、購入時にギフトカードに税が適用されます。一部の国では、税金規則により、ギフトカードに税金が購入時に適用される必要があります。",
+   "taxes-search-products": "商品を検索する..",
+@@ -2000,7 +2000,7 @@
+   "users-invite-users": "ユーザーを招待する",
+   "users-back-to-settings": "設定に戻る",
+   "users-the-team": "チーム",
+-  "users-manage-users-of-your-medusa-store": "Medusaストアのユーザーを管理する",
++  "users-manage-users-of-your-medusa-store": "Clinic OSストアのユーザーを管理する",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/ko/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/ko/translation.json
+index 7794e08..a60b703 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/ko/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/ko/translation.json
+@@ -23,7 +23,7 @@
+     "analytics-preferences-your-preferences-were-successfully-updated": "환경설정이 성공적으로 업데이트되었습니다.",
+     "analytics-preferences-error": "오류",
+     "analytics-preferences-help-us-get-better": "우리가 더 나아질 수 있도록 도와주세요",
+-    "analytics-preferences-disclaimer": "가장 매력적인 전자상거래 경험을 만들기 위해 우리는 귀하가 Medusa를 어떻게 사용하는지에 대한 통찰력을 얻고 싶습니다. ",
++    "analytics-preferences-disclaimer": "가장 매력적인 전자상거래 경험을 만들기 위해 우리는 귀하가 Clinic OS를 어떻게 사용하는지에 대한 통찰력을 얻고 싶습니다. ",
+     "analytics-preferences-documentation": "선적 서류 비치",
+     "analytics-preferences-please-enter-a-valid-email": "유효한 이메일을 입력해주세요",
+     "analytics-preferences-continue": "계속하다",
+@@ -241,7 +241,7 @@
+     "sidebar-orders": "명령",
+     "sidebar-products": "제품",
+     "sidebar-categories": "카테고리",
+-    "sidebar-customers": "고객",
++    "sidebar-patients": "고객",
+     "sidebar-inventory": "목록",
+     "sidebar-discounts": "할인",
+     "sidebar-gift-cards": "기프트 카드",
+@@ -543,7 +543,7 @@
+     "search-modal-to-select-and": "선택하고,",
+     "search-modal-to-search-anytime": "언제든지 검색하려면",
+     "templates-settings": "설정",
+-    "templates-manage-the-settings-for-your-medusa-store": "Medusa 매장 설정을 관리하세요.",
++    "templates-manage-the-settings-for-your-medusa-store": "Clinic OS 매장 설정을 관리하세요.",
+     "transfer-orders-modal-info": "정보",
+     "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "고객은 이미 주문의 소유자입니다.",
+     "transfer-orders-modal-success": "성공",
+@@ -906,7 +906,7 @@
+     "gift-cards-create-publish": "만들기 및 게시",
+     "gift-cards-successfully-updated-gift-card": "기프트 카드가 업데이트되었습니다.",
+     "gift-cards-gift-cards": "기프트 카드",
+-    "gift-cards-manage": "Medusa 매장의 기프트 카드를 관리하세요",
++    "gift-cards-manage": "Clinic OS 매장의 기프트 카드를 관리하세요",
+     "gift-cards-are-you-ready-to-sell-your-first-gift-card": "첫 번째 기프트 카드를 판매할 준비가 되셨나요?",
+     "gift-cards-no-gift-card-has-been-added-yet": "아직 기프트 카드가 추가되지 않았습니다.",
+     "gift-cards-history": "역사",
+@@ -1810,12 +1810,12 @@
+     "personal-information-personal-information": "개인 정보",
+     "personal-information-manage-your-medusa-profile": "메두사 프로필 관리",
+     "personal-information-language-settings-title": "언어",
+-    "personal-information-language-settings-description": "Medusa Admin의 언어 조정",
++    "personal-information-language-settings-description": "Clinic OS Admin의 언어 조정",
+     "personal-information-language-settings-help-us-translate": "번역을 도와주세요",
+     "personal-information-usage-insights-title": "사용량 통계",
+     "usage-insights-disabled": "장애가 있는",
+     "usage-insights-active": "활동적인",
+-    "usage-insights-share-usage-insights-and-help-us-improve-medusa": "사용 정보를 공유하고 Medusa 개선에 도움을 주세요.",
++    "usage-insights-share-usage-insights-and-help-us-improve-medusa": "사용 정보를 공유하고 Clinic OS 개선에 도움을 주세요.",
+     "usage-insights-edit-preferences": "환경설정 수정",
+     "usage-insights-success": "성공",
+     "usage-insights-your-information-was-successfully-updated": "귀하의 정보가 성공적으로 업데이트되었습니다",
+@@ -1982,7 +1982,7 @@
+     "taxes-region-tax-settings-were-successfully-updated": "지역세 설정이 업데이트되었습니다.",
+     "taxes-tax-provider": "세금 제공자",
+     "taxes-calculate-taxes-automatically": "세금을 자동으로 계산하시겠습니까?",
+-    "taxes-automatically-apply-tax-calculations-to-carts": "선택하면 Medusa가 자동으로 이 지역의 카트에 세금 계산을 적용합니다. ",
++    "taxes-automatically-apply-tax-calculations-to-carts": "선택하면 Clinic OS가 자동으로 이 지역의 카트에 세금 계산을 적용합니다. ",
+     "taxes-apply-tax-to-gift-cards": "기프트 카드에 세금을 적용하시겠습니까?",
+     "taxes-apply-taxes-to-gift-cards": "체크아웃 시 기프트 카드에 세금이 부과됩니다. ",
+     "taxes-search-products": "제품 검색..",
+@@ -2005,7 +2005,7 @@
+     "users-invite-users": "사용자 초대",
+     "users-back-to-settings": "설정으로 돌아가기",
+     "users-the-team": "팀",
+-    "users-manage-users-of-your-medusa-store": "Medusa Store 사용자 관리",
++    "users-manage-users-of-your-medusa-store": "Clinic OS Store 사용자 관리",
+     "users-count_one": "{{세다}}",
+     "users-count_other": "{{세다}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/pl/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/pl/translation.json
+index 6062a92..fd4133a 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/pl/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/pl/translation.json
+@@ -228,7 +228,7 @@
+   "sidebar-orders": "Zamówienia",
+   "sidebar-products": "Produkty",
+   "sidebar-categories": "Kategorie",
+-  "sidebar-customers": "Klienci",
++  "sidebar-patients": "Klienci",
+   "sidebar-inventory": "Zapasy",
+   "sidebar-discounts": "Rabaty",
+   "sidebar-gift-cards": "Karty Podarunkowe",
+@@ -530,7 +530,7 @@
+   "search-modal-to-select-and": "aby wybrać, oraz",
+   "search-modal-to-search-anytime": "aby wyszukać w dowolnym momencie",
+   "templates-settings": "Ustawienia",
+-  "templates-manage-the-settings-for-your-medusa-store": "Zarządzaj ustawieniami swojego sklepu Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Zarządzaj ustawieniami swojego sklepu Clinic OS",
+   "transfer-orders-modal-info": "Informacje",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Klient jest już właścicielem zamówienia",
+   "transfer-orders-modal-success": "Sukces",
+@@ -893,7 +893,7 @@
+   "gift-cards-create-publish": "Utwórz i publikuj",
+   "gift-cards-successfully-updated-gift-card": "Pomyślnie zaktualizowano kartę podarunkową",
+   "gift-cards-gift-cards": "Karty podarunkowe",
+-  "gift-cards-manage": "Zarządzaj kartami podarunkowymi swojego sklepu Medusa",
++  "gift-cards-manage": "Zarządzaj kartami podarunkowymi swojego sklepu Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Czy jesteś gotowy sprzedać swoją pierwszą kartę podarunkową?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Nie dodano jeszcze żadnej karty podarunkowej.",
+   "gift-cards-history": "Historia",
+@@ -1702,7 +1702,7 @@
+   "settings-manage-your-business-details": "Zarządzaj danymi swojej firmy",
+   "settings-general": "Ogólne",
+   "settings-store-name": "Nazwa sklepu",
+-  "settings-medusa-store": "Sklep Medusa",
++  "settings-medusa-store": "Sklep Clinic OS",
+   "settings-advanced-settings": "Ustawienia zaawansowane",
+   "settings-swap-link-template": "Szablon linku wymiany",
+   "settings-draft-order-link-template": "Szablon linku do wersji roboczej zamówienia",
+@@ -1716,9 +1716,9 @@
+   "edit-user-information-submit-and-close": "Zapisz i zamknij",
+   "personal-information-back-to-settings": "Wróć do ustawień",
+   "personal-information-personal-information": "Informacje osobiste",
+-  "personal-information-manage-your-medusa-profile": "Zarządzaj swoim profilem Medusa",
++  "personal-information-manage-your-medusa-profile": "Zarządzaj swoim profilem Clinic OS",
+   "personal-information-language-settings-title": "Język",
+-  "personal-information-language-settings-description": "Dostosuj język panelu Medusa",
++  "personal-information-language-settings-description": "Dostosuj język panelu Clinic OS",
+   "personal-information-language-settings-help-us-translate": "Pomóż nam w tłumaczeniu",
+   "personal-information-usage-insights-title": "Informacje o użytkowaniu",
+   "usage-insights-disabled": "Nieaktywne",
+@@ -1890,7 +1890,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Ustawienia podatku dla regionu zostały pomyślnie zaktualizowane",
+   "taxes-tax-provider": "Operator podatkowy",
+   "taxes-calculate-taxes-automatically": "Automatycznie obliczać podatki?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Po zaznaczeniu Medusa automatycznie zastosuje obliczenia podatkowe do koszyków w tym regionie. Gdy opcja nie jest zaznaczona, będziesz musiał ręcznie obliczyć podatki przy kasie. Ręczne naliczanie podatków jest zalecane w przypadku korzystania z zewnętrznego dostawcy podatków, aby uniknąć wykonywania zbyt wielu zapytań.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Po zaznaczeniu Clinic OS automatycznie zastosuje obliczenia podatkowe do koszyków w tym regionie. Gdy opcja nie jest zaznaczona, będziesz musiał ręcznie obliczyć podatki przy kasie. Ręczne naliczanie podatków jest zalecane w przypadku korzystania z zewnętrznego dostawcy podatków, aby uniknąć wykonywania zbyt wielu zapytań.",
+   "taxes-apply-tax-to-gift-cards": "Nałożyć podatek na karty podarunkowe?",
+   "taxes-apply-taxes-to-gift-cards": "Po zaznaczeniu tej opcji podatki będą naliczane do kart podarunkowych przy realizacji zakupu. W niektórych krajach przepisy podatkowe wymagają, aby podatki były naliczane do kart podarunkowych przy zakupie.",
+   "taxes-search-products": "Wyszukaj produkty..",
+@@ -1913,7 +1913,7 @@
+   "users-invite-users": "Zaproś użytkowników",
+   "users-back-to-settings": "Wróć do ustawień",
+   "users-the-team": "Zespół",
+-  "users-manage-users-of-your-medusa-store": "Zarządzanie użytkownikami sklepu Medusa",
++  "users-manage-users-of-your-medusa-store": "Zarządzanie użytkownikami sklepu Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/pt/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/pt/translation.json
+index 8469785..1eb97dd 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/pt/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/pt/translation.json
+@@ -15,7 +15,7 @@
+     "analytics-preferences-your-preferences-were-successfully-updated": "Suas preferências foram atualizadas com sucesso",
+     "analytics-preferences-error": "Erro",
+     "analytics-preferences-help-us-get-better": "Nos ajude a melhorar",
+-    "analytics-preferences-disclaimer": "Para criar a experiência de e-commerce mais cativante, gostaríamos de obter insights sobre como você usa o Medusa. Insights do usuário nos permitem construir produtos melhores, mais envolventes e mais usáveis. Coletamos dados apenas para melhorias no produto. Leia quais dados coletamos em nossa",
++    "analytics-preferences-disclaimer": "Para criar a experiência de e-commerce mais cativante, gostaríamos de obter insights sobre como você usa o Clinic OS. Insights do usuário nos permitem construir produtos melhores, mais envolventes e mais usáveis. Coletamos dados apenas para melhorias no produto. Leia quais dados coletamos em nossa",
+     "analytics-preferences-documentation": "documentação",
+     "analytics-preferences-please-enter-a-valid-email": "Por favor, insira um e-mail válido",
+     "analytics-preferences-continue": "Continuar",
+@@ -106,7 +106,7 @@
+     "invite-modal-cancel": "Cancelar",
+     "invite-modal-invite": "Convidar",
+     "login-card-no-match": "Essas credenciais não correspondem aos nossos registros.",
+-    "login-card-log-in-to-medusa": "Entrar no Medusa",
++    "login-card-log-in-to-medusa": "Entrar no Clinic OS",
+     "login-card-email": "E-mail",
+     "login-card-password": "Senha",
+     "login-card-forgot-your-password": "Esqueceu sua senha?",
+@@ -233,7 +233,7 @@
+     "sidebar-orders": "Pedidos",
+     "sidebar-products": "Produtos",
+     "sidebar-categories": "Categorias",
+-    "sidebar-customers": "Clientes",
++    "sidebar-patients": "Clientes",
+     "sidebar-inventory": "Inventário",
+     "sidebar-discounts": "Descontos",
+     "sidebar-gift-cards": "Cartões de Presente",
+@@ -535,7 +535,7 @@
+     "search-modal-to-select-and": "para selecionar e",
+     "search-modal-to-search-anytime": "para pesquisar a qualquer momento",
+     "templates-settings": "Configurações",
+-    "templates-manage-the-settings-for-your-medusa-store": "Gerencie as configurações da sua loja Medusa",
++    "templates-manage-the-settings-for-your-medusa-store": "Gerencie as configurações da sua loja Clinic OS",
+     "transfer-orders-modal-info": "Informação",
+     "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "O cliente já é o proprietário do pedido",
+     "transfer-orders-modal-success": "Sucesso",
+@@ -898,7 +898,7 @@
+     "gift-cards-create-publish": "Criar e Publicar",
+     "gift-cards-successfully-updated-gift-card": "Cartão de Presente atualizado com sucesso",
+     "gift-cards-gift-cards": "Cartões de Presente",
+-    "gift-cards-manage": "Gerencie os Cartões de Presente de sua loja Medusa",
++    "gift-cards-manage": "Gerencie os Cartões de Presente de sua loja Clinic OS",
+     "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Você está pronto para vender seu primeiro Cartão de Presente?",
+     "gift-cards-no-gift-card-has-been-added-yet": "Nenhum Cartão de Presente foi adicionado ainda.",
+     "gift-cards-history": "Histórico",
+@@ -1137,7 +1137,7 @@
+     "refund-error": "Erro",
+     "refund-create-a-refund": "Criar um reembolso",
+     "refund-attention": "Atenção!",
+-    "refund-system-payment-disclaimer": "Um ou mais dos seus pagamentos são pagamentos do sistema. Esteja ciente de que capturas e reembolsos não são tratados pela Medusa para tais pagamentos.",
++    "refund-system-payment-disclaimer": "Um ou mais dos seus pagamentos são pagamentos do sistema. Esteja ciente de que capturas e reembolsos não são tratados pela Clinic OS para tais pagamentos.",
+     "refund-details": "Detalhes",
+     "refund-cannot-refund-more-than-the-orders-net-total": "Não é possível reembolsar mais do que o total líquido do pedido.",
+     "refund-discount": "Desconto",
+@@ -1707,7 +1707,7 @@
+     "settings-manage-your-business-details": "Gerencie os detalhes do seu negócio",
+     "settings-general": "Geral",
+     "settings-store-name": "Nome da loja",
+-    "settings-medusa-store": "Loja Medusa",
++    "settings-medusa-store": "Loja Clinic OS",
+     "settings-advanced-settings": "Configurações avançadas",
+     "settings-swap-link-template": "Modelo de link de troca",
+     "settings-draft-order-link-template": "Modelo de link de pedido em rascunho",
+@@ -1721,14 +1721,14 @@
+     "edit-user-information-submit-and-close": "Enviar e fechar",
+     "personal-information-back-to-settings": "Voltar para Configurações",
+     "personal-information-personal-information": "Informações pessoais",
+-    "personal-information-manage-your-medusa-profile": "Gerencie seu perfil Medusa",
++    "personal-information-manage-your-medusa-profile": "Gerencie seu perfil Clinic OS",
+     "personal-information-language-settings-title": "Idioma",
+-    "personal-information-language-settings-description": "Ajuste o idioma do Medusa Admin",
++    "personal-information-language-settings-description": "Ajuste o idioma do Clinic OS Admin",
+     "personal-information-language-settings-help-us-translate": "Ajude-nos a traduzir",
+     "personal-information-usage-insights-title": "Análises de uso",
+     "usage-insights-disabled": "Desativado",
+     "usage-insights-active": "Ativo",
+-    "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Compartilhe análises de uso e nos ajude a melhorar o Medusa",
++    "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Compartilhe análises de uso e nos ajude a melhorar o Clinic OS",
+     "usage-insights-edit-preferences": "Editar preferências",
+     "usage-insights-success": "Sucesso",
+     "usage-insights-your-information-was-successfully-updated": "Suas informações foram atualizadas com sucesso",
+@@ -1895,7 +1895,7 @@
+     "taxes-region-tax-settings-were-successfully-updated": "As configurações fiscais da região foram atualizadas com sucesso.",
+     "taxes-tax-provider": "Provedor de Imposto",
+     "taxes-calculate-taxes-automatically": "Calcular impostos automaticamente?",
+-    "taxes-automatically-apply-tax-calculations-to-carts": "Quando marcado, o Medusa calculará automaticamente os impostos nos Carrinhos desta Região. Quando desmarcado, você terá que calcular manualmente os impostos no checkout. Impostos manuais são recomendados se você estiver usando um provedor de impostos de terceiros para evitar realizar muitas solicitações.",
++    "taxes-automatically-apply-tax-calculations-to-carts": "Quando marcado, o Clinic OS calculará automaticamente os impostos nos Carrinhos desta Região. Quando desmarcado, você terá que calcular manualmente os impostos no checkout. Impostos manuais são recomendados se você estiver usando um provedor de impostos de terceiros para evitar realizar muitas solicitações.",
+     "taxes-apply-tax-to-gift-cards": "Aplicar impostos a cartões-presente?",
+     "taxes-apply-taxes-to-gift-cards": "Quando marcado, os impostos serão aplicados aos cartões-presente no checkout. Em alguns países, as regulamentações fiscais exigem que os impostos sejam aplicados aos cartões-presente na compra.",
+     "taxes-search-products": "Buscar Produtos...",
+@@ -1918,7 +1918,7 @@
+     "users-invite-users": "Convidar Usuários",
+     "users-back-to-settings": "Voltar para Configurações",
+     "users-the-team": "A Equipe",
+-    "users-manage-users-of-your-medusa-store": "Gerencie os usuários de sua loja Medusa",
++    "users-manage-users-of-your-medusa-store": "Gerencie os usuários de sua loja Clinic OS",
+     "users-count_one": "{{count}}",
+     "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/ru/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/ru/translation.json
+index 6c69504..c8c61f2 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/ru/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/ru/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Ваши настройки были успешно обновлены",
+   "analytics-preferences-error": "Ошибка",
+   "analytics-preferences-help-us-get-better": "Помогите нам стать лучше",
+-  "analytics-preferences-disclaimer": "Чтобы создать наиболее привлекательный опыт электронной коммерции, мы хотели бы получить представление о том, как вы используете Medusa. Информация о пользователях позволяет нам создавать более качественные, привлекательные и полезные продукты. Мы собираем данные только для улучшения продукта. Прочтите, какие данные мы собираем в нашем",
++  "analytics-preferences-disclaimer": "Чтобы создать наиболее привлекательный опыт электронной коммерции, мы хотели бы получить представление о том, как вы используете Clinic OS. Информация о пользователях позволяет нам создавать более качественные, привлекательные и полезные продукты. Мы собираем данные только для улучшения продукта. Прочтите, какие данные мы собираем в нашем",
+   "analytics-preferences-documentation": "документация",
+   "analytics-preferences-please-enter-a-valid-email": "Пожалуйста, введите действительный адрес электронной почты",
+   "analytics-preferences-continue": "Продолжить",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Отменить",
+   "invite-modal-invite": "Пригласить",
+   "login-card-no-match": "Эти учетные данные не соответствуют нашим записям.",
+-  "login-card-log-in-to-medusa": "Войдите в Medusa",
++  "login-card-log-in-to-medusa": "Войдите в Clinic OS",
+   "login-card-email": "Электронная почта",
+   "login-card-password": "Пароль",
+   "login-card-forgot-your-password": "Забыли свой пароль?",
+@@ -530,7 +530,7 @@
+   "search-modal-to-select-and": "выбрать и",
+   "search-modal-to-search-anytime": "искать в любое время",
+   "templates-settings": "Настройки",
+-  "templates-manage-the-settings-for-your-medusa-store": "Управляйте настройками вашего магазина Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Управляйте настройками вашего магазина Clinic OS",
+   "transfer-orders-modal-info": "Информация",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Клиент уже является владельцем заказа",
+   "transfer-orders-modal-success": "Успешно",
+@@ -893,7 +893,7 @@
+   "gift-cards-create-publish": "Создать и опубликовать",
+   "gift-cards-successfully-updated-gift-card": "Подарочная карта успешно обновлена.",
+   "gift-cards-gift-cards": "Подарочные карты",
+-  "gift-cards-manage": "Управляйте подарочными картами вашего магазина Medusa",
++  "gift-cards-manage": "Управляйте подарочными картами вашего магазина Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Готовы ли вы продать свою первую подарочную карту?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Подарочная карта еще не добавлена.",
+   "gift-cards-history": "История",
+@@ -1132,7 +1132,7 @@
+   "refund-error": "Ошибка",
+   "refund-create-a-refund": "Создать возврат",
+   "refund-attention": "Внимание!",
+-  "refund-system-payment-disclaimer": "Один или несколько ваших платежей являются системными. Имейте в виду, что Medusa не занимается фиксацией и возвратом средств по таким платежам.",
++  "refund-system-payment-disclaimer": "Один или несколько ваших платежей являются системными. Имейте в виду, что Clinic OS не занимается фиксацией и возвратом средств по таким платежам.",
+   "refund-details": "Подробности",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Мы не можем вернуть сумму, превышающую чистую сумму заказа.",
+   "refund-discount": "Скидка",
+@@ -1702,7 +1702,7 @@
+   "settings-manage-your-business-details": "Управляйте деталями своей компании",
+   "settings-general": "Общие",
+   "settings-store-name": "Название магазина",
+-  "settings-medusa-store": "Магазин Medusa",
++  "settings-medusa-store": "Магазин Clinic OS",
+   "settings-advanced-settings": "Расширенные настройки",
+   "settings-swap-link-template": "Шаблон ссылки обмена",
+   "settings-draft-order-link-template": "Шаблон ссылки на черновой вариант заказа",
+@@ -1716,14 +1716,14 @@
+   "edit-user-information-submit-and-close": "Отправить и закрыть",
+   "personal-information-back-to-settings": "Вернуться к настройкам",
+   "personal-information-personal-information": "Персональная информация",
+-  "personal-information-manage-your-medusa-profile": "Управляйте своим профилем Medusa",
++  "personal-information-manage-your-medusa-profile": "Управляйте своим профилем Clinic OS",
+   "personal-information-language-settings-title": "Язык",
+-  "personal-information-language-settings-description": "Измените язык администратора Medusa",
++  "personal-information-language-settings-description": "Измените язык администратора Clinic OS",
+   "personal-information-language-settings-help-us-translate": "Помогите нам перевести",
+   "personal-information-usage-insights-title": "Информация об использовании",
+   "usage-insights-disabled": "Отключено",
+   "usage-insights-active": "Активен",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Поделитесь информацией об использовании и помогите нам улучшить Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Поделитесь информацией об использовании и помогите нам улучшить Clinic OS",
+   "usage-insights-edit-preferences": "Редактировать настройки",
+   "usage-insights-success": "Успешно",
+   "usage-insights-your-information-was-successfully-updated": "Ваша информация была успешно обновлена",
+@@ -1890,7 +1890,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Настройки регионального налога успешно обновлены.",
+   "taxes-tax-provider": "Налоговый провайдер",
+   "taxes-calculate-taxes-automatically": "Автоматически рассчитывать налоги?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Если этот флажок установлен, Medusa автоматически применит налоговые расчеты к корзинам в этом регионе. Если флажок снят, вам придется вручную рассчитать налоги при оформлении заказа. При использовании стороннего налогового провайдера рекомендуется взимать налоги вручную, чтобы избежать выполнения слишком большого количества запросов",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Если этот флажок установлен, Clinic OS автоматически применит налоговые расчеты к корзинам в этом регионе. Если флажок снят, вам придется вручную рассчитать налоги при оформлении заказа. При использовании стороннего налогового провайдера рекомендуется взимать налоги вручную, чтобы избежать выполнения слишком большого количества запросов",
+   "taxes-apply-tax-to-gift-cards": "Облагать налогом подарочные карты?",
+   "taxes-apply-taxes-to-gift-cards": "Если флажок установлен, к подарочным картам при оформлении заказа будут применяться налоги. В некоторых странах налоговое законодательство требует, чтобы подарочные карты при покупке облагались налогом.",
+   "taxes-search-products": "Поиск товаров..",
+@@ -1913,7 +1913,7 @@
+   "users-invite-users": "Пригласить пользователей",
+   "users-back-to-settings": "Back to settings",
+   "users-the-team": "Команда",
+-  "users-manage-users-of-your-medusa-store": "Управляйте пользователями вашего магазина Medusa",
++  "users-manage-users-of-your-medusa-store": "Управляйте пользователями вашего магазина Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/sl/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/sl/translation.json
+index 15dc5c3..e9694e0 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/sl/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/sl/translation.json
+@@ -241,7 +241,7 @@
+ "sidebar-orders": "Naročila",
+ "sidebar-products": "Izdelki",
+ "sidebar-categories": "Kategorije",
+-"sidebar-customers": "Stranke",
++"sidebar-patients": "Stranke",
+ "sidebar-inventory": "Zaloge",
+ "sidebar-discounts": "Popusti",
+ "sidebar-gift-cards": "Darilne kartice",
+@@ -542,7 +542,7 @@
+ "search-modal-to-select-and": "za izbiro, in",
+ "search-modal-to-search-anytime": "za iskanje kadar koli",
+ "templates-settings": "Nastavitve",
+-"templates-manage-the-settings-for-your-medusa-store": "Upravljajte nastavitve za svojo trgovino Medusa",
++"templates-manage-the-settings-for-your-medusa-store": "Upravljajte nastavitve za svojo trgovino Clinic OS",
+ "transfer-orders-modal-info": "Informacije",
+ "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Stranka je že lastnik naročila",
+ "transfer-orders-modal-success": "Uspeh",
+@@ -905,7 +905,7 @@
+ "gift-cards-create-publish": "Ustvari in objavi",
+ "gift-cards-successfully-updated-gift-card": "Darilna kartica uspešno posodobljena",
+ "gift-cards-gift-cards": "Darilne kartice",
+-"gift-cards-manage": "Upravljajte darilne kartice v vaši trgovini Medusa",
++"gift-cards-manage": "Upravljajte darilne kartice v vaši trgovini Clinic OS",
+ "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Ste pripravljeni prodati svojo prvo darilno kartico?",
+ "gift-cards-no-gift-card-has-been-added-yet": "Še nobena darilna kartica ni bila dodana.",
+ "gift-cards-history": "Zgodovina",
+@@ -1144,7 +1144,7 @@
+ "refund-error": "Napaka",
+ "refund-create-a-refund": "Ustvari vračilo",
+ "refund-attention": "Pozor!",
+-"refund-system-payment-disclaimer": "Eno ali več vaših plačil je sistemsko plačilo. Zavedajte se, da Medusa za takšna plačila ne izvaja zajetij ali vračil.",
++"refund-system-payment-disclaimer": "Eno ali več vaših plačil je sistemsko plačilo. Zavedajte se, da Clinic OS za takšna plačila ne izvaja zajetij ali vračil.",
+ "refund-details": "Podrobnosti",
+ "refund-cannot-refund-more-than-the-orders-net-total": "Ne morete vrniti več kot čista skupna vrednost naročila.",
+ "refund-discount": "Popust",
+@@ -1793,7 +1793,7 @@
+ "settings-manage-your-business-details": "Upravljanje podrobnosti vašega poslovanja",
+ "settings-general": "Splošno",
+ "settings-store-name": "Ime trgovine",
+-"settings-medusa-store": "Trgovina Medusa",
++"settings-medusa-store": "Trgovina Clinic OS",
+ "settings-advanced-settings": "Napredne nastavitve",
+ "settings-swap-link-template": "Predloga povezave za menjavo",
+ "settings-draft-order-link-template": "Predloga povezave za osnutek naročila",
+@@ -1807,9 +1807,9 @@
+ "edit-user-information-submit-and-close": "Pošlji in zapri",
+ "personal-information-back-to-settings": "Nazaj na Nastavitve",
+ "personal-information-personal-information": "Osebne informacije",
+-"personal-information-manage-your-medusa-profile": "Upravljanje vašega profila Medusa",
++"personal-information-manage-your-medusa-profile": "Upravljanje vašega profila Clinic OS",
+ "personal-information-language-settings-title": "Jezik",
+-"personal-information-language-settings-description": "Prilagodite jezik Medusa Admin",
++"personal-information-language-settings-description": "Prilagodite jezik Clinic OS Admin",
+ "personal-information-language-settings-help-us-translate": "Pomagajte nam pri prevajanju",
+ "personal-information-usage-insights-title": "Pregled uporabe",
+ "usage-insights-disabled": "Onemogočeno",
+@@ -1981,7 +1981,7 @@
+ "taxes-region-tax-settings-were-successfully-updated": "Nastavitve davkov za regijo so bile uspešno posodobljene.",
+ "taxes-tax-provider": "Davčni ponudnik",
+ "taxes-calculate-taxes-automatically": "Samodejno izračunajte davke?",
+-"taxes-automatically-apply-tax-calculations-to-carts": "Ko je označeno, bo Medusa samodejno uporabljal izračune davkov za vozičke v tej regiji. Če ni označeno, boste morali davke ročno izračunati ob blagajni. Ročni davki se priporočajo, če uporabljate davčnega ponudnika tretje osebe, da se izognete prevelikemu številu zahtevkov.",
++"taxes-automatically-apply-tax-calculations-to-carts": "Ko je označeno, bo Clinic OS samodejno uporabljal izračune davkov za vozičke v tej regiji. Če ni označeno, boste morali davke ročno izračunati ob blagajni. Ročni davki se priporočajo, če uporabljate davčnega ponudnika tretje osebe, da se izognete prevelikemu številu zahtevkov.",
+ "taxes-apply-tax-to-gift-cards": "Uporabi davek na darilne kartice?",
+ "taxes-apply-taxes-to-gift-cards": "Ko je označeno, se bodo davki uporabljali za darilne kartice ob blagajni. V nekaterih državah davčni predpisi zahtevajo, da se davki obračunajo ob nakupu darilnih kartic.",
+ "taxes-search-products": "Iskanje izdelkov...",
+@@ -2004,7 +2004,7 @@
+ "users-invite-users": "Povabi uporabnike",
+ "users-back-to-settings": "Nazaj na nastavitve",
+ "users-the-team": "Ekipa",
+-"users-manage-users-of-your-medusa-store": "Upravljajte uporabnike vaše trgovine Medusa",
++"users-manage-users-of-your-medusa-store": "Upravljajte uporabnike vaše trgovine Clinic OS",
+ "users-count_one": "{{count}}",
+ "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/tm/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/tm/translation.json
+index 1f2802c..6e1f648 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/tm/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/tm/translation.json
+@@ -1646,7 +1646,7 @@
+   "shipping-options-shipping-options": "வழிபாக விருப்பங்கள்",
+   "shipping-options-success": "வெற்றி",
+   "sidebar-categories": "வகைகள்",
+-  "sidebar-customers": "வாணிகர்கள்",
++  "sidebar-patients": "வாணிகர்கள்",
+   "sidebar-discounts": "தள்ளுபடிகள்",
+   "sidebar-gift-cards": "பருப்பு அட்டைகள்",
+   "sidebar-inventory": "சேமிப்பு",
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/uk/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/uk/translation.json
+index b8b0c55..fb1bded 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/uk/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/uk/translation.json
+@@ -15,7 +15,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Ваші налаштування були успішно оновлені",
+   "analytics-preferences-error": "Помилка",
+   "analytics-preferences-help-us-get-better": "Допоможіть нам стати кращими",
+-  "analytics-preferences-disclaimer": "Щоб створити найцікавіший електронний комерційний досвід, ми хотіли б отримати уявлення про те, як ви використовуєте Medusa. Відомості про користувачів дозволяють нам створювати кращі, більш залучаючі та зручні продукти. Ми збираємо дані лише для вдосконалення продукту. Дізнайтеся, які дані ми збираємо в нашій",
++  "analytics-preferences-disclaimer": "Щоб створити найцікавіший електронний комерційний досвід, ми хотіли б отримати уявлення про те, як ви використовуєте Clinic OS. Відомості про користувачів дозволяють нам створювати кращі, більш залучаючі та зручні продукти. Ми збираємо дані лише для вдосконалення продукту. Дізнайтеся, які дані ми збираємо в нашій",
+   "analytics-preferences-documentation": "документації",
+   "analytics-preferences-please-enter-a-valid-email": "Будь ласка, введіть дійсну електронну адресу",
+   "analytics-preferences-continue": "Продовжити",
+@@ -106,7 +106,7 @@
+   "invite-modal-cancel": "Скасувати",
+   "invite-modal-invite": "Запросити",
+   "login-card-no-match": "Ці облікові дані не відповідають нашим записам.",
+-  "login-card-log-in-to-medusa": "Увійдіть в Medusa",
++  "login-card-log-in-to-medusa": "Увійдіть в Clinic OS",
+   "login-card-email": "Електронна пошта",
+   "login-card-password": "Пароль",
+   "login-card-forgot-your-password": "Забули пароль?",
+@@ -228,7 +228,7 @@
+   "sidebar-orders": "Замовлення",
+   "sidebar-products": "Товари",
+   "sidebar-categories": "Категорії",
+-  "sidebar-customers": "Клієнти",
++  "sidebar-patients": "Клієнти",
+   "sidebar-inventory": "Наявність",
+   "sidebar-discounts": "Знижки",
+   "sidebar-gift-cards": "Подарункові картки",
+@@ -530,7 +530,7 @@
+   "search-modal-to-select-and": "вибрати, і",
+   "search-modal-to-search-anytime": "шукати в будь-який час",
+   "templates-settings": "Налаштування",
+-  "templates-manage-the-settings-for-your-medusa-store": "Керуйте налаштуваннями свого магазину Medusa",
++  "templates-manage-the-settings-for-your-medusa-store": "Керуйте налаштуваннями свого магазину Clinic OS",
+   "transfer-orders-modal-info": "Інформація",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Клієнт вже є власником замовлення",
+   "transfer-orders-modal-success": "Успішно",
+@@ -893,7 +893,7 @@
+   "gift-cards-create-publish": "Створити та опублікувати",
+   "gift-cards-successfully-updated-gift-card": "Подарункова картка успішно оновлена",
+   "gift-cards-gift-cards": "Подарункові картки",
+-  "gift-cards-manage": "Керуйте подарунковими картками вашого магазину Medusa",
++  "gift-cards-manage": "Керуйте подарунковими картками вашого магазину Clinic OS",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Ви готові продавати свою першу подарункову картку?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Жодна подарункова картка ще не була додана.",
+   "gift-cards-history": "Історія",
+@@ -1132,7 +1132,7 @@
+   "refund-error": "Помилка",
+   "refund-create-a-refund": "Створити повернення",
+   "refund-attention": "Увага!",
+-  "refund-system-payment-disclaimer": "Одна або кілька з ваших оплат є системними. Зверніть увагу, що захоплення та повернення не обробляються Medusa для таких платежів.",
++  "refund-system-payment-disclaimer": "Одна або кілька з ваших оплат є системними. Зверніть увагу, що захоплення та повернення не обробляються Clinic OS для таких платежів.",
+   "refund-details": "Деталі",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Не можна повернути більше, ніж чистий загальний замовлення.",
+   "refund-discount": "Знижка",
+@@ -1702,7 +1702,7 @@
+   "settings-manage-your-business-details": "Керуйте деталями вашого бізнесу",
+   "settings-general": "Загальні",
+   "settings-store-name": "Назва магазину",
+-  "settings-medusa-store": "Магазин Medusa",
++  "settings-medusa-store": "Магазин Clinic OS",
+   "settings-advanced-settings": "Розширені налаштування",
+   "settings-swap-link-template": "Шаблон посилання на обмін",
+   "settings-draft-order-link-template": "Шаблон посилання на чернетку замовлення",
+@@ -1716,14 +1716,14 @@
+   "edit-user-information-submit-and-close": "Надіслати та закрити",
+   "personal-information-back-to-settings": "Повернутися до налаштувань",
+   "personal-information-personal-information": "Особиста інформація",
+-  "personal-information-manage-your-medusa-profile": "Керуйте своїм профілем Medusa",
++  "personal-information-manage-your-medusa-profile": "Керуйте своїм профілем Clinic OS",
+   "personal-information-language-settings-title": "Мова",
+-  "personal-information-language-settings-description": "Налаштуйте мову Medusa Admin",
++  "personal-information-language-settings-description": "Налаштуйте мову Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Допоможіть нам перекласти",
+   "personal-information-usage-insights-title": "Використання",
+   "usage-insights-disabled": "Вимкнено",
+   "usage-insights-active": "Активно",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Поділіться використанням та допоможіть нам покращити Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Поділіться використанням та допоможіть нам покращити Clinic OS",
+   "usage-insights-edit-preferences": "Редагувати налаштування",
+   "usage-insights-success": "Успішно",
+   "usage-insights-your-information-was-successfully-updated": "Вашу інформацію успішно оновлено",
+@@ -1890,7 +1890,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Налаштування податків регіону успішно оновлені.",
+   "taxes-tax-provider": "Постачальник податків",
+   "taxes-calculate-taxes-automatically": "Автоматично розраховувати податки?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Якщо вибрано, Medusa автоматично застосовуватиме розрахунки податків до кошиків у цьому регіоні. Якщо не вибрано, вам доведеться вручну розраховувати податки при оформленні замовлення. Рекомендується використовувати ручні розрахунки податків, якщо використовуєте стороннього постачальника податків, щоб уникнути занадто багатьох запитів.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Якщо вибрано, Clinic OS автоматично застосовуватиме розрахунки податків до кошиків у цьому регіоні. Якщо не вибрано, вам доведеться вручну розраховувати податки при оформленні замовлення. Рекомендується використовувати ручні розрахунки податків, якщо використовуєте стороннього постачальника податків, щоб уникнути занадто багатьох запитів.",
+   "taxes-apply-tax-to-gift-cards": "Застосувати податок до подарункових карток?",
+   "taxes-apply-taxes-to-gift-cards": "Якщо вибрано, податки будуть застосовуватися до подарункових карток при оформленні замовлення. В деяких країнах податкові правила вимагають, щоб податки були застосовані до подарункових карток при їх придбанні.",
+   "taxes-search-products": "Пошук продуктів..",
+@@ -1913,7 +1913,7 @@
+   "users-invite-users": "Запросити користувачів",
+   "users-back-to-settings": "Повернутися до налаштувань",
+   "users-the-team": "Команда",
+-  "users-manage-users-of-your-medusa-store": "Керуйте користувачами вашого магазину Medusa",
++  "users-manage-users-of-your-medusa-store": "Керуйте користувачами вашого магазину Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+\ No newline at end of file
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/vi/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/vi/translation.json
+index f2b2a92..b794c65 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/vi/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/vi/translation.json
+@@ -23,7 +23,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "Tùy chọn của bạn đã được cập nhật thành công",
+   "analytics-preferences-error": "Lỗi",
+   "analytics-preferences-help-us-get-better": "Giúp chúng tôi trở nên tốt hơn",
+-  "analytics-preferences-disclaimer": "Để tạo trải nghiệm thương mại điện tử thú vị nhất, chúng tôi muốn có cái nhìn về cách bạn sử dụng Medusa. Thông tin của người dùng giúp chúng tôi xây dựng sản phẩm tốt hơn, hấp dẫn hơn và dễ sử dụng hơn. Chúng tôi chỉ thu thập dữ liệu cho mục tiêu cải thiện sản phẩm. Đọc thông tin về dữ liệu mà chúng tôi thu thập trong tài liệu hướng dẫn của chúng tôi",
++  "analytics-preferences-disclaimer": "Để tạo trải nghiệm thương mại điện tử thú vị nhất, chúng tôi muốn có cái nhìn về cách bạn sử dụng Clinic OS. Thông tin của người dùng giúp chúng tôi xây dựng sản phẩm tốt hơn, hấp dẫn hơn và dễ sử dụng hơn. Chúng tôi chỉ thu thập dữ liệu cho mục tiêu cải thiện sản phẩm. Đọc thông tin về dữ liệu mà chúng tôi thu thập trong tài liệu hướng dẫn của chúng tôi",
+   "analytics-preferences-documentation": "tài liệu hướng dẫn",
+   "analytics-preferences-please-enter-a-valid-email": "Vui lòng nhập một địa chỉ email hợp lệ",
+   "analytics-preferences-continue": "Tiếp tục",
+@@ -114,7 +114,7 @@
+   "invite-modal-cancel": "Hủy bỏ",
+   "invite-modal-invite": "Mời",
+   "login-card-no-match": "Những thông tin xác thực này không khớp với dữ liệu của chúng tôi.",
+-  "login-card-log-in-to-medusa": "Đăng nhập vào Medusa",
++  "login-card-log-in-to-medusa": "Đăng nhập vào Clinic OS",
+   "login-card-email": "Email",
+   "login-card-password": "Mật khẩu",
+   "login-card-forgot-your-password": "Quên mật khẩu của bạn?",
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "Đơn hàng",
+   "sidebar-products": "Sản phẩm",
+   "sidebar-categories": "Danh mục",
+-  "sidebar-customers": "Khách hàng",
++  "sidebar-patients": "Khách hàng",
+   "sidebar-inventory": "Tồn kho",
+   "sidebar-discounts": "Giảm giá",
+   "sidebar-gift-cards": "Thẻ quà tặng",
+@@ -543,7 +543,7 @@
+   "search-modal-to-select-and": "để chọn, và",
+   "search-modal-to-search-anytime": "để tìm kiếm bất cứ lúc nào",
+   "templates-settings": "Cài đặt",
+-  "templates-manage-the-settings-for-your-medusa-store": "Quản lý cài đặt cho cửa hàng Medusa của bạn",
++  "templates-manage-the-settings-for-your-medusa-store": "Quản lý cài đặt cho cửa hàng Clinic OS của bạn",
+   "transfer-orders-modal-info": "Thông tin",
+   "transfer-orders-modal-customer-is-already-the-owner-of-the-order": "Khách hàng đã là chủ sở hữu của đơn hàng",
+   "transfer-orders-modal-success": "Thành công",
+@@ -906,7 +906,7 @@
+   "gift-cards-create-publish": "Tạo & Xuất bản",
+   "gift-cards-successfully-updated-gift-card": "Cập nhật thẻ quà tặng thành công",
+   "gift-cards-gift-cards": "Thẻ quà tặng",
+-  "gift-cards-manage": "Quản lý thẻ quà tặng của cửa hàng Medusa của bạn",
++  "gift-cards-manage": "Quản lý thẻ quà tặng của cửa hàng Clinic OS của bạn",
+   "gift-cards-are-you-ready-to-sell-your-first-gift-card": "Bạn đã sẵn sàng bán thẻ quà tặng đầu tiên của mình chưa?",
+   "gift-cards-no-gift-card-has-been-added-yet": "Chưa có thẻ quà tặng nào được thêm vào.",
+   "gift-cards-history": "Lịch sử",
+@@ -1145,7 +1145,7 @@
+   "refund-error": "Lỗi",
+   "refund-create-a-refund": "Tạo hoàn tiền",
+   "refund-attention": "Lưu ý!",
+-  "refund-system-payment-disclaimer": "Một hoặc nhiều khoản thanh toán của bạn là khoản thanh toán hệ thống. Hãy lưu ý rằng việc thu tiền và hoàn tiền không được Medusa xử lý đối với các khoản thanh toán như vậy.",
++  "refund-system-payment-disclaimer": "Một hoặc nhiều khoản thanh toán của bạn là khoản thanh toán hệ thống. Hãy lưu ý rằng việc thu tiền và hoàn tiền không được Clinic OS xử lý đối với các khoản thanh toán như vậy.",
+   "refund-details": "Chi tiết",
+   "refund-cannot-refund-more-than-the-orders-net-total": "Không thể hoàn tiền nhiều hơn tổng ròng của đơn hàng.",
+   "refund-discount": "Giảm giá",
+@@ -1794,7 +1794,7 @@
+   "settings-manage-your-business-details": "Quản lý thông tin doanh nghiệp của bạn",
+   "settings-general": "Chung",
+   "settings-store-name": "Tên cửa hàng",
+-  "settings-medusa-store": "Cửa hàng Medusa",
++  "settings-medusa-store": "Cửa hàng Clinic OS",
+   "settings-advanced-settings": "Cài đặt nâng cao",
+   "settings-swap-link-template": "Mẫu liên kết trao đổi",
+   "settings-draft-order-link-template": "Mẫu liên kết đơn nháp",
+@@ -1808,14 +1808,14 @@
+   "edit-user-information-submit-and-close": "Gửi và đóng",
+   "personal-information-back-to-settings": "Quay lại Cài đặt",
+   "personal-information-personal-information": "Thông tin cá nhân",
+-  "personal-information-manage-your-medusa-profile": "Quản lý hồ sơ Medusa của bạn",
++  "personal-information-manage-your-medusa-profile": "Quản lý hồ sơ Clinic OS của bạn",
+   "personal-information-language-settings-title": "Ngôn ngữ",
+-  "personal-information-language-settings-description": "Điều chỉnh ngôn ngữ của Medusa Admin",
++  "personal-information-language-settings-description": "Điều chỉnh ngôn ngữ của Clinic OS Admin",
+   "personal-information-language-settings-help-us-translate": "Hãy giúp chúng tôi dịch",
+   "personal-information-usage-insights-title": "Thông tin sử dụng",
+   "usage-insights-disabled": "Tắt",
+   "usage-insights-active": "Hoạt động",
+-  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Chia sẻ thông tin sử dụng và giúp chúng tôi cải thiện Medusa",
++  "usage-insights-share-usage-insights-and-help-us-improve-medusa": "Chia sẻ thông tin sử dụng và giúp chúng tôi cải thiện Clinic OS",
+   "usage-insights-edit-preferences": "Chỉnh sửa ưa thích",
+   "usage-insights-success": "Thành công",
+   "usage-insights-your-information-was-successfully-updated": "Thông tin của bạn đã được cập nhật thành công",
+@@ -1982,7 +1982,7 @@
+   "taxes-region-tax-settings-were-successfully-updated": "Cài đặt thuế khu vực đã được cập nhật thành công.",
+   "taxes-tax-provider": "Nhà Cung Cấp Thuế",
+   "taxes-calculate-taxes-automatically": "Tính thuế tự động?",
+-  "taxes-automatically-apply-tax-calculations-to-carts": "Khi đã chọn, Medusa sẽ tự động áp dụng tính toán thuế cho Giỏ hàng trong khu vực này. Khi không chọn, bạn sẽ phải tính thuế thủ công khi thanh toán. Thuế thủ công được khuyến nghị nếu sử dụng nhà cung cấp thuế bên ngoài để tránh thực hiện quá nhiều yêu cầu.",
++  "taxes-automatically-apply-tax-calculations-to-carts": "Khi đã chọn, Clinic OS sẽ tự động áp dụng tính toán thuế cho Giỏ hàng trong khu vực này. Khi không chọn, bạn sẽ phải tính thuế thủ công khi thanh toán. Thuế thủ công được khuyến nghị nếu sử dụng nhà cung cấp thuế bên ngoài để tránh thực hiện quá nhiều yêu cầu.",
+   "taxes-apply-tax-to-gift-cards": "Áp dụng thuế cho thẻ quà tặng?",
+   "taxes-apply-taxes-to-gift-cards": "Khi đã chọn, thuế sẽ được áp dụng cho thẻ quà tặng khi thanh toán. Tại một số quốc gia, quy định thuế yêu cầu áp dụng thuế cho thẻ quà tặng khi mua sắm.",
+   "taxes-search-products": "Tìm kiếm Sản phẩm...",
+@@ -2005,7 +2005,7 @@
+   "users-invite-users": "Mời Người dùng",
+   "users-back-to-settings": "Quay lại cài đặt",
+   "users-the-team": "Nhóm của Bạn",
+-  "users-manage-users-of-your-medusa-store": "Quản lý người dùng của cửa hàng Medusa",
++  "users-manage-users-of-your-medusa-store": "Quản lý người dùng của cửa hàng Clinic OS",
+   "users-count_one": "{{count}}",
+   "users-count_other": "{{count}}"
+ }
+diff --git a/node_modules/@medusajs/admin-ui/ui/public/locales/zh/translation.json b/node_modules/@medusajs/admin-ui/ui/public/locales/zh/translation.json
+index f0e54b9..6643c18 100644
+--- a/node_modules/@medusajs/admin-ui/ui/public/locales/zh/translation.json
++++ b/node_modules/@medusajs/admin-ui/ui/public/locales/zh/translation.json
+@@ -23,7 +23,7 @@
+   "analytics-preferences-your-preferences-were-successfully-updated": "您的偏好已成功更新",
+   "analytics-preferences-error": "错误",
+   "analytics-preferences-help-us-get-better": "帮助我们变得更好",
+-  "analytics-preferences-disclaimer": "为了创建最引人入胜的电子商务体验，我们希望了解您如何使用 Medusa 的见解。用户见解让我们能够构建更好、更引人入胜、更易用的产品。我们仅收集用于产品改进的数据。阅读我们在",
++  "analytics-preferences-disclaimer": "为了创建最引人入胜的电子商务体验，我们希望了解您如何使用 Clinic OS 的见解。用户见解让我们能够构建更好、更引人入胜、更易用的产品。我们仅收集用于产品改进的数据。阅读我们在",
+   "analytics-preferences-documentation": "文档",
+   "analytics-preferences-please-enter-a-valid-email": "请输入有效的电子邮件",
+   "analytics-preferences-continue": "继续",
+@@ -241,7 +241,7 @@
+   "sidebar-orders": "订单",
+   "sidebar-products": "产品",
+   "sidebar-categories": "类别",
+-  "sidebar-customers": "顾客",
++  "sidebar-patients": "顾客",
+   "sidebar-inventory": "库存",
+   "sidebar-discounts": "折扣",
+   "sidebar-gift-cards": "礼品卡",
+diff --git a/node_modules/@medusajs/admin-ui/ui/src/components/organisms/login-card/index.tsx b/node_modules/@medusajs/admin-ui/ui/src/components/organisms/login-card/index.tsx
+index fa55c31..9ade63a 100644
+--- a/node_modules/@medusajs/admin-ui/ui/src/components/organisms/login-card/index.tsx
++++ b/node_modules/@medusajs/admin-ui/ui/src/components/organisms/login-card/index.tsx
+@@ -33,7 +33,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
+   const onSubmit = (values: FormValues) => {
+     mutate(values, {
+       onSuccess: () => {
+-        navigate("/a/orders")
++        navigate("/a/anamnesis")
+       },
+       onError: () => {
+         setError(
+@@ -53,7 +53,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
+     })
+   }
+   return (
+-    <div className="gap-y-large flex flex-col">
++    <div className="flex flex-col gap-y-large">
+       {getWidgets("login.before").map((w, i) => {
+         return (
+           <WidgetContainer
+@@ -95,7 +95,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
+             Continue
+           </Button>
+           <span
+-            className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
++            className="mt-8 cursor-pointer inter-small-regular text-grey-50"
+             onClick={toResetPassword}
+           >
+             {t("login-card-forgot-your-password", "Forgot your password?")}
 diff --git a/node_modules/@medusajs/admin-ui/ui/src/components/organisms/sidebar/index.tsx b/node_modules/@medusajs/admin-ui/ui/src/components/organisms/sidebar/index.tsx
-index 74f06c4..364c58a 100644
+index 74f06c4..d59db79 100644
 --- a/node_modules/@medusajs/admin-ui/ui/src/components/organisms/sidebar/index.tsx
 +++ b/node_modules/@medusajs/admin-ui/ui/src/components/organisms/sidebar/index.tsx
 @@ -44,23 +44,23 @@ const Sidebar: React.FC = () => {
@@ -17,9 +1752,10 @@ index 74f06c4..364c58a 100644
          </div>
 -        <div className="my-base flex flex-col px-2">
 -          <span className="text-grey-50 text-small font-medium">
+-            {t("sidebar-store", "Store")}
 +        <div className="flex flex-col px-2 my-base">
 +          <span className="font-medium text-grey-50 text-small">
-             {t("sidebar-store", "Store")}
++            {t("sidebar-store", "Clinic")}
            </span>
 -          <span className="text-grey-90 text-medium font-medium">
 +          <span className="font-medium text-grey-90 text-medium">
@@ -32,7 +1768,20 @@ index 74f06c4..364c58a 100644
              pageLink={"/a/orders"}
              icon={<CartIcon size={ICON_SIZE} />}
              triggerHandler={triggerHandler}
-@@ -112,6 +112,7 @@ const Sidebar: React.FC = () => {
+@@ -80,12 +80,6 @@ const Sidebar: React.FC = () => {
+               triggerHandler={triggerHandler}
+             />
+           )}
+-          <SidebarMenuItem
+-            pageLink={"/a/customers"}
+-            icon={<UsersIcon size={ICON_SIZE} />}
+-            triggerHandler={triggerHandler}
+-            text={t("sidebar-customers", "Customers")}
+-          />
+           {inventoryEnabled && (
+             <SidebarMenuItem
+               pageLink={"/a/inventory"}
+@@ -112,6 +106,7 @@ const Sidebar: React.FC = () => {
              triggerHandler={triggerHandler}
              text={t("sidebar-pricing", "Pricing")}
            />
@@ -40,8 +1789,188 @@ index 74f06c4..364c58a 100644
            {getLinks().map(({ path, label, icon }, index) => {
              const cleanLink = path.replace("/a/", "")
  
+@@ -127,6 +122,12 @@ const Sidebar: React.FC = () => {
+               />
+             )
+           })}
++          <SidebarMenuItem
++            pageLink={"/a/patients"}
++            icon={<UsersIcon size={ICON_SIZE} />}
++            triggerHandler={triggerHandler}
++            text={t("sidebar-patients", "Patients")}
++          />
+           <SidebarMenuItem
+             pageLink={"/a/settings"}
+             icon={<GearIcon size={ICON_SIZE} />}
+diff --git a/node_modules/@medusajs/admin-ui/ui/src/components/templates/search-modal/index.tsx b/node_modules/@medusajs/admin-ui/ui/src/components/templates/search-modal/index.tsx
+index 21b3d4b..257998c 100644
+--- a/node_modules/@medusajs/admin-ui/ui/src/components/templates/search-modal/index.tsx
++++ b/node_modules/@medusajs/admin-ui/ui/src/components/templates/search-modal/index.tsx
+@@ -33,14 +33,14 @@ const SearchModal = ({ handleClose }) => {
+     setQ("")
+   }
+ 
+-  const { orders, isFetching: isFetchingOrders } = useAdminOrders(
+-    {
+-      q: query,
+-      limit: 5,
+-      offset: 0,
+-    },
+-    { enabled: !!query, keepPreviousData: true }
+-  )
++  // const { orders, isFetching: isFetchingOrders } = useAdminOrders(
++  //   {
++  //     q: query,
++  //     limit: 5,
++  //     offset: 0,
++  //   },
++  //   { enabled: !!query, keepPreviousData: true }
++  // )
+   const { customers, isFetching: isFetchingCustomers } = useAdminCustomers(
+     {
+       q: query,
+@@ -49,22 +49,20 @@ const SearchModal = ({ handleClose }) => {
+     },
+     { enabled: !!query, keepPreviousData: true, retry: 0 }
+   )
+-  const { discounts, isFetching: isFetchingDiscounts } = useAdminDiscounts(
+-    { q: query, limit: 5, offset: 0 },
+-    { enabled: !!query, keepPreviousData: true }
+-  )
+-  const { products, isFetching: isFetchingProducts } = useAdminProducts(
+-    { q: query, limit: 5 },
+-    { enabled: !!query, keepPreviousData: true }
+-  )
++  // TODO: add anamnesis hooks !!!
+ 
+-  const isFetching =
+-    isFetchingDiscounts ||
+-    isFetchingCustomers ||
+-    isFetchingProducts ||
+-    isFetchingOrders
++  // const { discounts, isFetching: isFetchingDiscounts } = useAdminDiscounts(
++  //   { q: query, limit: 5, offset: 0 },
++  //   { enabled: !!query, keepPreviousData: true }
++  // )
++  // const { products, isFetching: isFetchingProducts } = useAdminProducts(
++  //   { q: query, limit: 5 },
++  //   { enabled: !!query, keepPreviousData: true }
++  // )
+ 
+-  const totalLength = getTotal(products, discounts, customers, orders)
++  const isFetching = isFetchingCustomers
++
++  const totalLength = getTotal(customers)
+ 
+   const { getInputProps, getLIProps, getULProps, selected } =
+     useKeyboardNavigationList({
+@@ -85,8 +83,8 @@ const SearchModal = ({ handleClose }) => {
+               "bg-grey-0 rounded-rounded shadow-searchModal mx-auto flex max-w-[640px] flex-1"
+             )}
+           >
+-            <div className="py-large flex flex-1 flex-col">
+-              <div className="pb-large px-xlarge border-grey-20 flex items-center gap-x-4 border-b border-solid">
++            <div className="flex flex-col flex-1 py-large">
++              <div className="flex items-center border-b border-solid pb-large px-xlarge border-grey-20 gap-x-4">
+                 <SearchIcon className="text-grey-40" />
+                 <Input
+                   className="flex-1"
+@@ -103,56 +101,58 @@ const SearchModal = ({ handleClose }) => {
+                   onClick={handleClear}
+                   content={t("search-modal-clear-search", "Clear search")}
+                 >
+-                  <CrossIcon className="text-grey-50 flex" />
++                  <CrossIcon className="flex text-grey-50" />
+                 </Tooltip>
+               </div>
+-              <KeyboardShortcuts className="mt-xlarge px-xlarge text-grey-40 inter-small-regular flex items-center gap-x-3" />
++              <KeyboardShortcuts className="flex items-center mt-xlarge px-xlarge text-grey-40 inter-small-regular gap-x-3" />
+               {totalLength > 0 ? (
+                 <ul
+                   {...getULProps()}
+-                  className="mt-large px-xlarge flex-1 overflow-y-auto"
++                  className="flex-1 overflow-y-auto mt-large px-xlarge"
+                 >
+                   {isFetching ? (
+-                    <div className="pt-2xlarge flex w-full items-center justify-center">
++                    <div className="flex items-center justify-center w-full pt-2xlarge">
+                       <Spinner size={"large"} variant={"secondary"} />
+                     </div>
+                   ) : (
+                     <>
+-                      <div>
++                      {/* <div>
+                         <OrderResults
+                           orders={orders}
+                           offset={0}
+                           getLIProps={getLIProps}
+                           selected={selected}
+                         />
+-                      </div>
++                      </div> */}
+ 
+                       <div className="mt-xlarge">
+                         <CustomerResults
+                           customers={customers}
+-                          offset={orders?.length || 0}
++                          offset={0}
+                           getLIProps={getLIProps}
+                           selected={selected}
+                         />
+                       </div>
+ 
+-                      <div className="mt-xlarge">
++                      {/* TODO: add anamnesis results !!! */}
++
++                      {/* <div className="mt-xlarge">
+                         <DiscountResults
+                           discounts={discounts}
+                           offset={customers?.length || 0}
+                           getLIProps={getLIProps}
+                           selected={selected}
+                         />
+-                      </div>
++                      </div> */}
+ 
+-                      <div className="mt-xlarge">
++                      {/* <div className="mt-xlarge">
+                         <ProductResults
+                           products={products}
+                           offset={getTotal(customers, discounts)}
+                           getLIProps={getLIProps}
+                           selected={selected}
+                         />
+-                      </div>
++                      </div> */}
+                     </>
+                   )}
+                 </ul>
+diff --git a/node_modules/@medusajs/admin-ui/ui/src/pages/a.tsx b/node_modules/@medusajs/admin-ui/ui/src/pages/a.tsx
+index 0dbc1e9..edb5d3c 100644
+--- a/node_modules/@medusajs/admin-ui/ui/src/pages/a.tsx
++++ b/node_modules/@medusajs/admin-ui/ui/src/pages/a.tsx
+@@ -26,8 +26,8 @@ import { isRoute } from "../utils/extensions"
+ 
+ const IndexPage = () => {
+   const navigate = useNavigate()
+-  useHotkeys("g + o", () => navigate("/a/orders"))
+-  useHotkeys("g + p", () => navigate("/a/products"))
++  useHotkeys("g + a", () => navigate("/a/anamnesis"))
++  useHotkeys("g + p", () => navigate("/a/customers"))
+ 
+   return (
+     <PrivateRoute>
+@@ -54,7 +54,7 @@ const DashboardRoutes = () => {
+           <Route path="orders/*" element={<Orders />} />
+           <Route path="draft-orders/*" element={<DraftOrders />} />
+           <Route path="discounts/*" element={<Discounts />} />
+-          <Route path="customers/*" element={<Customers />} />
++          <Route path="patients/*" element={<Customers />} />
+           <Route path="pricing/*" element={<PriceListRoute />} />
+           <Route path="settings/*" element={<Settings />} />
+           <Route path="sales-channels/*" element={<SalesChannels />} />
 diff --git a/node_modules/@medusajs/admin-ui/ui/src/pages/index.tsx b/node_modules/@medusajs/admin-ui/ui/src/pages/index.tsx
-index 0d42a7a..06162ab 100644
+index 0d42a7a..edaa044 100644
 --- a/node_modules/@medusajs/admin-ui/ui/src/pages/index.tsx
 +++ b/node_modules/@medusajs/admin-ui/ui/src/pages/index.tsx
 @@ -6,11 +6,11 @@ import SEO from "../components/seo"
@@ -49,7 +1978,7 @@ index 0d42a7a..06162ab 100644
    const navigate = useNavigate()
    useEffect(() => {
 -    navigate("/a/orders")
-+    navigate("/a/settings")
++    navigate("/a/anamnesis")
    }, [])
  
    return (
@@ -58,3 +1987,31 @@ index 0d42a7a..06162ab 100644
        <SEO title="Home" />
        <Spinner variant="secondary" />
      </div>
+diff --git a/node_modules/@medusajs/admin-ui/ui/tailwind.config.js b/node_modules/@medusajs/admin-ui/ui/tailwind.config.js
+index 170d5c5..4348422 100644
+--- a/node_modules/@medusajs/admin-ui/ui/tailwind.config.js
++++ b/node_modules/@medusajs/admin-ui/ui/tailwind.config.js
+@@ -358,6 +358,14 @@ module.exports = {
+           "0%": { transform: "translateY(-100%)" },
+           "100%": { transform: "translateY(0)" },
+         },
++        pop: {
++          '0%': { transform: 'scale(1)', boxShadow: 'var(--box-shadow)' },
++          '100%': { transform: 'scale(var(--scale))', boxShadow: 'var(--box-shadow-picked-up)' },
++        },
++        fadeIn: {
++          '0%': { opacity: '0' },
++          '100%': { opacity: '1' },
++        },
+       },
+       animation: {
+         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
+@@ -373,6 +381,8 @@ module.exports = {
+         enter: "enter 200ms ease-out",
+         "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
+         leave: "leave 150ms ease-in forwards",
++        pop: 'pop 200ms cubic-bezier(0.18, 0.67, 0.6, 1.22)',
++        fadeIn: 'fadeIn 500ms ease',
+       },
+       lineClamp: {
+         "[var(--lines)]": "var(--lines)",

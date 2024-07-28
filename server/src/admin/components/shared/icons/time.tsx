@@ -1,11 +1,7 @@
 import type React from "react";
 import type IconProps from "../../../types/icon-type";
 
-const TimeIcon: React.FC<IconProps> = ({
-  size = "24",
-  color = "currentColor",
-  ...attributes
-}) => {
+const TimeIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ...attributes }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,5 +21,4 @@ const TimeIcon: React.FC<IconProps> = ({
     </svg>
   );
 };
-
 export default TimeIcon;

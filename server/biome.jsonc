@@ -2,14 +2,31 @@
 	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
 	"organizeImports": {
 		"enabled": true
+		
+			},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineWidth": 120,
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"a11y": {
+				"noSvgWithoutTitle": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"noUnusedImports": "error"
+			},
 			"complexity": {
 				"noBannedTypes": "off",
-				"useLiteralKeys": "off",
+				"useLiteralKeys": "off"
+			},
+			"suspicious": {
+				"noAssignInExpressions": "off",
 			},
 			"style": {
 				"noArguments": "off"
