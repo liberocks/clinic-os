@@ -90,7 +90,7 @@ export const Toolbar: React.FC<ToolbarProps> = (props) => {
       <p className="text-xs text-center w-fit inter-base-regular text-grey-50">
         Click icon above to add new question
         <br />
-        You can also drag and drop the question within a section or between sections
+        You can also drag-and-drop the question within a section to reorder
       </p>
     </div>
   );

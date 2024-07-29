@@ -1,6 +1,7 @@
 import { dataSource } from "@medusajs/medusa/dist/loaders/database";
-import { AnamnesisResponse } from "../models/anamnesis-response";
 
-const AnamnessResponse = dataSource.getRepository(AnamnesisResponse);
+import { AnamnesisResponseModel } from "../models/anamnesis-response";
 
-export default AnamnessResponse;
+const AnamnesisResponseRepository = dataSource.getRepository(AnamnesisResponseModel);
+
+export default AnamnesisResponseRepository;

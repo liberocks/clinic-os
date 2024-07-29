@@ -1,6 +1,7 @@
 import { dataSource } from "@medusajs/medusa/dist/loaders/database";
-import { AnamnesisForm } from "../models/anamnesis-form";
 
-const AnamnessForm = dataSource.getRepository(AnamnesisForm);
+import { AnamnesisFormModel } from "../models/anamnesis-form";
 
-export default AnamnessForm;
+const AnamnesisFormRepository = dataSource.getRepository(AnamnesisFormModel);
+
+export default AnamnesisFormRepository;

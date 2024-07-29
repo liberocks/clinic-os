@@ -1,10 +1,11 @@
 import { BaseEntity } from "@medusajs/medusa";
 import { Column, Entity, OneToMany } from "typeorm";
-import { AnamnesisResponse } from "./anamnesis-response";
-import { AnamnesisSection } from "./anamnesis-section";
 
-@Entity()
-export class AnamnesisForm extends BaseEntity {
+import { AnamnesisResponseModel } from "./anamnesis-response";
+import { AnamnesisSectionModel } from "./anamnesis-section";
+
+@Entity({ name: "anamnesis_form" })
+export class AnamnesisFormModel extends BaseEntity {
   @Column()
   title: string;
 
@@ -12,14 +13,14 @@ export class AnamnesisForm extends BaseEntity {
   description: string;
 
   @OneToMany(
-    () => AnamnesisSection,
+    () => AnamnesisSectionModel,
     (section) => section.form,
   )
-  sections: AnamnesisSection[];
+  sections: AnamnesisSectionModel[];
 
   @OneToMany(
-    () => AnamnesisResponse,
+    () => AnamnesisResponseModel,
     (response) => response.form,
   )
-  responses: AnamnesisResponse[];
+  responses: AnamnesisResponseModel[];
 }

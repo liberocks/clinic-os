@@ -1,11 +1,11 @@
 import { BaseEntity } from "@medusajs/medusa";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { AnamnesisForm } from "./anamnesis-form";
-import { AnamnesisQuestion } from "./anamnesis-question";
+import { AnamnesisFormModel } from "./anamnesis-form";
+import { AnamnesisQuestionModel } from "./anamnesis-question";
 
-@Entity()
+@Entity({ name: "anamnesis_section" })
 @Index("idx_anamnesis_section_form_id", ["form_id"])
-export class AnamnesisSection extends BaseEntity {
+export class AnamnesisSectionModel extends BaseEntity {
   @Column()
   form_id: string;
 
@@ -19,15 +19,15 @@ export class AnamnesisSection extends BaseEntity {
   order: number;
 
   @ManyToOne(
-    () => AnamnesisForm,
+    () => AnamnesisFormModel,
     (form) => form.sections,
   )
   @JoinColumn({ name: "form_id" })
-  form: AnamnesisForm;
+  form: AnamnesisFormModel;
 
   @OneToMany(
-    () => AnamnesisQuestion,
+    () => AnamnesisQuestionModel,
     (question) => question.section,
   )
-  questions: AnamnesisQuestion[];
+  questions: AnamnesisQuestionModel[];
 }

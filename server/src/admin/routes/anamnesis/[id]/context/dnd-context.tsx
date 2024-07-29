@@ -28,7 +28,7 @@ interface DndContextValue {
   isSortingContainer: boolean;
   items: Items;
   onDragCancel: () => void;
-  onDragEnd: (event: DragEndEvent) => void;
+  onDragEnd: (callback?: (...vars) => void) => (event: DragEndEvent) => void;
   onDragOver: (event: DragOverEvent) => void;
   onDragStart: (event: DragStartEvent) => void;
   renderContainerDragOverlay: (containerId: UniqueIdentifier) => JSX.Element;
@@ -225,63 +225,71 @@ export function DndProvider({ children }: DndWrapperProps) {
     }
   };
 
-  const onDragEnd = (event: DragEndEvent): void => {
-    const { active, over } = event;
+  const onDragEnd =
+    (callback: Function) =>
+    (event: DragEndEvent): void => {
+      const { active, over } = event;
 
-    if (active.id in items && over?.id) {
-      setContainers((containers) => {
-        const activeIndex = containers.indexOf(active.id);
-        const overIndex = containers.indexOf(over.id);
+      if (active.id in items && over?.id) {
+        setContainers((containers) => {
+          const activeIndex = containers.indexOf(active.id);
+          const overIndex = containers.indexOf(over.id);
 
-        return arrayMove(containers, activeIndex, overIndex);
-      });
-    }
+          const activeContainerId = containers[activeIndex];
+          const overContainerId = containers[overIndex];
 
-    const activeContainer = findContainer(active.id);
-
-    if (!activeContainer) {
-      setActiveId(null);
-      return;
-    }
-
-    const overId = over?.id;
-
-    if (overId == null) {
-      setActiveId(null);
-      return;
-    }
-
-    if (overId === PLACEHOLDER_ID) {
-      const newContainerId = getNextContainerId();
-
-      unstable_batchedUpdates(() => {
-        setContainers((containers) => [...containers, newContainerId]);
-        setItems((items) => ({
-          ...items,
-          [activeContainer]: items[activeContainer].filter((id) => id !== activeId),
-          [newContainerId]: [active.id],
-        }));
-        setActiveId(null);
-      });
-      return;
-    }
-
-    const overContainer = findContainer(overId);
-
-    if (overContainer) {
-      const activeIndex = items[activeContainer].indexOf(active.id);
-      const overIndex = items[overContainer].indexOf(overId);
-
-      if (activeIndex !== overIndex) {
-        setItems((items) => ({
-          ...items,
-          [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
-        }));
+          return arrayMove(containers, activeIndex, overIndex);
+        });
       }
-    }
 
-    setActiveId(null);
-  };
+      const activeContainer = findContainer(active.id);
+
+      if (!activeContainer) {
+        setActiveId(null);
+        return;
+      }
+
+      const overId = over?.id;
+
+      if (overId == null) {
+        setActiveId(null);
+        return;
+      }
+
+      callback(activeContainer, active.id);
+
+      if (overId === PLACEHOLDER_ID) {
+        const newContainerId = getNextContainerId();
+
+        unstable_batchedUpdates(() => {
+          setContainers((containers) => [...containers, newContainerId]);
+          setItems((items) => ({
+            ...items,
+            [activeContainer]: items[activeContainer].filter((id) => id !== activeId),
+            [newContainerId]: [active.id],
+          }));
+          setActiveId(null);
+        });
+
+        return;
+      }
+
+      const overContainer = findContainer(overId);
+
+      if (overContainer) {
+        const activeIndex = items[activeContainer].indexOf(active.id);
+        const overIndex = items[overContainer].indexOf(overId);
+
+        if (activeIndex !== overIndex) {
+          setItems((items) => ({
+            ...items,
+            [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
+          }));
+        }
+      }
+
+      setActiveId(null);
+    };
 
   useEffect(() => {
     requestAnimationFrame(() => {

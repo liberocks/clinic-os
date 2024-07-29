@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 
 import Button from "../../../components/shared/button";
 import ShareIcon from "../../../components/shared/icons/share";
+import { ShowIf } from "../../../components/shared/show-if";
 import cx from "../../../utils/cx";
 import { EmptyState } from "./components/empty-state";
 import NewSection from "./components/new-section";
@@ -17,6 +18,7 @@ import { dropAnimation } from "./utils/drop-animation";
 const AnamnesisPage: React.FC<RouteProps> = (props) => {
   const { notify } = props;
   const {
+    id,
     isLoading,
     handleAddQuestion,
     handleAddNewSection,
@@ -26,7 +28,9 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
     description,
     handleChangeTitle,
     handleChangeDescription,
-    handleSave,
+    handleCreateForm,
+    handleMoveQuestion,
+    isValid,
   } = useAnamnesisContext();
   const {
     activeId,
@@ -62,15 +66,24 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
           />
         </div>
         <div className="flex flex-row flex-shrink space-x-4">
-          <Button type="secondary">
-            <span className="flex flex-row space-x-2">
-              <ShareIcon size={18} />
-              <span>Share</span>
-            </span>
-          </Button>
-          <Button onClick={handleSave(notify)} loading={isLoading}>
-            Save
-          </Button>
+          <ShowIf condition={id !== "new"}>
+            <Button type="secondary">
+              <span className="flex flex-row space-x-2">
+                <ShareIcon size={18} />
+                <span>Share</span>
+              </span>
+            </Button>
+          </ShowIf>
+
+          <ShowIf condition={id !== "new"}>
+            <Button className="!min-w-36">Save changes</Button>
+          </ShowIf>
+
+          <ShowIf condition={id === "new"}>
+            <Button onClick={handleCreateForm(notify)} loading={isLoading} disabled={!isValid}>
+              Create
+            </Button>
+          </ShowIf>
         </div>
       </div>
 
@@ -85,16 +98,20 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
         >
           Editor
         </button>
-        <button
-          type="button"
-          className={cx(
-            "text-base text-grey-700 h-10 min-w-28",
-            activeTab === "submissions" ? "border-b-2 border-b-gray-700 font-semibold text-gray-800" : "text-gray-500",
-          )}
-          onClick={() => setActiveTab("submissions")}
-        >
-          Submissions
-        </button>
+        <ShowIf condition={id !== "new"}>
+          <button
+            type="button"
+            className={cx(
+              "text-base text-grey-700 h-10 min-w-28",
+              activeTab === "submissions"
+                ? "border-b-2 border-b-gray-700 font-semibold text-gray-800"
+                : "text-gray-500",
+            )}
+            onClick={() => setActiveTab("submissions")}
+          >
+            Submissions
+          </button>
+        </ShowIf>
       </div>
 
       <div className={cx("w-full mt-4", activeTab === "editor" ? "block" : "hidden")}>
@@ -104,7 +121,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
           measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
           onDragStart={onDragStart}
           onDragOver={onDragOver}
-          onDragEnd={onDragEnd}
+          onDragEnd={onDragEnd(handleMoveQuestion)}
           onDragCancel={onDragCancel}
         >
           <div className="w-full space-y-8">

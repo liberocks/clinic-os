@@ -1,9 +1,16 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { RouteProps } from "@medusajs/admin";
+import { useAdminCustomPost, useMedusa } from "medusa-react";
 import { nanoid } from "nanoid";
-import { createContext, useContext, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import type { AnamnesisQuestionType, NewAnamnesisSection } from "../../../../types/anamnesis";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import type {
+  AnamnesisQuestionType,
+  CreateAnamnesisFormResponse,
+  NewAnamnesisSection,
+} from "../../../../types/anamnesis";
+import { ANAMNESIS_QUERY_KEY, type CreateAnamnesisFormPayload } from "../../../../types/anamnesis";
 import { useDndContext } from "./dnd-context";
 
 interface AnamnesisContextValue {
@@ -38,9 +45,9 @@ interface AnamnesisContextValue {
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDeleteSection: (sectionId: UniqueIdentifier) => () => void;
   handleDeleteQuestion: (sectionId: UniqueIdentifier, questionId: UniqueIdentifier) => () => void;
-  handleSave: (notify: RouteProps["notify"]) => () => void;
+  handleCreateForm: (notify: RouteProps["notify"]) => () => void;
+  handleUpdateForm: (notify: RouteProps["notify"]) => () => void;
   handleShare: (notify: RouteProps["notify"]) => () => void;
-
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isFetching: boolean;
@@ -53,6 +60,10 @@ interface AnamnesisContextValue {
   handleChangeTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
   description: string;
   handleChangeDescription: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleMoveQuestion: (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => void;
+  isValid: boolean;
+  handleChangeSectionTitle: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeSectionDescription: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 interface AnamnesisWrapperProps {
@@ -62,7 +73,12 @@ interface AnamnesisWrapperProps {
 const AnamnesisContext = createContext<AnamnesisContextValue>(null as unknown as AnamnesisContextValue);
 
 export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
+  // STATES
+
+  // Get the anamnesis ID from the URL
   const { id } = useParams();
+
+  // State for the anamnesis form
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [patientEmail, setPatientEmail] = useState("");
@@ -71,8 +87,20 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const dndContext = useDndContext();
+  const [isValid, setIsValid] = useState(false);
 
+  // Other hooks
+  const dndContext = useDndContext();
+  const navigate = useNavigate();
+
+  // QUERIES
+  const { client } = useMedusa();
+  const { mutate: createAnamnesisForm } = useAdminCustomPost<CreateAnamnesisFormPayload, CreateAnamnesisFormResponse>(
+    "/anamnesis",
+    ANAMNESIS_QUERY_KEY,
+  );
+
+  // HANDLERS
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -107,6 +135,37 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
 
     setSections(newSections);
   };
+
+  const handleChangeSectionTitle = (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSections = sections.map((section) => {
+      if (section.id === sectionId) {
+        return {
+          ...section,
+          title: e.target.value,
+        };
+      }
+
+      return section;
+    });
+
+    setSections(newSections);
+  };
+
+  const handleChangeSectionDescription =
+    (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const newSections = sections.map((section) => {
+        if (section.id === sectionId) {
+          return {
+            ...section,
+            description: e.target.value,
+          };
+        }
+
+        return section;
+      });
+
+      setSections(newSections);
+    };
 
   const handleDeleteSection = (sectionId: UniqueIdentifier) => () => {
     const newSections = sections.filter((section) => section.id !== sectionId);
@@ -384,24 +443,188 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     setSections(newSections);
   };
 
-  const handleSave = (notify: RouteProps["notify"]) => async () => {
-    try {
-      setIsLoading(true);
+  const handleCreateForm = (notify: RouteProps["notify"]) => async () => {
+    setIsLoading(true);
 
-      console.log("Anamness ID", id);
-      console.log("Title", title);
-      console.log("Description", description);
-      console.log("Sections", sections);
+    // Reorder sections and its questions based on dndContext
+    const newSections = dndContext.containers.map((containerId, index) => {
+      const section = sections.find((section) => section.id === containerId);
 
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      return {
+        ...section,
+        questions: dndContext.items[containerId].map((questionId, index) => {
+          const question = section?.questions.find((question) => question.id === questionId);
 
-      notify.success("Success", "Anamnesis form saved successfully");
-    } catch (error) {
-      notify.error("Error", "Failed to save anamnesis form");
-    } finally {
-      setIsLoading(false);
+          return {
+            ...question,
+            order: index,
+          };
+        }),
+        order: index,
+      };
+    });
+
+    createAnamnesisForm(
+      { title, description, sections: newSections },
+      {
+        onSuccess: async (data) => {
+          notify.success("Success", "Anamnesis form saved successfully");
+
+          // delay to allow the success notification to show
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+
+          navigate(`/a/anamnesis/${data.formId}`);
+        },
+        onError: (error) => {
+          notify.error("Error", "Failed to save anamnesis form");
+        },
+        onSettled: () => {
+          setIsLoading(false);
+        },
+      },
+    );
+  };
+
+  const handleUpdateForm = (notify: RouteProps["notify"]) => async () => {
+    setIsLoading(true);
+
+    // Reorder sections and its questions based on dndContext
+    const newSections = dndContext.containers.map((containerId, index) => {
+      const section = sections.find((section) => section.id === containerId);
+
+      return {
+        ...section,
+        questions: dndContext.items[containerId].map((questionId, index) => {
+          const question = section?.questions.find((question) => question.id === questionId);
+
+          return {
+            ...question,
+            order: index,
+          };
+        }),
+        order: index,
+      };
+    });
+
+    // TODO: Implement update form
+  };
+
+  const handleMoveQuestion = (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => {
+    const originSectionId = sections.find((section) =>
+      section.questions.find((question) => question.id === questionId),
+    )?.id;
+
+    if (originSectionId !== destinationContainerId) {
+      const newSections = sections.map((section) => {
+        if (section.id === originSectionId) {
+          return {
+            ...section,
+            questions: section.questions.filter((question) => question.id !== questionId),
+          };
+        }
+
+        if (section.id === destinationContainerId) {
+          return {
+            ...section,
+            questions: [
+              ...section.questions,
+              sections
+                .find((section) => section.id === originSectionId)
+                ?.questions.find((question) => question.id === questionId),
+            ],
+          };
+        }
+
+        return section;
+      });
+
+      setSections(newSections);
     }
   };
+
+  // EFFECTS
+  useEffect(() => {
+    if (id === "new") {
+      // cleanup form state
+      setTitle("");
+      setDescription("");
+      setSections([]);
+      dndContext.setItems({});
+      dndContext.setContainers([]);
+    } else {
+      client.admin.custom
+        .get(`/anamnesis/${id}`)
+        .then((res) => {
+          // Populate form details
+          setTitle(res.title);
+          setDescription(res.description);
+          setSections(res.sections);
+
+          // Populate dndContext
+          dndContext.setItems(
+            res.sections.reduce(
+              (acc, section) => {
+                acc[section.id] = (section.questions || []).map((question) => question.id);
+                return acc;
+              },
+              {} as Record<string, string[]>,
+            ),
+          );
+          dndContext.setContainers(res.sections.map((section) => section.id));
+        })
+        .catch((error) => {
+          // If anamnesis form is not found or something goes wrong with the data retrieval, redirect to 404 page
+          navigate("/404.html");
+        });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (!title) {
+      // Check if title is not empty
+      return setIsValid(false);
+    }
+
+    if (!description) {
+      // Check if description is not empty
+      return setIsValid(false);
+    }
+
+    for (const section of sections) {
+      if (!section.title) {
+        // Check if section title is not empty
+        return setIsValid(false);
+      }
+
+      if (!section.description) {
+        // Check if section description is not empty
+        return setIsValid(false);
+      }
+
+      for (const question of section.questions) {
+        if (!question.question_text) {
+          // Check if question text is not empty
+          return setIsValid(false);
+        }
+
+        if (question.question_type === "multiple_choice" || question.question_type === "select") {
+          for (const option of question.options) {
+            if (!option.label) {
+              // Check if option label is not empty
+              return setIsValid(false);
+            }
+
+            if (!option.value) {
+              // Check if option value is not empty
+              return setIsValid(false);
+            }
+          }
+        }
+      }
+    }
+
+    setIsValid(true);
+  }, [sections, title, description, activeTab]);
 
   const contextValue = useMemo(() => {
     return {
@@ -414,17 +637,21 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       handleChangeDescription,
       handleChangeMultipleChoiceOption,
       handleChangeQuestionText,
+      handleChangeSectionDescription,
+      handleChangeSectionTitle,
       handleChangeSelectOptionText,
       handleChangeTitle,
       handleDeleteMultipleChoiceOption,
       handleDeleteQuestion,
       handleDeleteSection,
       handleDeleteSelectOption,
-      handleSave,
+      handleMoveQuestion,
+      handleCreateForm,
       handleShare,
       id,
       isFetching,
       isLoading,
+      isValid,
       patientEmail,
       sections,
       setActiveTab,
@@ -434,6 +661,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       setSections,
       setShareModalOpened,
       shareModalOpened,
+      handleUpdateForm,
       title,
     };
   }, [
@@ -446,17 +674,22 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     handleChangeDescription,
     handleChangeMultipleChoiceOption,
     handleChangeQuestionText,
+    handleChangeSectionDescription,
+    handleChangeSectionTitle,
     handleChangeSelectOptionText,
     handleChangeTitle,
     handleDeleteMultipleChoiceOption,
     handleDeleteQuestion,
     handleDeleteSection,
     handleDeleteSelectOption,
-    handleSave,
+    handleMoveQuestion,
+    handleCreateForm,
     handleShare,
+    handleUpdateForm,
     id,
     isFetching,
     isLoading,
+    isValid,
     patientEmail,
     sections,
     setActiveTab,

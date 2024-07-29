@@ -1,20 +1,26 @@
-export interface CreateAnamnesisQuestionInput {
+export const ANAMNESIS_QUERY_KEY = ["anamnesis"];
+
+export interface CreateAnamnesisQuestionPayload {
   question_text: string;
   question_type: AnamnesisQuestionType;
   options: AnamnesisQuestionOption[] | null;
 }
 
-export interface CreateAnamnesisSectionInput {
+export interface CreateAnamnesisSectionPayload {
   title: string;
   description: string;
   order: number;
-  questions: CreateAnamnesisQuestionInput[];
+  questions?: CreateAnamnesisQuestionPayload[];
 }
 
-export interface CreateAnamnesisFormInput {
+export interface CreateAnamnesisFormPayload {
   title: string;
   description: string;
-  sections: CreateAnamnesisSectionInput[];
+  sections?: CreateAnamnesisSectionPayload[];
+}
+
+export interface CreateAnamnesisFormResponse {
+  formId: string;
 }
 
 export enum AnamnesisQuestionType {
