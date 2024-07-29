@@ -76,7 +76,7 @@ async function getCountryCode(
 	} catch (error) {
 		if (process.env.NODE_ENV === "development") {
 			console.error(
-				"Middleware.ts: Error getting the country code. Did you set up regions in your Medusa Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?",
+				"Middleware.ts: Error getting the country code. Did you set up regions in your Clinic OS Admin and define a NEXT_PUBLIC_MEDUSA_BACKEND_URL environment variable?",
 			);
 		}
 	}

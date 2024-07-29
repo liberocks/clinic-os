@@ -1,6 +1,5 @@
 import type React from "react";
 
-import { AnamnesisQuestionType } from "../../../../../types/anamnesis";
 import DateIcon from "../../../../components/shared/icons/date";
 import DateTimeIcon from "../../../../components/shared/icons/date-time";
 import LongTextIcon from "../../../../components/shared/icons/long-text";
@@ -8,6 +7,7 @@ import MultipleChoiceIcon from "../../../../components/shared/icons/multiple-cho
 import SelectIcon from "../../../../components/shared/icons/select";
 import ShortTextIcon from "../../../../components/shared/icons/short-text";
 import TimeIcon from "../../../../components/shared/icons/time";
+import { AnamnesisQuestionType } from "../../../../types/anamnesis";
 
 interface ToolbarProps {
   onAddQuestion: (type: AnamnesisQuestionType) => void;
@@ -76,7 +76,7 @@ export const Toolbar: React.FC<ToolbarProps> = (props) => {
   ];
 
   return (
-    <div className="flex flex-col items-center px-4 py-2 mx-auto space-x-4 bg-white border rounded-xl h-fit w-fit">
+    <div className="flex flex-col items-center px-4 py-2 mx-auto space-x-4 bg-white h-fit w-fit">
       <div className="flex flex-row space-x-2">
         {tools.map((tool) => (
           <ToolButton
@@ -87,7 +87,11 @@ export const Toolbar: React.FC<ToolbarProps> = (props) => {
           />
         ))}
       </div>
-      <p className="text-xs text-center w-fit inter-base-regular text-grey-50">Click icon above to add new question</p>
+      <p className="text-xs text-center w-fit inter-base-regular text-grey-50">
+        Click icon above to add new question
+        <br />
+        You can also drag and drop the question within a section or between sections
+      </p>
     </div>
   );
 };

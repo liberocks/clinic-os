@@ -31,5 +31,3 @@ export class AnamnesisSection extends BaseEntity {
   )
   questions: AnamnesisQuestion[];
 }
-
-export type NewAnamnesisSection = Omit<AnamnesisSection, "created_at" | "updated_at">;

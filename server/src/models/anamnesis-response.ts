@@ -51,5 +51,3 @@ export class AnamnesisResponse extends BaseEntity {
   @JoinColumn({ name: "order_id" })
   order: Order;
 }
-
-export type NewAnamnesisResponse = Omit<AnamnesisResponse, "created_at" | "updated_at">;

@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
-
-import type { DraggableSyntheticListeners } from "@dnd-kit/core";
+import type { DraggableSyntheticListeners, UniqueIdentifier } from "@dnd-kit/core";
 import type { Transform } from "@dnd-kit/utilities";
-import type { ItemActionProps } from "./item-action";
-import { ItemHandle } from "./item-handle";
-import { ItemRemove } from "./item-remove";
+import React, { useEffect } from "react";
+import DotIcon from "../../../../components/shared/icons/dot";
+import GhostIcon from "../../../../components/shared/icons/ghost";
+import PlusIcon from "../../../../components/shared/icons/plus";
+import TrashIcon from "../../../../components/shared/icons/trash";
+import VerticalGripIcon from "../../../../components/shared/icons/vertical-grip";
+import XIcon from "../../../../components/shared/icons/x";
+import { ShowIf } from "../../../../components/shared/show-if";
+import { AnamnesisQuestionType } from "../../../../types/anamnesis";
+import { useAnamnesisContext } from "../context/anamnesis-context";
 
 export type RenderItem = (args?: {
   dragOverlay: boolean;
@@ -21,12 +26,11 @@ export type RenderItem = (args?: {
 }) => React.ReactElement;
 
 export interface ItemProps {
+  containerId?: UniqueIdentifier;
   dragOverlay?: boolean;
-  color?: string;
   disabled?: boolean;
   dragging?: boolean;
   handle?: boolean;
-  handleProps?: ItemActionProps;
   height?: number;
   index?: number;
   fadeIn?: boolean;
@@ -39,19 +43,18 @@ export interface ItemProps {
   value: React.ReactNode;
   onRemove?(): void;
   renderItem?: RenderItem;
+  type?: "question" | "empty-state";
 }
 
 export const Item = React.memo(
   React.forwardRef<HTMLLIElement, ItemProps>(
     (
       {
-        color,
         dragOverlay,
         dragging,
         disabled,
         fadeIn,
         handle,
-        handleProps,
         height,
         index,
         listeners,
@@ -63,6 +66,8 @@ export const Item = React.memo(
         transform,
         value,
         wrapperStyle,
+        type,
+        containerId,
         ...props
       },
       ref,
@@ -79,26 +84,26 @@ export const Item = React.memo(
         };
       }, [dragOverlay]);
 
+      const {
+        sections,
+        handleAddMultipleChoiceOption,
+        handleAddSelectOption,
+        handleChangeMultipleChoiceOption,
+        handleChangeQuestionText,
+        handleChangeSelectOptionText,
+        handleDeleteMultipleChoiceOption,
+        handleDeleteQuestion,
+        handleDeleteSelectOption,
+      } = useAnamnesisContext();
+      const section = sections.find((section) => section.id === containerId);
+      const questions = section?.questions || [];
+      const question = questions.find((question) => question?.id === value);
+
       const wrapperClasses = `
         flex box-border transform
         ${fadeIn ? "animate-fadeIn" : ""}
         ${sorting ? "transition-transform" : ""}
         ${dragOverlay ? "z-[999]" : ""}
-      `;
-
-      const itemClasses = `
-        relative flex flex-grow items-center p-[18px_20px] bg-white
-        shadow-[0_0_0_1px_rgba(63,63,68,0.05),0_1px_3px_0_rgba(34,33,81,0.15)]
-        outline-none rounded-[4px] box-border list-none origin-center
-        text-[#333] font-normal text-base whitespace-nowrap
-        transition-shadow duration-200 ease-[cubic-bezier(0.18,0.67,0.6,1.22)]
-        focus-visible:shadow-[0_0_0_1px_#4c9ffe,0_0_0_1px_rgba(63,63,68,0.05),0_1px_3px_0_rgba(34,33,81,0.15)]
-        ${!handle ? "touch-manipulation cursor-grab" : ""}
-        ${dragging && !dragOverlay ? "opacity-50 z-0" : ""}
-        ${disabled ? "text-[#999] bg-[#f1f1f1] cursor-not-allowed" : ""}
-        ${dragOverlay ? "cursor-inherit animate-pop shadow-[0_0_0_1px_rgba(63,63,68,0.05),-1px_0_15px_0_rgba(34,33,81,0.01),0px_15px_15px_0_rgba(34,33,81,0.25)] opacity-100" : ""}
-        ${color ? 'before:content-[""] before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:h-full before:w-[3px] before:block before:rounded-l-[3px]' : ""}
-        hover:[&>.Remove]:visible
       `;
 
       return renderItem ? (
@@ -127,7 +132,6 @@ export const Item = React.memo(
               "--scale-x": transform?.scaleX ? `${transform.scaleX}` : undefined,
               "--scale-y": transform?.scaleY ? `${transform.scaleY}` : undefined,
               "--index": index,
-              "--color": color,
               transform: `
               translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
               scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1))
@@ -137,23 +141,180 @@ export const Item = React.memo(
           }
           ref={ref}
         >
-          <div
-            className={itemClasses}
-            style={{
-              ...style,
-              transform: "scale(var(--scale, 1))",
-              boxShadow: dragOverlay ? "var(--box-shadow-picked-up)" : undefined,
-            }}
-            data-cypress="draggable-item"
-            {...(!handle ? listeners : undefined)}
-            {...props}
-            tabIndex={!handle ? 0 : undefined}
-          >
-            {value}
-            <span className="flex self-start -mt-3 ml-auto -mb-[15px] -mr-[10px]">
-              {onRemove ? <ItemRemove className="invisible" onClick={onRemove} /> : null}
-              {handle ? <ItemHandle {...handleProps} {...listeners} /> : null}
-            </span>
+          <div className="flex flex-row w-full border rounded-md">
+            <ShowIf condition={type === "question" && !!question}>
+              <div
+                className="flex flex-col items-center justify-center w-6 text-center bg-gray-100 cursor-grab active:cursor-grabbing"
+                style={{
+                  ...style,
+                  transform: "scale(var(--scale, 1))",
+                  boxShadow: dragOverlay ? "var(--box-shadow-picked-up)" : undefined,
+                }}
+                data-cypress="draggable-item"
+                {...(!handle ? listeners : {})}
+                {...props}
+                tabIndex={!handle ? 0 : undefined}
+              >
+                <VerticalGripIcon size={16} color="#DDDDDD" />
+              </div>
+
+              <div className="flex flex-col items-start py-5 px-5 space-y-1 w-full min-h-[150px]">
+                <div className="flex flex-row items-center w-full mb-5 ">
+                  <input
+                    type="text"
+                    className="flex-grow w-full break-words bg-transparent outline-none inter-large-regular text-grey-50 text-wrap"
+                    placeholder="Question goes here"
+                    maxLength={300}
+                    value={question?.question_text}
+                    onChange={handleChangeQuestionText(containerId, question?.id)}
+                  />
+                  <button
+                    type="button"
+                    className="flex-shrink pl-1 bg-gray-100 rounded-full size-6 hover:bg-gray-200 active:bg-gray-300"
+                    onClick={handleDeleteQuestion(containerId, question?.id)}
+                  >
+                    <TrashIcon size={16} color="#DDDDDD" />
+                  </button>
+                </div>
+
+                {/* SHORT ANSWER */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.SHORT_ANSWER}>
+                  <input
+                    type="text"
+                    className="w-full p-5 bg-transparent border rounded-md inter-large-regular border-emerald-700 outline-1 outline-emerald-700"
+                    placeholder="Patient's short answer goes here"
+                    maxLength={128}
+                  />
+                </ShowIf>
+
+                {/* LONG ANSWER */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.LONG_ANSWER}>
+                  <textarea
+                    className="w-full p-5 break-words bg-transparent border rounded-md inter-large-regular text-grey-500 text-wrap border-emerald-700 outline-1 outline-emerald-700"
+                    placeholder="Patient's long answer goes here"
+                    maxLength={600}
+                  />
+                </ShowIf>
+
+                {/* DATE */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.DATE}>
+                  <input
+                    type="date"
+                    className="w-full p-5 bg-transparent border rounded-md inter-large-regular text-grey-500 border-emerald-700 outline-1 outline-emerald-700"
+                  />
+                </ShowIf>
+
+                {/* DATE TIME */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.DATE_TIME}>
+                  <input
+                    type="datetime-local"
+                    className="w-full p-5 bg-transparent border rounded-md inter-large-regular text-grey-500 border-emerald-700 outline-1 outline-emerald-700"
+                  />
+                </ShowIf>
+
+                {/* TIME */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.TIME}>
+                  <input
+                    type="time"
+                    className="w-full p-5 bg-transparent border rounded-md inter-large-regular text-grey-500 border-emerald-700 outline-1 outline-emerald-700"
+                  />
+                </ShowIf>
+
+                {/* MULTIPLE CHOICE */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.MULTIPLE_CHOICE}>
+                  <div className="flex flex-col w-full text-gray-700 gap-y-2">
+                    {question?.options?.map((option, index) => {
+                      return (
+                        <div
+                          key={`${containerId}-${question?.id}-${index}`}
+                          className="flex flex-row items-center space-x-2"
+                        >
+                          <div className="font-semibold text-center border rounded-md size-6 border-emerald-700 hover:border-emerald-90 text-emerald-700">
+                            {String.fromCharCode(65 + index)}
+                          </div>
+                          <input
+                            key={`${containerId}-${question?.id}-${index}-text`}
+                            type="text"
+                            placeholder="Choice goes here"
+                            className="flex-grow px-2 py-2 bg-transparent outline-none inter-large-regular"
+                            value={option.label}
+                            onChange={handleChangeMultipleChoiceOption(containerId, question?.id, index)}
+                          />
+                          <button
+                            key={`${containerId}-${question?.id}-${index}-button`}
+                            type="button"
+                            className="flex-shrink pl-1 bg-gray-100 rounded-full size-6 hover:bg-gray-200 active:bg-gray-300"
+                            onClick={handleDeleteMultipleChoiceOption(containerId, question?.id, index)}
+                          >
+                            <XIcon size={16} color="#DDDDDD" />
+                          </button>
+                        </div>
+                      );
+                    })}
+
+                    <button
+                      className="flex flex-row items-center space-x-2 text-gray-500 inter-base-regular hover:text-gray-600 active:text-gray-700"
+                      type="button"
+                      onClick={handleAddMultipleChoiceOption(containerId, question?.id)}
+                    >
+                      <div>
+                        <PlusIcon size={16} />
+                      </div>
+                      <div>Add new choice</div>
+                    </button>
+                  </div>
+                </ShowIf>
+
+                {/* SELECT */}
+                <ShowIf condition={question?.question_type === AnamnesisQuestionType.SELECT}>
+                  <div className="flex flex-col w-full text-gray-700 gap-y-2">
+                    {question?.options?.map((option, index) => {
+                      return (
+                        <div
+                          key={`${containerId}-${question?.id}-${index}`}
+                          className="flex flex-row items-center space-x-2 text-gray-700 inter-large-regular"
+                        >
+                          <div className="flex-shrink">
+                            <DotIcon size={18} />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Selection option goes here"
+                            className="flex-grow px-2 py-2 bg-transparent outline-none"
+                            value={option.label}
+                            onChange={handleChangeSelectOptionText(containerId, question?.id, index)}
+                          />
+                          <button
+                            type="button"
+                            className="flex-shrink pl-1 bg-gray-100 rounded-full size-6 hover:bg-gray-200 active:bg-gray-300"
+                            onClick={handleDeleteSelectOption(containerId, question?.id, index)}
+                          >
+                            <XIcon size={16} color="#DDDDDD" />
+                          </button>
+                        </div>
+                      );
+                    })}
+
+                    <button
+                      type="button"
+                      className="flex flex-row items-center space-x-2 text-gray-500 inter-base-regular hover:text-gray-600 active:text-gray-700"
+                      onClick={handleAddSelectOption(containerId, question?.id)}
+                    >
+                      <div>
+                        <PlusIcon size={16} />
+                      </div>
+                      <div>Add new option</div>
+                    </button>
+                  </div>
+                </ShowIf>
+              </div>
+            </ShowIf>
+            <ShowIf condition={type === "empty-state"}>
+              <div className="flex flex-col items-center mb-4 space-y-2   w-full min-h-[150px] justify-center">
+                <GhostIcon size={28} />
+                <p className="w-full text-center inter-large-regular text-grey-50">No question yet</p>
+              </div>
+            </ShowIf>
           </div>
         </li>
       );

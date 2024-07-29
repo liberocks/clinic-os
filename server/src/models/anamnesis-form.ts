@@ -23,5 +23,3 @@ export class AnamnesisForm extends BaseEntity {
   )
   responses: AnamnesisResponse[];
 }
-
-export type NewAnamnesisForm = Omit<AnamnesisForm, "created_at" | "updated_at">;

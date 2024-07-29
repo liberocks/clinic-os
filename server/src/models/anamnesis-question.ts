@@ -49,5 +49,3 @@ export class AnamnesisQuestion extends BaseEntity {
   @JoinColumn({ name: "section_id" })
   section: AnamnesisSection;
 }
-
-export type NewAnamnesisQuestion = Omit<AnamnesisQuestion, "created_at" | "updated_at">;
