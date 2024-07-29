@@ -62,6 +62,8 @@ interface AnamnesisContextValue {
   handleChangeDescription: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleMoveQuestion: (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => void;
   isValid: boolean;
+  isInitialised: boolean;
+  init: () => Promise<void>;
   handleChangeSectionTitle: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeSectionDescription: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
@@ -88,6 +90,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const [isFetching, setIsFetching] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [isInitialised, setIsInitialised] = useState(false);
 
   // Other hooks
   const dndContext = useDndContext();
@@ -101,6 +104,41 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   );
 
   // HANDLERS
+  const init = async () => {
+    if (!isInitialised && id !== "new") {
+      try {
+        setIsFetching(true);
+        setIsLoading(true);
+
+        const res = await client.admin.custom.get(`/anamnesis/${id}`);
+
+        // Populate form details
+        setTitle(res.title);
+        setDescription(res.description);
+        setSections(res.sections);
+
+        // Populate dndContext
+        dndContext.setItems(
+          res.sections.reduce(
+            (acc, section) => {
+              acc[section.id] = (section.questions || []).map((question) => question.id);
+              return acc;
+            },
+            {} as Record<string, string[]>,
+          ),
+        );
+        dndContext.setContainers(res.sections.map((section) => section.id));
+      } catch (error) {
+        // If anamnesis form is not found or something goes wrong with the data retrieval, redirect to 404 page
+        navigate("/404.html");
+      } finally {
+        setIsInitialised(true);
+        setIsLoading(false);
+        setIsFetching(false);
+      }
+    }
+  };
+
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -468,10 +506,10 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       { title, description, sections: newSections },
       {
         onSuccess: async (data) => {
-          notify.success("Success", "Anamnesis form saved successfully");
+          notify.success("Success", "Anamnesis form saved successfully. Redirecting to form details...");
 
           // delay to allow the success notification to show
-          await new Promise((resolve) => setTimeout(resolve, 3000));
+          await new Promise((resolve) => setTimeout(resolve, 1500));
 
           navigate(`/a/anamnesis/${data.formId}`);
         },
@@ -542,42 +580,42 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     }
   };
 
-  // EFFECTS
-  useEffect(() => {
-    if (id === "new") {
-      // cleanup form state
-      setTitle("");
-      setDescription("");
-      setSections([]);
-      dndContext.setItems({});
-      dndContext.setContainers([]);
-    } else {
-      client.admin.custom
-        .get(`/anamnesis/${id}`)
-        .then((res) => {
-          // Populate form details
-          setTitle(res.title);
-          setDescription(res.description);
-          setSections(res.sections);
+  // // EFFECTS
+  // useEffect(() => {
+  //   if (id === "new") {
+  //     // cleanup form state
+  //     setTitle("");
+  //     setDescription("");
+  //     setSections([]);
+  //     dndContext.setItems({});
+  //     dndContext.setContainers([]);
+  //   } else {
+  //     client.admin.custom
+  //       .get(`/anamnesis/${id}`)
+  //       .then((res) => {
+  //         // Populate form details
+  //         setTitle(res.title);
+  //         setDescription(res.description);
+  //         setSections(res.sections);
 
-          // Populate dndContext
-          dndContext.setItems(
-            res.sections.reduce(
-              (acc, section) => {
-                acc[section.id] = (section.questions || []).map((question) => question.id);
-                return acc;
-              },
-              {} as Record<string, string[]>,
-            ),
-          );
-          dndContext.setContainers(res.sections.map((section) => section.id));
-        })
-        .catch((error) => {
-          // If anamnesis form is not found or something goes wrong with the data retrieval, redirect to 404 page
-          navigate("/404.html");
-        });
-    }
-  }, [id]);
+  //         // Populate dndContext
+  //         dndContext.setItems(
+  //           res.sections.reduce(
+  //             (acc, section) => {
+  //               acc[section.id] = (section.questions || []).map((question) => question.id);
+  //               return acc;
+  //             },
+  //             {} as Record<string, string[]>,
+  //           ),
+  //         );
+  //         dndContext.setContainers(res.sections.map((section) => section.id));
+  //       })
+  //       .catch((error) => {
+  //         // If anamnesis form is not found or something goes wrong with the data retrieval, redirect to 404 page
+  //         navigate("/404.html");
+  //       });
+  //   }
+  // }, [id]);
 
   useEffect(() => {
     if (!title) {
@@ -641,15 +679,18 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       handleChangeSectionTitle,
       handleChangeSelectOptionText,
       handleChangeTitle,
+      handleCreateForm,
       handleDeleteMultipleChoiceOption,
       handleDeleteQuestion,
       handleDeleteSection,
       handleDeleteSelectOption,
       handleMoveQuestion,
-      handleCreateForm,
       handleShare,
+      handleUpdateForm,
       id,
+      init,
       isFetching,
+      isInitialised,
       isLoading,
       isValid,
       patientEmail,
@@ -661,7 +702,6 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       setSections,
       setShareModalOpened,
       shareModalOpened,
-      handleUpdateForm,
       title,
     };
   }, [
@@ -678,16 +718,18 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     handleChangeSectionTitle,
     handleChangeSelectOptionText,
     handleChangeTitle,
+    handleCreateForm,
     handleDeleteMultipleChoiceOption,
     handleDeleteQuestion,
     handleDeleteSection,
     handleDeleteSelectOption,
     handleMoveQuestion,
-    handleCreateForm,
     handleShare,
     handleUpdateForm,
     id,
+    init,
     isFetching,
+    isInitialised,
     isLoading,
     isValid,
     patientEmail,

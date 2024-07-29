@@ -13,7 +13,7 @@ interface AsyncProps<T> {
   children: ReactNode;
 }
 
-export function Async<T = unknown>({
+export function Async<T = void>({
   className,
   request,
   immediate = true,
