@@ -77,6 +77,31 @@ export const CreateAnamnesisQuestionSchema = BaseAnamnesisQuestionSchema;
 export const CreateAnamnesisSectionSchema = BaseAnamnesisSectionSchema;
 export const CreateAnamnesisFormSchema = BaseAnamnesisFormSchema;
 
+// Schemas for updating entities (without timestamps)
+export const UpdateAnamnesisQuestionSchema = AnamnesisQuestionSchema.omit({
+  created_at: true,
+  updated_at: true,
+}).extend({ id: z.string().uuid(), section_id: z.string().uuid() });
+
+export const UpdateAnamnesisSectionSchema = AnamnesisSectionSchema.omit({
+  created_at: true,
+  updated_at: true,
+  questions: true,
+}).extend({
+  id: z.string().uuid(),
+  form_id: z.string().uuid(),
+  questions: z.array(UpdateAnamnesisQuestionSchema).optional(),
+});
+
+export const UpdateAnamnesisFormSchema = AnamnesisFormSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+  sections: true,
+}).extend({
+  sections: z.array(UpdateAnamnesisSectionSchema).optional(),
+});
+
 // Schema for AnamnesisResponse
 const ResponseItemSchema = z.object({
   question_id: z.string().uuid(),

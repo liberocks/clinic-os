@@ -19,9 +19,27 @@ export interface CreateAnamnesisFormPayload {
   sections?: CreateAnamnesisSectionPayload[];
 }
 
+export interface UpdateAnamnesisQuestionPayload extends CreateAnamnesisQuestionPayload {
+  id: string;
+  section_id: string;
+}
+
+export interface UpdateAnamnesisSectionPayload extends CreateAnamnesisSectionPayload {
+  id: string;
+  form_id: string;
+}
+
+export interface UpdateAnamnesisFormPayload {
+  title: string;
+  description: string;
+  sections?: UpdateAnamnesisSectionPayload[];
+}
+
 export interface CreateAnamnesisFormResponse {
   formId: string;
 }
+
+export type UpdateAnamnesisFormResponse = CreateAnamnesisFormResponse;
 
 export enum AnamnesisQuestionType {
   SHORT_ANSWER = "short_answer",
@@ -44,7 +62,7 @@ export interface AnamnesisResponseItem {
   answer: string | string[];
 }
 
-export interface NewAnamnesisQuestion {
+export interface AnamnesisQuestionData {
   id: string;
   section_id: string;
   question_text: string;
@@ -53,10 +71,11 @@ export interface NewAnamnesisQuestion {
   options: AnamnesisQuestionOption[] | null;
 }
 
-export interface NewAnamnesisSection {
+export interface AnamnesisSectionData {
   id: string;
+  form_id?: string;
   title: string;
   description: string;
   order: number;
-  questions: NewAnamnesisQuestion[];
+  questions: AnamnesisQuestionData[];
 }

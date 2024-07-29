@@ -1,6 +1,7 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import type { EntityManager } from "typeorm";
 import { z } from "zod";
+
 import { CreateAnamnesisFormSchema } from "../../../schema/anamnesis";
 import type AnamnesisService from "../../../services/anamnesis";
 
@@ -28,7 +29,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       return res.status(400).json({ errors: error.errors });
     }
 
-    console.error(error);
     // Handle other errors
     return res.status(500).json({ error: "Internal server error" });
   }

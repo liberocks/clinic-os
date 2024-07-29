@@ -31,6 +31,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
     handleChangeTitle,
     handleChangeDescription,
     handleCreateForm,
+    handleUpdateForm,
     handleMoveQuestion,
     isValid,
     init,
@@ -88,7 +89,9 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
             </ShowIf>
 
             <ShowIf condition={id !== "new"}>
-              <Button className="!min-w-36">Save changes</Button>
+              <Button className="!min-w-36" onClick={handleUpdateForm(notify)} loading={isLoading} disabled={!isValid}>
+                Save changes
+              </Button>
             </ShowIf>
 
             <ShowIf condition={id === "new"}>

@@ -1,22 +1,26 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import type { RouteProps } from "@medusajs/admin";
 import { useAdminCustomPost, useMedusa } from "medusa-react";
-import { nanoid } from "nanoid";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { v7 as uuidv7 } from "uuid";
 
 import type {
   AnamnesisQuestionType,
+  AnamnesisSectionData,
+  CreateAnamnesisFormPayload,
   CreateAnamnesisFormResponse,
-  NewAnamnesisSection,
+  UpdateAnamnesisFormPayload,
+  UpdateAnamnesisFormResponse,
+  UpdateAnamnesisSectionPayload,
 } from "../../../../types/anamnesis";
-import { ANAMNESIS_QUERY_KEY, type CreateAnamnesisFormPayload } from "../../../../types/anamnesis";
+import { ANAMNESIS_QUERY_KEY } from "../../../../types/anamnesis";
 import { useDndContext } from "./dnd-context";
 
 interface AnamnesisContextValue {
   id: string;
-  sections: NewAnamnesisSection[];
-  setSections: React.Dispatch<React.SetStateAction<NewAnamnesisSection[]>>;
+  sections: AnamnesisSectionData[];
+  setSections: React.Dispatch<React.SetStateAction<AnamnesisSectionData[]>>;
   handleAddNewSection: () => void;
   handleAddQuestion: (sectionId: UniqueIdentifier) => (type: AnamnesisQuestionType) => void;
   activeTab: "editor" | "submissions";
@@ -85,7 +89,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const [description, setDescription] = useState("");
   const [patientEmail, setPatientEmail] = useState("");
   const [activeTab, setActiveTab] = useState<"editor" | "submissions">("editor");
-  const [sections, setSections] = useState<NewAnamnesisSection[]>([]);
+  const [sections, setSections] = useState<AnamnesisSectionData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
@@ -100,6 +104,10 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const { client } = useMedusa();
   const { mutate: createAnamnesisForm } = useAdminCustomPost<CreateAnamnesisFormPayload, CreateAnamnesisFormResponse>(
     "/anamnesis",
+    ANAMNESIS_QUERY_KEY,
+  );
+  const { mutate: updateAnamnesisForm } = useAdminCustomPost<UpdateAnamnesisFormPayload, UpdateAnamnesisFormResponse>(
+    `/anamnesis/${id}`,
     ANAMNESIS_QUERY_KEY,
   );
 
@@ -150,7 +158,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const handleShare = (notify: RouteProps["notify"]) => () => {};
 
   const handleAddNewSection = () => {
-    const newSectionId = nanoid();
+    const newSectionId = uuidv7();
     dndContext.setItems((items) => {
       return {
         ...items,
@@ -426,7 +434,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     };
 
   const handleAddQuestion = (sectionId: UniqueIdentifier) => (type: AnamnesisQuestionType) => {
-    const newQuestionId = nanoid();
+    const newQuestionId = uuidv7();
     dndContext.setItems((items) => {
       return {
         ...items,
@@ -506,7 +514,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       { title, description, sections: newSections },
       {
         onSuccess: async (data) => {
-          notify.success("Success", "Anamnesis form saved successfully. Redirecting to form details...");
+          notify.success("Success", "Anamnesis form created successfully. Redirecting to form details...");
 
           // delay to allow the success notification to show
           await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -514,7 +522,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
           navigate(`/a/anamnesis/${data.formId}`);
         },
         onError: (error) => {
-          notify.error("Error", "Failed to save anamnesis form");
+          notify.error("Error", "Failed to create anamnesis form");
         },
         onSettled: () => {
           setIsLoading(false);
@@ -527,11 +535,12 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     setIsLoading(true);
 
     // Reorder sections and its questions based on dndContext
-    const newSections = dndContext.containers.map((containerId, index) => {
+    const newSections: UpdateAnamnesisSectionPayload[] = dndContext.containers.map((containerId, index) => {
       const section = sections.find((section) => section.id === containerId);
 
       return {
         ...section,
+        form_id: id,
         questions: dndContext.items[containerId].map((questionId, index) => {
           const question = section?.questions.find((question) => question.id === questionId);
 
@@ -544,7 +553,20 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       };
     });
 
-    // TODO: Implement update form
+    updateAnamnesisForm(
+      { title, description, sections: newSections },
+      {
+        onSuccess: async (data) => {
+          notify.success("Success", "Anamnesis form updated successfully");
+        },
+        onError: (error) => {
+          notify.error("Error", "Failed to update anamnesis form");
+        },
+        onSettled: () => {
+          setIsLoading(false);
+        },
+      },
+    );
   };
 
   const handleMoveQuestion = (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => {
