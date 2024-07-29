@@ -393,7 +393,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       console.log("Description", description);
       console.log("Sections", sections);
 
-      await Promise.resolve(setTimeout(() => {}, 3000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       notify.success("Success", "Anamnesis form saved successfully");
     } catch (error) {
