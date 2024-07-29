@@ -5,6 +5,7 @@ import { v7 as uuidv7 } from "uuid";
 
 import type { AnamnesisFormDto, CreateAnamnesisFormDto } from "../dto/anamnesis";
 import type { AnamnesisFormModel } from "../models/anamnesis-form";
+import type AnamnesisAssignmentRepository from "../repositories/anamnesis-assignment";
 import type AnamnesisFormRepository from "../repositories/anamnesis-form";
 import type AnamnesisQuestionRepository from "../repositories/anamnesis-question";
 import type AnamnesisResponseRepository from "../repositories/anamnesis-response";
@@ -17,6 +18,7 @@ type InjectedDependencies = {
   anamnesisSectionRepository: typeof AnamnesisSectionRepository;
   anamnesisQuestionRepository: typeof AnamnesisQuestionRepository;
   anamnesisResponseRepository: typeof AnamnesisResponseRepository;
+  anamnesisAssignmentRepository: typeof AnamnesisAssignmentRepository;
 };
 
 export class AnamnesisService extends TransactionBaseService {
@@ -26,12 +28,14 @@ export class AnamnesisService extends TransactionBaseService {
   protected anamnesisSectionRepository_: typeof AnamnesisSectionRepository;
   protected anamnesisQuestionRepository_: typeof AnamnesisQuestionRepository;
   protected anamnesisResponseRepository_: typeof AnamnesisResponseRepository;
+  protected anamnesisAssignmentRepository_: typeof AnamnesisAssignmentRepository;
 
   constructor({
     anamnesisFormRepository,
     anamnesisSectionRepository,
     anamnesisQuestionRepository,
     anamnesisResponseRepository,
+    anamnesisAssignmentRepository,
   }: InjectedDependencies) {
     super(arguments[0]);
 
@@ -39,6 +43,7 @@ export class AnamnesisService extends TransactionBaseService {
     this.anamnesisSectionRepository_ = anamnesisSectionRepository;
     this.anamnesisQuestionRepository_ = anamnesisQuestionRepository;
     this.anamnesisResponseRepository_ = anamnesisResponseRepository;
+    this.anamnesisAssignmentRepository_ = anamnesisAssignmentRepository;
   }
   async createForm(data: CreateAnamnesisFormDto): Promise<string> {
     return await this.atomicPhase_(async (transactionManager: EntityManager) => {
