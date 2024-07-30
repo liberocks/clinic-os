@@ -115,3 +115,10 @@ export const AnamnesisResponseSchema = z.object({
   form_id: z.string().uuid(),
   responses: z.array(ResponseItemSchema),
 });
+
+export const CreateAnamnesisResponseSchema = AnamnesisResponseSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+  form_id: true,
+});
