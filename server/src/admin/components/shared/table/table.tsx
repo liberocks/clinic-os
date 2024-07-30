@@ -205,15 +205,19 @@ const Table: FC<TableProps> = ({
       </ShowIf>
 
       <div className="flex flex-row items-center justify-between w-full mt-2">
-        <ShowIf condition={!loading}>
+        <ShowIf condition={!loading && data.length > 0}>
           <div>
             Showing {1 + (page - 1) * limit}-{page * limit > totalItems ? totalItems : page * limit} of{" "}
             {page * limit > totalItems ? totalItems : page * limit} items
           </div>
         </ShowIf>
+        <ShowIf condition={data.length === 0 && !loading}>
+          <span>&nbsp;</span>
+        </ShowIf>
         <ShowIf condition={loading}>
           <Spin />
         </ShowIf>
+
         <div className="flex flex-row items-center justify-between space-x-4">
           <span> Rows per page: </span>
           <div className="grid">
@@ -233,10 +237,10 @@ const Table: FC<TableProps> = ({
             </select>
           </div>
           <div className="flex flex-row items-center justify-between space-x-2">
-            <Button onClick={handlePrevious} disabled={page === 1 || loading}>
+            <Button onClick={handlePrevious} disabled={page === 1 || loading || data.length === 0}>
               Previous
             </Button>
-            <Button onClick={handleNext} disabled={page === totalPages || loading}>
+            <Button onClick={handleNext} disabled={page === totalPages || loading || data.length === 0}>
               Next
             </Button>
           </div>
