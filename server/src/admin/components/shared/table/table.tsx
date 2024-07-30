@@ -150,7 +150,7 @@ const Table: FC<TableProps> = ({
                                 <ShowIf condition={!!onView}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800"
+                                    className="px-2 py-1 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800 disabled:bg-gray-500"
                                     onClick={() => onView?.(rowId)}
                                     disabled={loading}
                                   >
@@ -160,7 +160,7 @@ const Table: FC<TableProps> = ({
                                 <ShowIf condition={!!onEdit}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-orange-600 rounded-md hover:bg-orange-700 active:bg-orange-800"
+                                    className="px-2 py-1 text-sm text-white bg-orange-600 rounded-md hover:bg-orange-700 active:bg-orange-800 disabled:bg-gray-500"
                                     onClick={() => onEdit?.(rowId)}
                                     disabled={loading}
                                   >
@@ -170,7 +170,7 @@ const Table: FC<TableProps> = ({
                                 <ShowIf condition={!!onDelete}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 active:bg-red-800"
+                                    className="px-2 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500"
                                     onClick={() => onDelete?.(rowId)}
                                     disabled={loading}
                                   >
