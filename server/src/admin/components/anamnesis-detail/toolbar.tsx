@@ -1,13 +1,13 @@
 import type React from "react";
 
-import DateIcon from "../../../../components/shared/icons/date";
-import DateTimeIcon from "../../../../components/shared/icons/date-time";
-import LongTextIcon from "../../../../components/shared/icons/long-text";
-import MultipleChoiceIcon from "../../../../components/shared/icons/multiple-choice";
-import SelectIcon from "../../../../components/shared/icons/select";
-import ShortTextIcon from "../../../../components/shared/icons/short-text";
-import TimeIcon from "../../../../components/shared/icons/time";
-import { AnamnesisQuestionType } from "../../../../types/anamnesis";
+import { AnamnesisQuestionType } from "../../types/shared/anamnesis";
+import DateIcon from "../shared/icons/date";
+import DateTimeIcon from "../shared/icons/date-time";
+import LongTextIcon from "../shared/icons/long-text";
+import MultipleChoiceIcon from "../shared/icons/multiple-choice";
+import SelectIcon from "../shared/icons/select";
+import ShortTextIcon from "../shared/icons/short-text";
+import TimeIcon from "../shared/icons/time";
 
 interface ToolbarProps {
   onAddQuestion: (type: AnamnesisQuestionType) => void;

@@ -5,16 +5,16 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { v7 as uuidv7 } from "uuid";
 
-import type {
-  AnamnesisQuestionType,
-  AnamnesisSectionData,
-  CreateAnamnesisFormPayload,
-  CreateAnamnesisFormResponse,
-  UpdateAnamnesisFormPayload,
-  UpdateAnamnesisFormResponse,
-  UpdateAnamnesisSectionPayload,
-} from "../../../../types/anamnesis";
-import { ANAMNESIS_QUERY_KEY } from "../../../../types/anamnesis";
+import {
+  ANAMNESIS_QUERY_KEY,
+  type AnamnesisQuestionType,
+  type AnamnesisSectionData,
+  type CreateAnamnesisFormPayload,
+  type CreateAnamnesisFormResponse,
+  type UpdateAnamnesisFormPayload,
+  type UpdateAnamnesisFormResponse,
+  type UpdateAnamnesisSectionPayload,
+} from "../../types/shared/anamnesis";
 import { useDndContext } from "./dnd-context";
 
 interface AnamnesisContextValue {
@@ -601,43 +601,6 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       setSections(newSections);
     }
   };
-
-  // // EFFECTS
-  // useEffect(() => {
-  //   if (id === "new") {
-  //     // cleanup form state
-  //     setTitle("");
-  //     setDescription("");
-  //     setSections([]);
-  //     dndContext.setItems({});
-  //     dndContext.setContainers([]);
-  //   } else {
-  //     client.admin.custom
-  //       .get(`/anamnesis/${id}`)
-  //       .then((res) => {
-  //         // Populate form details
-  //         setTitle(res.title);
-  //         setDescription(res.description);
-  //         setSections(res.sections);
-
-  //         // Populate dndContext
-  //         dndContext.setItems(
-  //           res.sections.reduce(
-  //             (acc, section) => {
-  //               acc[section.id] = (section.questions || []).map((question) => question.id);
-  //               return acc;
-  //             },
-  //             {} as Record<string, string[]>,
-  //           ),
-  //         );
-  //         dndContext.setContainers(res.sections.map((section) => section.id));
-  //       })
-  //       .catch((error) => {
-  //         // If anamnesis form is not found or something goes wrong with the data retrieval, redirect to 404 page
-  //         navigate("/404.html");
-  //       });
-  //   }
-  // }, [id]);
 
   useEffect(() => {
     if (!title) {

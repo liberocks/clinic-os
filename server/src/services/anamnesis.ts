@@ -128,20 +128,13 @@ export class AnamnesisService extends TransactionBaseService {
       const anamnesisFormRepository = transactionManager.withRepository(this.anamnesisFormRepository_);
       const anamnesisSectionRepository = transactionManager.withRepository(this.anamnesisSectionRepository_);
       const anamnesisQuestionRepository = transactionManager.withRepository(this.anamnesisQuestionRepository_);
+      const anamnesisResponseRepository = transactionManager.withRepository(this.anamnesisResponseRepository_);
 
       const form = await this.getForm(id);
 
       if (!form) return null;
 
-      const promises: Promise<unknown>[] = [];
-
-      // Delete form
-      promises.push(anamnesisFormRepository.delete(id));
-
-      // Delete sections
-      for (const section of form.sections) {
-        promises.push(anamnesisSectionRepository.delete(section.id));
-      }
+      let promises: Promise<unknown>[] = [];
 
       // Delete questions
       for (const section of form.sections) {
@@ -149,8 +142,19 @@ export class AnamnesisService extends TransactionBaseService {
           promises.push(anamnesisQuestionRepository.delete(question.id));
         }
       }
+      promises.push(anamnesisResponseRepository.delete({ form_id: id }));
 
       await Promise.all(promises);
+
+      // Delete sections
+      promises = [];
+      for (const section of form.sections) {
+        promises.push(anamnesisSectionRepository.delete(section.id));
+      }
+      await Promise.all(promises);
+
+      // Delete form
+      await anamnesisFormRepository.delete(id);
     });
 
     return id;
@@ -219,35 +223,18 @@ export class AnamnesisService extends TransactionBaseService {
       },
     };
 
-    return await this.anamnesisFormRepository_.findOne({ where: { id }, relations, select });
+    const query_ = this.anamnesisFormRepository_
+      .createQueryBuilder("form")
+      .leftJoinAndSelect("form.sections", "section")
+      .leftJoinAndSelect("section.questions", "question");
+    return await query_.where("form.id = :id", { id }).getOne();
+    // return await this.anamnesisFormRepository_.findOne({ where: { id }, relations, select });
   }
 
   async getForms(query: GetEntitiesQuery): Promise<PaginatedResult<AnamnesisFormResultDto>> {
     const { page = 1, limit = 10, filters, field, order } = query;
 
-    const select = {
-      id: true,
-      title: true,
-      description: true,
-      created_at: true,
-      updated_at: true,
-      sections: {
-        id: true,
-        form_id: true,
-        title: true,
-        description: true,
-        order: true,
-      },
-    };
-
     let query_ = this.anamnesisFormRepository_.createQueryBuilder("form").leftJoinAndSelect("form.sections", "section");
-
-    // Apply select
-    for (const key of Object.keys(select)) {
-      if (key !== "sections") {
-        query_ = query_.addSelect(`form.${key}`, key);
-      }
-    }
 
     // Apply filters
     if (filters) {
@@ -273,7 +260,7 @@ export class AnamnesisService extends TransactionBaseService {
             query_ = query_.andWhere(`form.${filter.field} <= :${paramName}`, { [paramName]: filter.value });
             break;
           case "like":
-            query_ = query_.andWhere(`form.${filter.field} LIKE :${paramName}`, { [paramName]: `%${filter.value}%` });
+            query_ = query_.andWhere(`form.${filter.field} ILIKE :${paramName}`, { [paramName]: `%${filter.value}%` });
             break;
         }
       });
@@ -283,6 +270,8 @@ export class AnamnesisService extends TransactionBaseService {
     if (field && order) {
       query_ = query_.orderBy(`form.${field}`, order.toUpperCase() as "ASC" | "DESC");
     }
+
+    console.log(`form.${field}`, order.toUpperCase() as "ASC" | "DESC");
 
     const [totalItems, data] = await Promise.all([
       query_.getCount(),
@@ -295,7 +284,7 @@ export class AnamnesisService extends TransactionBaseService {
     const paginatedResult: PaginatedResult<AnamnesisFormResultDto> = {
       data,
       currentPage: page,
-      itemsPerPage: limit,
+      limit: limit,
       totalItems: totalItems,
       totalPages: Math.ceil(totalItems / limit),
     };
@@ -314,15 +303,17 @@ export class AnamnesisService extends TransactionBaseService {
       if (!form) return null;
 
       // Find missing sections ids
-      const sectionIds = form.sections.map((section) => section.id);
-      const incomingSectionIds = data.sections.map((section) => section.id);
+      const sectionIds = (form.sections ?? []).map((section) => section.id);
+      const incomingSectionIds = (data.sections ?? []).map((section) => section.id);
       const missingSectionIds = sectionIds.filter((id) => !incomingSectionIds.includes(id));
       const remaningSectionIds = sectionIds.filter((id) => incomingSectionIds.includes(id));
       const newSectionIds = incomingSectionIds.filter((id) => !remaningSectionIds.includes(id));
 
       // Find missing question ids
-      const questionIds = form.sections.flatMap((section) => section.questions.map((question) => question.id));
-      const incomingQuestionIds = data.sections.flatMap((section) => section.questions.map((question) => question.id));
+      const questionIds = form.sections.flatMap((section) => (section.questions ?? []).map((question) => question.id));
+      const incomingQuestionIds = data.sections.flatMap((section) =>
+        (section.questions ?? []).map((question) => question.id),
+      );
       const missingQuestionIds = questionIds.filter((id) => !incomingQuestionIds.includes(id));
       const remaningQuestionIds = questionIds.filter((id) => incomingQuestionIds.includes(id));
       const newQuestionIds = incomingQuestionIds.filter((id) => !remaningQuestionIds.includes(id));
@@ -375,7 +366,7 @@ export class AnamnesisService extends TransactionBaseService {
               question_text: question.question_text,
               question_type: question.question_type,
               order: question.order,
-              options: question.options.map((option) => ({ label: option.label, value: option.value })),
+              options: (question.options ?? []).map((option) => ({ label: option.label, value: option.value })),
             }),
           );
         }
@@ -390,7 +381,7 @@ export class AnamnesisService extends TransactionBaseService {
               question_text: question.question_text,
               question_type: question.question_type,
               order: question.order,
-              options: question.options.map((option) => ({ label: option.label, value: option.value })),
+              options: (question.options ?? []).map((option) => ({ label: option.label, value: option.value })),
               updated_at: new Date(),
             }),
           );
@@ -493,7 +484,7 @@ export class AnamnesisService extends TransactionBaseService {
 
     // Apply form id based on the form assignments
     query_ = query_.where("form.id IN (:...formIds)", {
-      formIds: formAssignments.map((assignment) => assignment.form_id),
+      formIds: (formAssignments ?? []).map((assignment) => assignment.form_id),
     });
 
     // Apply select
@@ -524,7 +515,7 @@ export class AnamnesisService extends TransactionBaseService {
     const paginatedResult: PaginatedResult<AnamnesisFormResultDto> = {
       data,
       currentPage: page,
-      itemsPerPage: limit,
+      limit: limit,
       totalItems: totalItems,
       totalPages: Math.ceil(totalItems / limit),
     };
@@ -585,7 +576,7 @@ export class AnamnesisService extends TransactionBaseService {
     const paginatedResult: PaginatedResult<AnamnesisResponseResultDto> = {
       data,
       currentPage: page,
-      itemsPerPage: limit,
+      limit: limit,
       totalItems: totalItems,
       totalPages: Math.ceil(totalItems / limit),
     };

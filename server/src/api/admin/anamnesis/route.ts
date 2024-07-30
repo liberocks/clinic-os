@@ -5,13 +5,13 @@ import { CreateAnamnesisFormSchema } from "../../../schema/anamnesis";
 import { GetEntitiesQuerySchema, IdsSchema } from "../../../schema/generic";
 import type AnamnesisService from "../../../services/anamnesis";
 
-export const GET = (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
     const anamnesisService: AnamnesisService = req.scope.resolve("anamnesisService");
 
     const validatedQuery = GetEntitiesQuerySchema.parse(req.query);
 
-    const paginatedForms = anamnesisService.getForms(validatedQuery);
+    const paginatedForms = await anamnesisService.getForms(validatedQuery);
 
     return res.json(paginatedForms);
   } catch (error) {

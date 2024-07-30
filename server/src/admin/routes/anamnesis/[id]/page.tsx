@@ -3,19 +3,19 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import type { RouteProps } from "@medusajs/admin";
 import { createPortal } from "react-dom";
 
+import { EmptyState } from "../../../components/anamnesis-detail/empty-state";
+import NewSection from "../../../components/anamnesis-detail/new-section";
+import { Question } from "../../../components/anamnesis-detail/question";
+import { Section } from "../../../components/anamnesis-detail/section";
 import { Async } from "../../../components/shared/async";
 import Button from "../../../components/shared/button";
 import ShareIcon from "../../../components/shared/icons/share";
 import { ShowIf } from "../../../components/shared/show-if";
 import Spin from "../../../components/shared/spin";
+import { AnamnesisProvider, useAnamnesisContext } from "../../../context/anamnesis-detail/anamnesis-context";
+import { DndProvider, useDndContext } from "../../../context/anamnesis-detail/dnd-context";
+import { dropAnimation } from "../../../utils/anamnesis-detail/drop-animation";
 import cx from "../../../utils/cx";
-import { EmptyState } from "./components/empty-state";
-import NewSection from "./components/new-section";
-import { Question } from "./components/question";
-import { Section } from "./components/section";
-import { AnamnesisProvider, useAnamnesisContext } from "./context/anamnesis-context";
-import { DndProvider, useDndContext } from "./context/dnd-context";
-import { dropAnimation } from "./utils/drop-animation";
 
 const AnamnesisPage: React.FC<RouteProps> = (props) => {
   const { notify } = props;

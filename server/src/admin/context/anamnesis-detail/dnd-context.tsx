@@ -17,8 +17,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
-import { Item } from "../components/item";
-import { type Items, PLACEHOLDER_ID } from "../type";
+import { Item } from "../../components/anamnesis-detail/item";
+import { type Items, PLACEHOLDER_ID } from "../../types/anamnesis-detail/type";
 
 interface DndContextValue {
   activeId: UniqueIdentifier | null;

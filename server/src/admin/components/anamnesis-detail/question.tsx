@@ -2,7 +2,7 @@ import type { UniqueIdentifier } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import type React from "react";
 
-import { useMountStatus } from "../context/use-mount-status";
+import { useMountStatus } from "../../context/anamnesis-detail/use-mount-status";
 import { Item } from "./item";
 
 interface QuestionProps {

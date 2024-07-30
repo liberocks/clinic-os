@@ -1,7 +1,7 @@
 import type React from "react";
 import type IconProps from "../../../types/shared/icon-type";
 
-const TimeIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ...attributes }) => {
+const PencilIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ...attributes }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,12 +13,12 @@ const TimeIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ..
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-clock"
+      className="lucide lucide-pencil"
       {...attributes}
     >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
+      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+      <path d="m15 5 4 4" />
     </svg>
   );
 };
-export default TimeIcon;
+export default PencilIcon;

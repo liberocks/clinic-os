@@ -1,7 +1,7 @@
 import type React from "react";
 import type { ButtonHTMLAttributes } from "react";
 
-import PlusIcon from "../../../../components/shared/icons/plus";
+import PlusIcon from "../shared/icons/plus";
 
 interface NewSectionProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 

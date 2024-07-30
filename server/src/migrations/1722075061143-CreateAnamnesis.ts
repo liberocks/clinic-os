@@ -52,7 +52,7 @@ export class CreateAnamnesis1722075061143 implements MigrationInterface {
 					"created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
 					"updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
 					"customer_id" character varying NOT NULL,
-					"order_id" character varying NOT NULL,
+          "order_id" character varying DEFAULT NULL,
 					"form_id" character varying NOT NULL,
 					"responses" jsonb NOT NULL,
 					CONSTRAINT "PK_anamnesis_response" PRIMARY KEY ("id")
@@ -62,7 +62,6 @@ export class CreateAnamnesis1722075061143 implements MigrationInterface {
     await queryRunner.query(
       `CREATE INDEX "idx_anamnesis_response_customer_id" ON "anamnesis_response" ("customer_id")`,
     );
-    await queryRunner.query(`CREATE INDEX "idx_anamnesis_response_order_id" ON "anamnesis_response" ("order_id")`);
 
     // Add foreign key constraints
     await queryRunner.query(
@@ -77,21 +76,16 @@ export class CreateAnamnesis1722075061143 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "anamnesis_response" ADD CONSTRAINT "FK_anamnesis_response_customer" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
-    await queryRunner.query(
-      `ALTER TABLE "anamnesis_response" ADD CONSTRAINT "FK_anamnesis_response_order" FOREIGN KEY ("order_id") REFERENCES "order"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Remove foreign key constraints
-    await queryRunner.query(`ALTER TABLE "anamnesis_response" DROP CONSTRAINT "FK_anamnesis_response_order"`);
     await queryRunner.query(`ALTER TABLE "anamnesis_response" DROP CONSTRAINT "FK_anamnesis_response_customer"`);
     await queryRunner.query(`ALTER TABLE "anamnesis_response" DROP CONSTRAINT "FK_anamnesis_response_form"`);
     await queryRunner.query(`ALTER TABLE "anamnesis_question" DROP CONSTRAINT "FK_anamnesis_question_section"`);
     await queryRunner.query(`ALTER TABLE "anamnesis_section" DROP CONSTRAINT "FK_anamnesis_section_form"`);
 
     // Drop indexes
-    await queryRunner.query(`DROP INDEX "idx_anamnesis_response_order_id"`);
     await queryRunner.query(`DROP INDEX "idx_anamnesis_response_customer_id"`);
     await queryRunner.query(`DROP INDEX "idx_anamnesis_response_form_id"`);
     await queryRunner.query(`DROP INDEX "idx_anamnesis_question_section_id"`);

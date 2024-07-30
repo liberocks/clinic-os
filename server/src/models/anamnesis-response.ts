@@ -1,12 +1,12 @@
 import { BaseEntity, Customer, Order } from "@medusajs/medusa";
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+
 import type { AnamnesisResponseItem } from "../types/anamnesis";
 import { AnamnesisFormModel } from "./anamnesis-form";
 
 @Entity({ name: "anamnesis_response" })
 @Index("idx_anamnesis_response_form_id", ["form_id"])
 @Index("idx_anamnesis_response_customer_id", ["customer_id"])
-@Index("idx_anamnesis_response_order_id", ["order_id"])
 export class AnamnesisResponseModel extends BaseEntity {
   @Column()
   customer_id: string;

@@ -1,9 +1,9 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import type React from "react";
 
-import TrashIcon from "../../../../components/shared/icons/trash";
-import type { AnamnesisQuestionType } from "../../../../types/anamnesis";
-import { useAnamnesisContext } from "../context/anamnesis-context";
+import { useAnamnesisContext } from "../../context/anamnesis-detail/anamnesis-context";
+import type { AnamnesisQuestionType } from "../../types/shared/anamnesis";
+import TrashIcon from "../shared/icons/trash";
 import Toolbar from "./toolbar";
 
 export type SectionProps = {

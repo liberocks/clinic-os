@@ -1,15 +1,16 @@
 import type { DraggableSyntheticListeners, UniqueIdentifier } from "@dnd-kit/core";
 import type { Transform } from "@dnd-kit/utilities";
 import React, { useEffect } from "react";
-import DotIcon from "../../../../components/shared/icons/dot";
-import GhostIcon from "../../../../components/shared/icons/ghost";
-import PlusIcon from "../../../../components/shared/icons/plus";
-import TrashIcon from "../../../../components/shared/icons/trash";
-import VerticalGripIcon from "../../../../components/shared/icons/vertical-grip";
-import XIcon from "../../../../components/shared/icons/x";
-import { ShowIf } from "../../../../components/shared/show-if";
-import { AnamnesisQuestionType } from "../../../../types/anamnesis";
-import { useAnamnesisContext } from "../context/anamnesis-context";
+
+import { useAnamnesisContext } from "../../context/anamnesis-detail/anamnesis-context";
+import { AnamnesisQuestionType } from "../../types/shared/anamnesis";
+import DotIcon from "../shared/icons/dot";
+import GhostIcon from "../shared/icons/ghost";
+import PlusIcon from "../shared/icons/plus";
+import TrashIcon from "../shared/icons/trash";
+import VerticalGripIcon from "../shared/icons/vertical-grip";
+import XIcon from "../shared/icons/x";
+import { ShowIf } from "../shared/show-if";
 
 export type RenderItem = (args?: {
   dragOverlay: boolean;

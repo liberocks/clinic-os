@@ -28,9 +28,13 @@
 			},
 			"suspicious": {
 				"noAssignInExpressions": "off",
+				
 			},
 			"style": {
 				"noArguments": "off"
+			},
+			"performance": {
+				"noDelete": "off"
 			}
 		}
 	}

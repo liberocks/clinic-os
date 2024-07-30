@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { AnamnesisQuestionType } from "../types/anamnesis";
-import { IdTimestampSchema } from "./generic";
+import { IdTimestampSchema, toNumber } from "./generic";
 
 // Enum for AnamnesisQuestionType
 const AnamnesisQuestionTypeEnum = z.enum([
@@ -24,28 +24,28 @@ const OptionSchema = z.object({
 const BaseAnamnesisQuestionSchema = z.object({
   question_text: z.string(),
   question_type: AnamnesisQuestionTypeEnum,
-  order: z.number().int(),
+  order: z.preprocess(toNumber, z.number().int()),
   options: z.array(OptionSchema).nullable(),
 });
 
 // Full AnamnesisQuestion Schema (with id and timestamps)
 export const AnamnesisQuestionSchema = BaseAnamnesisQuestionSchema.extend({
   ...IdTimestampSchema.shape,
-  section_id: z.string().uuid(),
+  section_id: z.string(),
 });
 
 // Base AnamnesisSection Schema (without id and timestamps)
 const BaseAnamnesisSectionSchema = z.object({
   title: z.string(),
   description: z.string(),
-  order: z.number().int(),
+  order: z.preprocess(toNumber, z.number().int()),
   questions: z.array(BaseAnamnesisQuestionSchema).optional(),
 });
 
 // Full AnamnesisSection Schema (with id and timestamps)
 export const AnamnesisSectionSchema = BaseAnamnesisSectionSchema.extend({
   ...IdTimestampSchema.shape,
-  form_id: z.string().uuid(),
+  form_id: z.string(),
 });
 
 // Base AnamnesisForm Schema (without id and timestamps)
@@ -63,7 +63,7 @@ export const AnamnesisFormSchema = BaseAnamnesisFormSchema.extend({
 // Base AnamnesisAssignmnet Schema (without id and timestamps)
 const BaseAnamnesisAssignmentSchema = z.object({
   user_id: z.string(),
-  form_id: z.string().uuid(),
+  form_id: z.string(),
   status: z.string(),
 });
 
@@ -81,15 +81,15 @@ export const CreateAnamnesisFormSchema = BaseAnamnesisFormSchema;
 export const UpdateAnamnesisQuestionSchema = AnamnesisQuestionSchema.omit({
   created_at: true,
   updated_at: true,
-}).extend({ id: z.string().uuid(), section_id: z.string().uuid() });
+}).extend({ id: z.string(), section_id: z.string() });
 
 export const UpdateAnamnesisSectionSchema = AnamnesisSectionSchema.omit({
   created_at: true,
   updated_at: true,
   questions: true,
 }).extend({
-  id: z.string().uuid(),
-  form_id: z.string().uuid(),
+  id: z.string(),
+  form_id: z.string(),
   questions: z.array(UpdateAnamnesisQuestionSchema).optional(),
 });
 
@@ -104,15 +104,15 @@ export const UpdateAnamnesisFormSchema = AnamnesisFormSchema.omit({
 
 // Schema for AnamnesisResponse
 const ResponseItemSchema = z.object({
-  question_id: z.string().uuid(),
+  question_id: z.string(),
   answer: z.union([z.string(), z.array(z.string())]),
 });
 
 export const AnamnesisResponseSchema = z.object({
   ...IdTimestampSchema.shape,
-  customer_id: z.string().uuid(),
-  order_id: z.string().uuid(),
-  form_id: z.string().uuid(),
+  customer_id: z.string(),
+  order_id: z.string(),
+  form_id: z.string(),
   responses: z.array(ResponseItemSchema),
 });
 

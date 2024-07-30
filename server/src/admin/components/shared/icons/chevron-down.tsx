@@ -1,7 +1,7 @@
 import type React from "react";
 import type IconProps from "../../../types/shared/icon-type";
 
-const TimeIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ...attributes }) => {
+const ChevronDownIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ...attributes }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,12 +13,11 @@ const TimeIcon: React.FC<IconProps> = ({ size = "24", color = "currentColor", ..
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-clock"
+      className="lucide lucide-chevron-down"
       {...attributes}
     >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
+      <path d="m6 9 6 6 6-6" />
     </svg>
   );
 };
-export default TimeIcon;
+export default ChevronDownIcon;
