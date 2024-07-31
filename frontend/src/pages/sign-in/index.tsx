@@ -58,6 +58,7 @@ export const SignInPage = () => {
       })
       .catch((err) => {
         setErrorMessage("Wrong email or password.");
+        console.error(err);
       })
       .finally(() => {
         setIsLoading(false);
