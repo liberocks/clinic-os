@@ -86,6 +86,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
               value={title}
               onChange={handleChangeTitle}
             />
+
             <input
               className="break-words bg-transparent outline-none resize-none inter-base-regular text-grey-50 text-wrap"
               placeholder="Type anamnesis description here"

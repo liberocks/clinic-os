@@ -545,12 +545,9 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     );
   };
 
-  const handleMoveQuestion = (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => {
-    // check if questionId is actually a container
-    const isContainer = dndContext.containers.includes(questionId);
-
+  const handleMoveQuestion = (destinationContainerId: UniqueIdentifier, itemId: UniqueIdentifier) => {
     const originSectionId = sections.find((section) =>
-      section.questions.find((question) => question?.id === questionId),
+      section.questions.find((question) => question?.id === itemId),
     )?.id;
 
     if (originSectionId !== destinationContainerId) {
@@ -558,7 +555,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
         if (section.id === originSectionId) {
           return {
             ...section,
-            questions: section.questions.filter((question) => question?.id !== questionId).filter(Boolean),
+            questions: section.questions.filter((question) => question?.id !== itemId).filter(Boolean),
           };
         }
 
@@ -569,7 +566,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
               ...section.questions,
               sections
                 .find((section) => section.id === originSectionId)
-                ?.questions.find((question) => question?.id === questionId),
+                ?.questions.find((question) => question?.id === itemId),
             ].filter(Boolean),
           };
         }
@@ -579,6 +576,24 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
 
       setSections(newSections);
     }
+
+    // Resynchronise dndContext items and sections. The ground truth is the dnd context items
+    const allQuestions = sections.reduce((acc, section) => {
+      acc.push(...section.questions);
+
+      return acc;
+    }, []);
+
+    const synchronisedSections = dndContext.containers.map((containerId) => {
+      return {
+        ...sections.find((section) => section.id === containerId),
+        questions: dndContext.items[containerId].map((questionId) => {
+          return allQuestions.find((question) => question?.id === questionId);
+        }),
+      };
+    });
+
+    setSections(synchronisedSections);
   };
 
   const handleViewSubmission = (_: string, payload: {}) => {
@@ -629,6 +644,11 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
 
       if (!section.description) {
         // Check if section description is not empty
+        return setIsValid(false);
+      }
+
+      if (!section.questions.length) {
+        // Check if section has at least one question
         return setIsValid(false);
       }
 
