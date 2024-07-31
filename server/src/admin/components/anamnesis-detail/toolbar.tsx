@@ -76,7 +76,7 @@ export const Toolbar: React.FC<ToolbarProps> = (props) => {
   ];
 
   return (
-    <div className="flex flex-col items-center px-4 py-2 mx-auto space-x-4 bg-white h-fit w-fit">
+    <div className="flex flex-col items-center px-4 py-2 mx-auto space-x-4 h-fit w-fit">
       <div className="flex flex-row space-x-2">
         {tools.map((tool) => (
           <ToolButton

@@ -116,7 +116,7 @@ export const FormPage = () => {
                               {/* DATE TIME */}
                               <ShowIf condition={question?.question_type === AnamnesisQuestionType.DATE_TIME}>
                                 <p className="mb-4 -mt-4 text-sm font-light text-gray-400">
-                                  Choose the date and the time
+                                  Choose the date and the time (24 hour format)
                                 </p>
                                 <input
                                   type="datetime-local"
@@ -128,7 +128,9 @@ export const FormPage = () => {
 
                               {/* TIME */}
                               <ShowIf condition={question?.question_type === AnamnesisQuestionType.TIME}>
-                                <p className="mb-4 -mt-4 text-sm font-light text-gray-400">Choose the time</p>
+                                <p className="mb-4 -mt-4 text-sm font-light text-gray-400">
+                                  Choose the time (24 hour format)
+                                </p>
                                 <input
                                   type="time"
                                   className="w-full p-5 bg-transparent border rounded-md inter-large-regular text-grey-500 border-emerald-700 outline-1 outline-emerald-700"

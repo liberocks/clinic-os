@@ -93,6 +93,9 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
 
         const res = await client.admin.custom.get(`/anamnesis/${id}`);
 
+        // Reorder sections and its questions based on the order
+        const incomingSections = res.sections.sort((a, b) => a.order - b.order);
+
         // Populate form details
         setTitle(res.title);
         setDescription(res.description);
@@ -100,7 +103,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
 
         // Populate dndContext
         dndContext.setItems(
-          res.sections.reduce(
+          incomingSections.reduce(
             (acc, section) => {
               acc[section.id] = (section.questions || []).map((question) => question.id);
               return acc;
@@ -543,8 +546,11 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   };
 
   const handleMoveQuestion = (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => {
+    // check if questionId is actually a container
+    const isContainer = dndContext.containers.includes(questionId);
+
     const originSectionId = sections.find((section) =>
-      section.questions.find((question) => question.id === questionId),
+      section.questions.find((question) => question?.id === questionId),
     )?.id;
 
     if (originSectionId !== destinationContainerId) {
@@ -552,7 +558,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
         if (section.id === originSectionId) {
           return {
             ...section,
-            questions: section.questions.filter((question) => question.id !== questionId),
+            questions: section.questions.filter((question) => question?.id !== questionId).filter(Boolean),
           };
         }
 
@@ -563,8 +569,8 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
               ...section.questions,
               sections
                 .find((section) => section.id === originSectionId)
-                ?.questions.find((question) => question.id === questionId),
-            ],
+                ?.questions.find((question) => question?.id === questionId),
+            ].filter(Boolean),
           };
         }
 
@@ -627,13 +633,13 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       }
 
       for (const question of section.questions) {
-        if (!question.question_text) {
+        if (!question?.question_text) {
           // Check if question text is not empty
           return setIsValid(false);
         }
 
-        if (question.question_type === "multiple_choice" || question.question_type === "select") {
-          for (const option of question.options) {
+        if (question?.question_type === "multiple_choice" || question?.question_type === "select") {
+          for (const option of question?.options || []) {
             if (!option.label) {
               // Check if option label is not empty
               return setIsValid(false);

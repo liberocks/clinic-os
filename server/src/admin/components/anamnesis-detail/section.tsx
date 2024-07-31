@@ -1,10 +1,16 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
+import { type AnimateLayoutChanges, defaultAnimateLayoutChanges, useSortable } from "@dnd-kit/sortable";
 import type React from "react";
 
 import { useAnamnesisContext } from "../../context/anamnesis-detail/anamnesis-context";
 import type { AnamnesisQuestionType } from "../../types/shared/anamnesis";
+import cx from "../../utils/cx";
+import HorizontalGrip from "../shared/icons/horizontal-grip";
 import TrashIcon from "../shared/icons/trash";
 import Toolbar from "./toolbar";
+
+const animateLayoutChanges: AnimateLayoutChanges = (args) =>
+  defaultAnimateLayoutChanges({ ...args, wasDragging: true });
 
 export type SectionProps = {
   children: React.ReactNode;
@@ -12,22 +18,49 @@ export type SectionProps = {
   id: UniqueIdentifier;
   items: UniqueIdentifier[];
   style?: React.CSSProperties;
+  handleProps?: React.HTMLAttributes<{}>;
   handleAddQuestion: (type: AnamnesisQuestionType) => void;
+  onClick?: () => void;
 };
 
 export const Section: React.FC<SectionProps> = (props) => {
-  const { id, children, handleAddQuestion } = props;
+  const { id, children, handleAddQuestion, onClick, items, handleProps } = props;
 
   const { sections, handleChangeSectionTitle, handleChangeSectionDescription, handleDeleteSection } =
     useAnamnesisContext();
+
+  const { active, attributes, isDragging, listeners, over, setNodeRef, transition, transform } = useSortable({
+    id,
+    data: {
+      type: "container",
+      children: items,
+    },
+    animateLayoutChanges,
+  });
+  const isOverContainer = over
+    ? (id === over.id && active?.data.current?.type !== "container") || items.includes(over.id)
+    : false;
 
   const section = sections.find((section) => section.id === id);
 
   if (!section) return null;
 
   return (
-    <div className="relative w-full px-6 py-6 bg-white border rounded-md min-h-4">
-      <div className="flex flex-row items-start justify-between w-full">
+    <div
+      className={cx("relative w-full border rounded-md min-h-4", isDragging ? "bg-gray-50" : "bg-white")}
+      onClick={onClick}
+      ref={setNodeRef}
+    >
+      <button
+        className={cx(
+          "flex flex-row justify-center w-full py-0.5 bg-gray-100",
+          isDragging ? "cursor-grabbing" : "cursor-grab",
+        )}
+        {...{ ...handleProps, ...listeners }}
+      >
+        <HorizontalGrip size={16} />
+      </button>
+      <div className="flex flex-row items-start justify-between w-full px-6 py-6">
         <div className="flex flex-col w-full mb-4 gap-y-2xsmall">
           <input
             className="bg-transparent outline-none inter-large-semibold"
@@ -54,8 +87,8 @@ export const Section: React.FC<SectionProps> = (props) => {
         </button>
       </div>
 
-      <div className="space-y-4">{children}</div>
-      <div className="mt-5">
+      <div className="px-6 py-2 pb-4 space-y-4">{children}</div>
+      <div className="my-5">
         <Toolbar onAddQuestion={handleAddQuestion} />
       </div>
     </div>

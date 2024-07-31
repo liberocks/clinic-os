@@ -1,11 +1,7 @@
+import type { CollisionDetection, DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from "@dnd-kit/core";
 import {
-  type CollisionDetection,
-  type DragEndEvent,
-  type DragOverEvent,
-  type DragStartEvent,
   MouseSensor,
   TouchSensor,
-  type UniqueIdentifier,
   closestCenter,
   getFirstCollision,
   pointerWithin,
@@ -17,30 +13,13 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
-import { Item } from "../../components/anamnesis-detail/item";
+import { EmptyState } from "../../components/anamnesis-detail/empty-state";
+import { renderQuestion } from "../../components/anamnesis-detail/item";
+import { Question } from "../../components/anamnesis-detail/question";
+import { Section } from "../../components/anamnesis-detail/section";
 import { type Items, PLACEHOLDER_ID } from "../../types/anamnesis-detail/type";
-
-interface DndContextValue {
-  activeId: UniqueIdentifier | null;
-  collisionDetectionStrategy: CollisionDetection;
-  containers: UniqueIdentifier[];
-  getIndex: (id: UniqueIdentifier) => number;
-  isSortingContainer: boolean;
-  items: Items;
-  onDragCancel: () => void;
-  onDragEnd: (callback?: (...vars) => void) => (event: DragEndEvent) => void;
-  onDragOver: (event: DragOverEvent) => void;
-  onDragStart: (event: DragStartEvent) => void;
-  renderContainerDragOverlay: (containerId: UniqueIdentifier) => JSX.Element;
-  renderSortableItemDragOverlay: (id: UniqueIdentifier) => JSX.Element;
-  sensors: ReturnType<typeof useSensors>;
-  setContainers: React.Dispatch<React.SetStateAction<UniqueIdentifier[]>>;
-  setItems: React.Dispatch<React.SetStateAction<Items>>;
-}
-
-interface DndWrapperProps {
-  children: React.ReactNode;
-}
+import type { AnamnesisSectionData } from "../../types/shared/anamnesis";
+import type { DndContextValue, DndWrapperProps } from "./dnd-context.type";
 
 const DndContext = createContext<DndContextValue>(null as unknown as DndContextValue);
 
@@ -152,17 +131,32 @@ export function DndProvider({ children }: DndWrapperProps) {
     return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
   };
 
-  const renderSortableItemDragOverlay = (id: UniqueIdentifier) => {
-    return <Item value={id} handle={false} dragOverlay />;
+  const renderSortableItemDragOverlay = (id: UniqueIdentifier, sections: AnamnesisSectionData[]) => {
+    const containerId = findContainer(id);
+
+    const index = items[containerId].findIndex((itemId) => itemId === id);
+    const item = items[containerId][index];
+    const section = sections.find((section) => section.id === containerId);
+    const question = section?.questions.find((question) => question.id === item);
+
+    return renderQuestion({
+      index: index,
+      containerId: containerId,
+      type: "question",
+      question,
+    });
   };
 
   const renderContainerDragOverlay = (containerId: UniqueIdentifier) => {
     return (
-      <div>
-        {items[containerId].map((item, index) => (
-          <Item key={item} value={item} handle={false} />
-        ))}
-      </div>
+      <Section key={containerId} id={containerId} items={items[containerId]} handleAddQuestion={() => {}}>
+        <>
+          {items[containerId].map((value, index) => {
+            return <Question key={value} id={value} index={index} containerId={containerId} />;
+          })}
+          {items[containerId].length === 0 && <EmptyState key={0} id={0} index={0} containerId={containerId} />}
+        </>
+      </Section>
     );
   };
 
@@ -256,7 +250,7 @@ export function DndProvider({ children }: DndWrapperProps) {
         return;
       }
 
-      callback(activeContainer, active.id);
+      if (activeContainer !== activeId) callback(activeContainer, active.id);
 
       if (overId === PLACEHOLDER_ID) {
         const newContainerId = getNextContainerId();
@@ -285,6 +279,8 @@ export function DndProvider({ children }: DndWrapperProps) {
             ...items,
             [overContainer]: arrayMove(items[overContainer], activeIndex, overIndex),
           }));
+        } else {
+          callback(activeContainer, overContainer);
         }
       }
 

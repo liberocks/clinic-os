@@ -17,6 +17,7 @@ import Spin from "../../../components/shared/spin";
 import Table from "../../../components/shared/table/table";
 import { AnamnesisProvider, useAnamnesisContext } from "../../../context/anamnesis-detail/anamnesis-context";
 import { DndProvider, useDndContext } from "../../../context/anamnesis-detail/dnd-context";
+import { PLACEHOLDER_ID } from "../../../types/anamnesis-detail/type";
 import { dropAnimation } from "../../../utils/anamnesis-detail/drop-animation";
 import cx from "../../../utils/cx";
 
@@ -49,6 +50,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
     columns,
     handleViewSubmission,
     shareModalOpened,
+    sections,
   } = useAnamnesisContext();
   const {
     activeId,
@@ -155,30 +157,32 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
             onDragCancel={onDragCancel}
           >
             <div className="w-full space-y-8">
-              {containers.map((containerId) => (
-                <Section
-                  key={containerId}
-                  id={containerId}
-                  items={items[containerId]}
-                  handleAddQuestion={handleAddQuestion(containerId)}
-                >
-                  <SortableContext items={items[containerId]} strategy={verticalListSortingStrategy}>
-                    {items[containerId].map((value, index) => {
-                      return <Question key={value} id={value} index={index} containerId={containerId} />;
-                    })}
-                    {items[containerId].length === 0 && (
-                      <EmptyState key={0} id={0} index={0} containerId={containerId} />
-                    )}
-                  </SortableContext>
-                </Section>
-              ))}
+              <SortableContext items={[...containers, PLACEHOLDER_ID]} strategy={verticalListSortingStrategy}>
+                {containers.map((containerId) => (
+                  <Section
+                    key={containerId}
+                    id={containerId}
+                    items={items[containerId]}
+                    handleAddQuestion={handleAddQuestion(containerId)}
+                  >
+                    <SortableContext items={items[containerId]} strategy={verticalListSortingStrategy}>
+                      {items[containerId].map((value, index) => {
+                        return <Question key={value} id={value} index={index} containerId={containerId} />;
+                      })}
+                      {items[containerId].length === 0 && (
+                        <EmptyState key={0} id={0} index={0} containerId={containerId} />
+                      )}
+                    </SortableContext>
+                  </Section>
+                ))}
+              </SortableContext>
             </div>
             {createPortal(
               <DragOverlay adjustScale={false} dropAnimation={dropAnimation}>
                 {activeId
                   ? containers.includes(activeId)
                     ? renderContainerDragOverlay(activeId)
-                    : renderSortableItemDragOverlay(activeId)
+                    : renderSortableItemDragOverlay(activeId, sections)
                   : null}
               </DragOverlay>,
               document.body,
