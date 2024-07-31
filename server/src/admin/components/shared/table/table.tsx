@@ -84,7 +84,7 @@ const Table: FC<TableProps> = ({
           <div className="grid">
             <ChevronDownIcon
               size={16}
-              className="relative z-10 self-center w-4 h-4 col-start-1 row-start-1 pointer-events-none right-1 justify-self-end forced-colors:hidden"
+              className="relative self-center w-4 h-4 col-start-1 row-start-1 pointer-events-none z-1 right-1 justify-self-end forced-colors:hidden"
             />
             <select
               className="w-52 col-start-1 row-start-1 px-4 py-1.5 border rounded-lg appearance-none forced-colors:appearance-auto dark:bg-slate-800 hover:border-cyan-500 dark:hover:border-cyan-700 hover:bg-white dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200"
@@ -217,8 +217,8 @@ const Table: FC<TableProps> = ({
       <div className="flex flex-row items-center justify-between w-full mt-2">
         <ShowIf condition={!loading && data.length > 0}>
           <div>
-            Showing {1 + (page - 1) * limit}-{page * limit > totalItems ? totalItems : page * limit} of{" "}
-            {page * limit > totalItems ? totalItems : page * limit} items
+            Showing {1 + (page - 1) * limit}-{page * limit > totalItems ? totalItems : page * limit} of {totalItems}{" "}
+            items
           </div>
         </ShowIf>
         <ShowIf condition={data.length === 0 && !loading}>
@@ -233,7 +233,7 @@ const Table: FC<TableProps> = ({
           <div className="grid">
             <ChevronDownIcon
               size={16}
-              className="relative z-10 self-center w-4 h-4 col-start-1 row-start-1 pointer-events-none right-1 justify-self-end forced-colors:hidden"
+              className="relative self-center w-4 h-4 col-start-1 row-start-1 pointer-events-none z-1 right-1 justify-self-end forced-colors:hidden"
             />
             <select
               className="w-20 col-start-1 row-start-1 px-4 py-1.5 border rounded-lg appearance-none forced-colors:appearance-auto dark:bg-slate-800 hover:border-cyan-500 dark:hover:border-cyan-700 hover:bg-white dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200"
