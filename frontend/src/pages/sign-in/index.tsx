@@ -18,10 +18,6 @@ export const SignInPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle sign-in logic here
-    console.log("Sign in attempt with:", email, password);
-    console.log("VITE_APP_MEDUSA_BACKEND_URL", import.meta.env.VITE_APP_MEDUSA_BACKEND_URL);
-    console.log("VITE_APP_BASE_URL", import.meta.env.VITE_APP_BASE_URL);
 
     setIsLoading(true);
     setErrorMessage("");
@@ -56,9 +52,9 @@ export const SignInPage = () => {
 
         navigate("/");
       })
-      .catch((err) => {
+      .catch((error) => {
         setErrorMessage("Wrong email or password.");
-        console.error(err);
+        console.error(error);
       })
       .finally(() => {
         setIsLoading(false);

@@ -595,7 +595,10 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       setShareModalOpened(false);
       setPatientEmail("");
     } catch (error) {
-      notify.error("Error", "No such email found");
+      notify.error(
+        "Error",
+        "Can't share a form due to emails not being found or there being an existing assignment already.",
+      );
     } finally {
       setIsLoading(false);
     }

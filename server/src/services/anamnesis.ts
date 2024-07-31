@@ -341,7 +341,7 @@ export class AnamnesisService extends TransactionBaseService {
   }
 
   async createFormAssignment(formId: string, emails: string[]): Promise<string[] | null> {
-    await this.atomicPhase_(async (transactionManager: EntityManager) => {
+    const result = await this.atomicPhase_(async (transactionManager: EntityManager) => {
       const anamnesisAssignmentRepository = transactionManager.withRepository(this.anamnesisAssignmentRepository_);
       const customerRepository = transactionManager.withRepository(this.customerRepository_);
 
@@ -351,6 +351,12 @@ export class AnamnesisService extends TransactionBaseService {
       ]);
 
       if (!form || customers.length !== emails.length) return null;
+
+      const existingAssignments = await anamnesisAssignmentRepository.findOne({
+        where: { form_id: formId, user_id: In(customers.map((customer) => customer.id)) },
+      });
+
+      if (existingAssignments) return null;
 
       const promises: Promise<unknown>[] = [];
       for (const customer of customers) {
@@ -364,8 +370,10 @@ export class AnamnesisService extends TransactionBaseService {
         );
       }
 
-      await Promise.all(promises);
+      return await Promise.all(promises);
     });
+
+    if (!result) return null;
 
     return emails;
   }

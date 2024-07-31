@@ -27,8 +27,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       return res.status(400).json({ errors: error.errors });
     }
 
-    console.log(error);
-
     // Handle other errors
     return res.status(500).json({ error: "Internal server error" });
   }

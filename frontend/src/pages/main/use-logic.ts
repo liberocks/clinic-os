@@ -61,8 +61,8 @@ export const useLogic = () => {
 
       setData(data.data);
       setParams(newParams);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }

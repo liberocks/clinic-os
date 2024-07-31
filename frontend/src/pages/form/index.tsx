@@ -8,6 +8,7 @@ import { useLogic } from "./use-logic";
 
 export const FormPage = () => {
   const {
+    initializing,
     loading,
     data,
     currentPage,
@@ -28,13 +29,13 @@ export const FormPage = () => {
     <ProtectedPage>
       <div className="min-h-screen bg-gray-100">
         <div className="max-w-4xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
-          <ShowIf condition={loading}>
+          <ShowIf condition={initializing}>
             <div className="min-h-[80vh] flex flex-col items-center my-6 space-y-2 rounded-md    w-full justify-center">
               <Spin className="text-emerald-600" />
             </div>
           </ShowIf>
 
-          <ShowIf condition={!loading}>
+          <ShowIf condition={!initializing}>
             <div className="flex flex-row justify-between">
               <div className="flex flex-col gap-y-2xsmall">
                 <h2 className="text-lg font-semibold">{data?.title}</h2>
@@ -194,7 +195,7 @@ export const FormPage = () => {
 
               <div className="flex flex-row items-center justify-between w-full px-1 mt-5">
                 <div className="w-fit">
-                  <Button variant="danger" onClick={handleCancel}>
+                  <Button variant="danger" onClick={handleCancel} disabled={loading}>
                     Abort
                   </Button>
                 </div>
@@ -202,7 +203,7 @@ export const FormPage = () => {
                 <div className="flex flex-row space-x-2">
                   <ShowIf condition={currentPage !== 1}>
                     <div className="w-fit">
-                      <Button variant="secondary" onClick={handleGoBack}>
+                      <Button variant="secondary" onClick={handleGoBack} disabled={loading}>
                         Go back
                       </Button>
                     </div>
@@ -210,13 +211,17 @@ export const FormPage = () => {
 
                   <ShowIf condition={currentPage !== totalPages && currentPage < totalPages}>
                     <div className="w-fit">
-                      <Button onClick={handleContinue}>Continue</Button>
+                      <Button onClick={handleContinue} disabled={loading}>
+                        Continue
+                      </Button>
                     </div>
                   </ShowIf>
 
                   <ShowIf condition={currentPage === totalPages}>
                     <div className="w-fit">
-                      <Button type="submit">Submit</Button>
+                      <Button type="submit" loading={loading}>
+                        Submit
+                      </Button>
                     </div>
                   </ShowIf>
                 </div>

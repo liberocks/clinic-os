@@ -324,8 +324,8 @@ const WrappedTable: FC<WrappedTableProps> = (props) => {
       setTotalItems(data.totalItems);
       setTotalPages(data.totalPages);
       setParams(newParams);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }

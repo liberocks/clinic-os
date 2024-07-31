@@ -15,7 +15,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const submissionIds = await anamnesisService.createFormAssignment(formId, validatedBody.emails);
 
     if (!submissionIds) {
-      return res.status(404).json({ error: "Anamnesis form or emails not found" });
+      return res.status(401).json({
+        error: "Can't share a form due to emails not being found or there being an existing assignment already.",
+      });
     }
 
     return res.status(201).json({ submissionIds });
@@ -24,8 +26,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       // Handle validation errors
       return res.status(400).json({ errors: error.errors });
     }
-
-    console.log(error);
 
     // Handle other errors
     return res.status(500).json({ error: "Internal server error" });

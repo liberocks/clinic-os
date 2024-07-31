@@ -31,8 +31,8 @@ export async function getCustomer() {
   return medusaClient.customers
     .retrieve()
     .then(({ customer }) => customer)
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       return null;
     });
 }

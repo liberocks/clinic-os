@@ -14,6 +14,7 @@ import { medusaClient } from "../../utils/medusa";
 export const useLogic = () => {
   const [data, setData] = useState<AnamnesisForm | null>(null);
 
+  const [initializing, setInitializing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -27,7 +28,7 @@ export const useLogic = () => {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
+      setInitializing(true);
 
       const data = await medusaClient.client.request("GET", `/store/assignment/${id}`, undefined, undefined, {
         Authorization: `Bearer ${Cookies.get("_medusa_jwt")}`,
@@ -38,11 +39,11 @@ export const useLogic = () => {
       if (data?.sections) {
         setTotalPages(data.sections.length);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       navigate("/404");
     } finally {
-      setLoading(false);
+      setInitializing(false);
     }
   };
 
@@ -81,6 +82,8 @@ export const useLogic = () => {
     try {
       e.preventDefault();
 
+      setLoading(true);
+
       const formData = new FormData(formRef.current!);
       const formValues = Object.fromEntries(formData);
 
@@ -101,8 +104,10 @@ export const useLogic = () => {
       });
 
       navigate("/success");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,7 +127,7 @@ export const useLogic = () => {
     data,
     reorderSections,
     reorderQuestions,
-    loading,
+    initializing,
     currentPage,
     totalPages,
     handleContinue,
@@ -131,6 +136,7 @@ export const useLogic = () => {
     email,
     firstName,
     lastName,
+    loading,
     handleCancel,
     formRef,
   };
