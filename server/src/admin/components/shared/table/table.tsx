@@ -103,7 +103,7 @@ const Table: FC<TableProps> = ({
 
       <ShowIf condition={data.length === 0}>
         <div className="flex flex-col items-center my-4 space-y-2 rounded-md border  w-full min-h-[150px] justify-center">
-          <GhostIcon size={28} />
+          <GhostIcon size={28} className="text-emerald-700" />
           <p className="w-full text-center inter-large-regular text-grey-50">No data</p>
         </div>
       </ShowIf>

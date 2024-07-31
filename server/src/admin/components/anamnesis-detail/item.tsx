@@ -310,7 +310,7 @@ export const renderQuestion: React.FC<RenderQuestionProps> = ({
         </ShowIf>
         <ShowIf condition={type === "empty-state"}>
           <div className="flex flex-col items-center mb-4 space-y-2   w-full min-h-[150px] justify-center">
-            <GhostIcon size={28} />
+            <GhostIcon size={28} className="text-emerald-700" />
             <p className="w-full text-center inter-large-regular text-grey-50">No question yet</p>
           </div>
         </ShowIf>
