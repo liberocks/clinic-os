@@ -5,6 +5,7 @@ import type {
   AnamnesisQuestionSchema,
   AnamnesisResponseSchema,
   AnamnesisSectionSchema,
+  CreateAnamnesisAssignmentSchema,
   CreateAnamnesisFormSchema,
   CreateAnamnesisQuestionSchema,
   CreateAnamnesisResponseSchema,
@@ -38,3 +39,6 @@ export type AnamnesisFormResultDto = UpdateAnamnesisFormDto & { id?: string };
 
 // Dto for anamnesis response results
 export type AnamnesisResponseResultDto = AnamnesisResponseDto;
+
+// Dto for anamnesis assignment
+export type AnamnesisAssignmentDto = z.infer<typeof CreateAnamnesisAssignmentSchema>;

@@ -16,7 +16,7 @@ import Spin from "../spin";
 
 interface TableProps {
   columns: readonly Column<{}>[];
-  data: readonly {}[];
+  data: readonly ({} & { id: string })[];
   handleNext: () => void;
   handlePrevious: () => void;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,9 +29,10 @@ interface TableProps {
   orderBy: string;
   search: string;
   loading?: boolean;
-  onView?: (id: string) => void;
+  onView?: (id: string, payload: {}) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
+  hideSearch?: boolean;
 }
 
 const Table: FC<TableProps> = ({
@@ -52,6 +53,7 @@ const Table: FC<TableProps> = ({
   onEdit,
   onView,
   loading,
+  hideSearch,
 }) => {
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
@@ -66,13 +68,16 @@ const Table: FC<TableProps> = ({
   return (
     <div className="w-full">
       <div className="flex flex-row justify-between">
-        <input
-          type="text"
-          placeholder="Search by title"
-          className="flex-grow p-2 border border-gray-300 rounded-md max-w-72"
-          onChange={handleSearch}
-          value={search}
-        />
+        <ShowIf condition={!hideSearch}>
+          <input
+            type="text"
+            placeholder="Search by title"
+            className="flex-grow p-2 border border-gray-300 rounded-md max-w-72"
+            onChange={handleSearch}
+            value={search}
+          />
+        </ShowIf>
+        <ShowIf condition={hideSearch}>&nbsp;</ShowIf>
 
         <div className="flex flex-row items-center justify-between space-x-4">
           <span> Sort by: </span>
@@ -146,12 +151,17 @@ const Table: FC<TableProps> = ({
                         return (
                           <ShowIf condition={!!onView || !!onEdit || !!onDelete}>
                             <td {...cellProps} className={cx(cellClassName, "border px-4 py-2 text-gray-800")}>
-                              <div className="flex flex-row items-center justify-between space-x-2">
+                              <div className="flex flex-row items-center justify-center space-x-2">
                                 <ShowIf condition={!!onView}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800 disabled:bg-gray-500"
-                                    onClick={() => onView?.(rowId)}
+                                    className="px-2 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800 disabled:bg-gray-500"
+                                    onClick={() =>
+                                      onView?.(
+                                        rowId,
+                                        data.find((d) => d.id === rowId),
+                                      )
+                                    }
                                     disabled={loading}
                                   >
                                     <EyeIcon size={16} />
@@ -160,7 +170,7 @@ const Table: FC<TableProps> = ({
                                 <ShowIf condition={!!onEdit}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-orange-600 rounded-md hover:bg-orange-700 active:bg-orange-800 disabled:bg-gray-500"
+                                    className="px-2 py-2 text-sm text-white bg-orange-600 rounded-md hover:bg-orange-700 active:bg-orange-800 disabled:bg-gray-500"
                                     onClick={() => onEdit?.(rowId)}
                                     disabled={loading}
                                   >
@@ -170,11 +180,11 @@ const Table: FC<TableProps> = ({
                                 <ShowIf condition={!!onDelete}>
                                   <button
                                     type="button"
-                                    className="px-2 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500"
+                                    className="px-2 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500"
                                     onClick={() => onDelete?.(rowId)}
                                     disabled={loading}
                                   >
-                                    <TrashIcon size={16} />{" "}
+                                    <TrashIcon size={16} />
                                   </button>
                                 </ShowIf>
                               </div>
@@ -253,8 +263,8 @@ const Table: FC<TableProps> = ({
 interface WrappedTableProps {
   endpoint: string;
   columns: readonly Column<{}>[];
-
-  onView?: (id: string) => void;
+  hideSearch?: boolean;
+  onView?: (id: string, payload: {}) => void;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => Promise<void>;
 }
@@ -267,7 +277,7 @@ interface Parameters {
 }
 
 const WrappedTable: FC<WrappedTableProps> = (props) => {
-  const { endpoint, columns, onDelete, onEdit, onView } = props;
+  const { endpoint, columns, onDelete, onEdit, onView, hideSearch } = props;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -341,6 +351,7 @@ const WrappedTable: FC<WrappedTableProps> = (props) => {
 
   return (
     <Table
+      hideSearch={hideSearch}
       columns={columns}
       data={data}
       limit={params.limit}
@@ -354,10 +365,14 @@ const WrappedTable: FC<WrappedTableProps> = (props) => {
       handlePrevious={handlePrevious}
       handleSearch={handleSearch}
       handleSelectSortBy={handleSelectSortBy}
-      onDelete={(id: string) => {
-        setLoading(true);
-        onDelete(id).then(() => fetchData(params));
-      }}
+      onDelete={
+        onDelete
+          ? (id: string) => {
+              setLoading(true);
+              onDelete(id).then(() => fetchData(params));
+            }
+          : null
+      }
       loading={loading}
       onEdit={onEdit}
       onView={onView}

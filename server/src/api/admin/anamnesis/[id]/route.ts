@@ -17,7 +17,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       return res.status(404).json({ error: "Anamnesis form not found" });
     }
 
-    return res.status(200).json({ ...anamnesisForm });
+    return res.status(200).json(anamnesisForm);
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Handle validation errors

@@ -7,11 +7,14 @@ import { EmptyState } from "../../../components/anamnesis-detail/empty-state";
 import NewSection from "../../../components/anamnesis-detail/new-section";
 import { Question } from "../../../components/anamnesis-detail/question";
 import { Section } from "../../../components/anamnesis-detail/section";
+import { ShareModal } from "../../../components/anamnesis-detail/share-modal";
+import { SubmissionModal } from "../../../components/anamnesis-detail/submission-modal";
 import { Async } from "../../../components/shared/async";
 import Button from "../../../components/shared/button";
 import ShareIcon from "../../../components/shared/icons/share";
 import { ShowIf } from "../../../components/shared/show-if";
 import Spin from "../../../components/shared/spin";
+import Table from "../../../components/shared/table/table";
 import { AnamnesisProvider, useAnamnesisContext } from "../../../context/anamnesis-detail/anamnesis-context";
 import { DndProvider, useDndContext } from "../../../context/anamnesis-detail/dnd-context";
 import { dropAnimation } from "../../../utils/anamnesis-detail/drop-animation";
@@ -21,20 +24,31 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
   const { notify } = props;
   const {
     id,
+    patientEmail,
+    setShareModalOpened,
+    detailPayload,
+    setPatientEmail,
+    handleChangePatientEmail,
     isLoading,
     handleAddQuestion,
     handleAddNewSection,
     activeTab,
+    setDetailModalOpened,
     setActiveTab,
     title,
     description,
+    handleShareForm,
     handleChangeTitle,
+    detailModalOpened,
     handleChangeDescription,
     handleCreateForm,
     handleUpdateForm,
     handleMoveQuestion,
     isValid,
     init,
+    columns,
+    handleViewSubmission,
+    shareModalOpened,
   } = useAnamnesisContext();
   const {
     activeId,
@@ -80,7 +94,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
           </div>
           <div className="flex flex-row flex-shrink space-x-4">
             <ShowIf condition={id !== "new"}>
-              <Button type="secondary">
+              <Button type="secondary" onClick={() => setShareModalOpened(true)}>
                 <span className="flex flex-row space-x-2">
                   <ShareIcon size={18} />
                   <span>Share</span>
@@ -175,9 +189,32 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
         </div>
 
         <div className={cx("w-full mt-4", activeTab === "submissions" ? "block" : "hidden")}>
-          Submissions table goes here
+          <div className="w-full px-4 py-4 mt-4 mb-5 overflow-x-hidden bg-white border rounded-md">
+            <Table endpoint={`/submission/${id}`} columns={columns} onView={handleViewSubmission} hideSearch />
+          </div>
         </div>
       </div>
+
+      <ShowIf condition={shareModalOpened}>
+        <ShareModal
+          patientEmail={patientEmail}
+          handleClose={() => {
+            setShareModalOpened(false);
+            setPatientEmail("");
+          }}
+          handleChangePatientEmail={handleChangePatientEmail}
+          handleSubmit={handleShareForm(notify)}
+          isLoading={isLoading}
+        />
+      </ShowIf>
+      <ShowIf condition={detailModalOpened}>
+        <SubmissionModal
+          handleClose={() => {
+            setDetailModalOpened(false);
+          }}
+          payload={detailPayload}
+        />
+      </ShowIf>
     </Async>
   );
 };

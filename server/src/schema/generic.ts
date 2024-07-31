@@ -46,6 +46,11 @@ export const GetEntitiesQuerySchema = z
   })
   .partial();
 
+// Schema for GetEntitiesQueryWithStatus
+export const GetEntitiesQueryWithStatusSchema = GetEntitiesQuerySchema.extend({
+  status: z.enum(["new", "done"]).optional(),
+}).partial();
+
 // Schema for PaginatedResult
 export const PaginatedResultSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
   z.object({

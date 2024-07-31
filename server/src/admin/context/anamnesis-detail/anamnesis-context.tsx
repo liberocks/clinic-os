@@ -4,7 +4,6 @@ import { useAdminCustomPost, useMedusa } from "medusa-react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { v7 as uuidv7 } from "uuid";
-
 import {
   ANAMNESIS_QUERY_KEY,
   type AnamnesisQuestionType,
@@ -15,66 +14,8 @@ import {
   type UpdateAnamnesisFormResponse,
   type UpdateAnamnesisSectionPayload,
 } from "../../types/shared/anamnesis";
+import type { AnamnesisContextValue, AnamnesisWrapperProps } from "./anamnesis-context.type";
 import { useDndContext } from "./dnd-context";
-
-interface AnamnesisContextValue {
-  id: string;
-  sections: AnamnesisSectionData[];
-  setSections: React.Dispatch<React.SetStateAction<AnamnesisSectionData[]>>;
-  handleAddNewSection: () => void;
-  handleAddQuestion: (sectionId: UniqueIdentifier) => (type: AnamnesisQuestionType) => void;
-  activeTab: "editor" | "submissions";
-  setActiveTab: React.Dispatch<React.SetStateAction<"editor" | "submissions">>;
-  handleAddMultipleChoiceOption: (sectionId: UniqueIdentifier, questionId: UniqueIdentifier) => () => void;
-  handleChangeMultipleChoiceOption: (
-    sectionId: UniqueIdentifier,
-    questionId: UniqueIdentifier,
-    index: number,
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteMultipleChoiceOption: (
-    sectionId: UniqueIdentifier,
-    questionId: UniqueIdentifier,
-    index: number,
-  ) => () => void;
-  handleAddSelectOption: (sectionId: UniqueIdentifier, questionId: UniqueIdentifier) => () => void;
-  handleChangeSelectOptionText: (
-    sectionId: UniqueIdentifier,
-    questionId: UniqueIdentifier,
-    index: number,
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteSelectOption: (sectionId: UniqueIdentifier, questionId: UniqueIdentifier, index: number) => () => void;
-  handleChangeQuestionText: (
-    sectionId: UniqueIdentifier,
-    questionId: UniqueIdentifier,
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteSection: (sectionId: UniqueIdentifier) => () => void;
-  handleDeleteQuestion: (sectionId: UniqueIdentifier, questionId: UniqueIdentifier) => () => void;
-  handleCreateForm: (notify: RouteProps["notify"]) => () => void;
-  handleUpdateForm: (notify: RouteProps["notify"]) => () => void;
-  handleShare: (notify: RouteProps["notify"]) => () => void;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isFetching: boolean;
-  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
-  shareModalOpened: boolean;
-  setShareModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  patientEmail: string;
-  setPatientEmail: React.Dispatch<React.SetStateAction<string>>;
-  title: string;
-  handleChangeTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  description: string;
-  handleChangeDescription: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleMoveQuestion: (destinationContainerId: UniqueIdentifier, questionId: UniqueIdentifier) => void;
-  isValid: boolean;
-  isInitialised: boolean;
-  init: () => Promise<void>;
-  handleChangeSectionTitle: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChangeSectionDescription: (sectionId: UniqueIdentifier) => (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-}
-
-interface AnamnesisWrapperProps {
-  children: React.ReactNode;
-}
 
 const AnamnesisContext = createContext<AnamnesisContextValue>(null as unknown as AnamnesisContextValue);
 
@@ -95,10 +36,42 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const [shareModalOpened, setShareModalOpened] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [isInitialised, setIsInitialised] = useState(false);
+  const [detailModalOpened, setDetailModalOpened] = useState(false);
+  const [detailPayload, setDetailPayload] = useState<{}>({});
 
   // Other hooks
   const dndContext = useDndContext();
   const navigate = useNavigate();
+
+  const columns = [
+    {
+      Header: "Anamnesis Response",
+      columns: [
+        {
+          Header: "id",
+          accessor: "id",
+        },
+        {
+          Header: "name",
+          accessor: (row: { customer: { first_name: string; last_name: string } }) => {
+            return `${row.customer.first_name}·${row.customer.last_name}`;
+          },
+        },
+        {
+          Header: "Email",
+          accessor: "customer.email",
+        },
+        {
+          Header: "Created at",
+          accessor: "created_at",
+        },
+        {
+          Header: "Action",
+          accessor: "actions",
+        },
+      ],
+    },
+  ];
 
   // QUERIES
   const { client } = useMedusa();
@@ -602,6 +575,32 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     }
   };
 
+  const handleViewSubmission = (_: string, payload: {}) => {
+    setDetailModalOpened(true);
+    setDetailPayload(payload);
+  };
+
+  const handleChangePatientEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPatientEmail(e.target.value);
+  };
+
+  const handleShareForm = (notify: RouteProps["notify"]) => async () => {
+    try {
+      setIsLoading(true);
+      await client.admin.custom.post("/assignment", { emails: [patientEmail], formId: id });
+      notify.success("Success", "Anamnesis form shared successfully");
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setShareModalOpened(false);
+      setPatientEmail("");
+    } catch (error) {
+      notify.error("Error", "No such email found");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!title) {
       // Check if title is not empty
@@ -652,6 +651,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
   const contextValue = useMemo(() => {
     return {
       activeTab,
+      columns,
       description,
       handleAddMultipleChoiceOption,
       handleAddNewSection,
@@ -659,6 +659,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       handleAddSelectOption,
       handleChangeDescription,
       handleChangeMultipleChoiceOption,
+      handleChangePatientEmail,
       handleChangeQuestionText,
       handleChangeSectionDescription,
       handleChangeSectionTitle,
@@ -672,6 +673,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       handleMoveQuestion,
       handleShare,
       handleUpdateForm,
+      handleViewSubmission,
       id,
       init,
       isFetching,
@@ -686,18 +688,25 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
       setPatientEmail,
       setSections,
       setShareModalOpened,
+      handleShareForm,
       shareModalOpened,
+      setDetailModalOpened,
+      detailModalOpened,
+      detailPayload,
       title,
     };
   }, [
     activeTab,
+    columns,
     description,
     handleAddMultipleChoiceOption,
+    detailModalOpened,
     handleAddNewSection,
     handleAddQuestion,
     handleAddSelectOption,
     handleChangeDescription,
     handleChangeMultipleChoiceOption,
+    handleChangePatientEmail,
     handleChangeQuestionText,
     handleChangeSectionDescription,
     handleChangeSectionTitle,
@@ -711,6 +720,9 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     handleMoveQuestion,
     handleShare,
     handleUpdateForm,
+    handleViewSubmission,
+    handleShareForm,
+    detailPayload,
     id,
     init,
     isFetching,
@@ -725,6 +737,7 @@ export function AnamnesisProvider({ children }: AnamnesisWrapperProps) {
     setPatientEmail,
     setSections,
     setShareModalOpened,
+    setDetailModalOpened,
     shareModalOpened,
     title,
   ]);

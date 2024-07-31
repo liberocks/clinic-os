@@ -71,6 +71,10 @@ const BaseAnamnesisAssignmentSchema = z.object({
 export const AnamnesisAssignmentSchema = BaseAnamnesisAssignmentSchema.extend({
   ...IdTimestampSchema.shape,
 });
+export const CreateAnamnesisAssignmentSchema = z.object({
+  formId: z.string(),
+  emails: z.array(z.string().email()),
+});
 
 // Schemas for creating new entities (without id and timestamps)
 export const CreateAnamnesisQuestionSchema = BaseAnamnesisQuestionSchema;
@@ -114,6 +118,13 @@ export const AnamnesisResponseSchema = z.object({
   order_id: z.string(),
   form_id: z.string(),
   responses: z.array(ResponseItemSchema),
+  customer: z
+    .object({
+      email: z.string(),
+      first_name: z.string(),
+      last_name: z.string(),
+    })
+    .optional(),
 });
 
 export const CreateAnamnesisResponseSchema = AnamnesisResponseSchema.omit({

@@ -1,7 +1,7 @@
 import { TransactionBaseService } from "@medusajs/medusa";
 import type CustomerRepository from "@medusajs/medusa/dist/repositories/customer";
 import { Lifetime } from "awilix";
-import { type EntityManager, type FindOptionsSelect, In } from "typeorm";
+import { type EntityManager, In } from "typeorm";
 import { v7 as uuidv7 } from "uuid";
 
 import type {
@@ -13,7 +13,6 @@ import type {
   UpdateAnamnesisFormDto,
 } from "../dto/anamnesis";
 import type { GetEntitiesQuery, PaginatedResult } from "../dto/generic";
-import type { AnamnesisFormModel } from "../models/anamnesis-form";
 import type AnamnesisAssignmentRepository from "../repositories/anamnesis-assignment";
 import type AnamnesisFormRepository from "../repositories/anamnesis-form";
 import type AnamnesisQuestionRepository from "../repositories/anamnesis-question";
@@ -39,7 +38,7 @@ export class AnamnesisService extends TransactionBaseService {
   protected anamnesisQuestionRepository_: typeof AnamnesisQuestionRepository;
   protected anamnesisResponseRepository_: typeof AnamnesisResponseRepository;
   protected anamnesisAssignmentRepository_: typeof AnamnesisAssignmentRepository;
-  protected customerRepository: typeof CustomerRepository;
+  protected customerRepository_: typeof CustomerRepository;
 
   constructor({
     anamnesisFormRepository,
@@ -47,6 +46,7 @@ export class AnamnesisService extends TransactionBaseService {
     anamnesisQuestionRepository,
     anamnesisResponseRepository,
     anamnesisAssignmentRepository,
+    customerRepository,
   }: InjectedDependencies) {
     super(arguments[0]);
 
@@ -55,6 +55,7 @@ export class AnamnesisService extends TransactionBaseService {
     this.anamnesisQuestionRepository_ = anamnesisQuestionRepository;
     this.anamnesisResponseRepository_ = anamnesisResponseRepository;
     this.anamnesisAssignmentRepository_ = anamnesisAssignmentRepository;
+    this.customerRepository_ = customerRepository;
   }
   async createForm(data: CreateAnamnesisFormDto): Promise<string> {
     return await this.atomicPhase_(async (transactionManager: EntityManager) => {
@@ -160,75 +161,13 @@ export class AnamnesisService extends TransactionBaseService {
     return id;
   }
 
-  async deleteForms(formIds: string[]): Promise<string[] | null> {
-    await this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const anamnesisFormRepository = transactionManager.withRepository(this.anamnesisFormRepository_);
-      const anamnesisSectionRepository = transactionManager.withRepository(this.anamnesisSectionRepository_);
-      const anamnesisQuestionRepository = transactionManager.withRepository(this.anamnesisQuestionRepository_);
-
-      const forms = await this.anamnesisFormRepository_.findBy({ id: In(formIds) });
-
-      if (!forms.length || forms.length !== formIds.length) return null;
-
-      const promises: Promise<unknown>[] = [];
-
-      // Delete questions
-      for (const form of forms) {
-        for (const section of form.sections) {
-          for (const question of section.questions) {
-            promises.push(anamnesisQuestionRepository.delete(question.id));
-          }
-        }
-      }
-
-      // Delete sections
-      for (const form of forms) {
-        for (const section of form.sections) {
-          promises.push(anamnesisSectionRepository.delete(section.id));
-        }
-      }
-
-      // Delete forms
-      for (const form of forms) {
-        promises.push(anamnesisFormRepository.delete(form.id));
-      }
-
-      await Promise.all(promises);
-    });
-
-    return formIds;
-  }
-
   async getForm(id: string): Promise<AnamnesisFormResultDto | null> {
-    const relations: string[] = ["sections", "sections.questions"];
-    const select: FindOptionsSelect<AnamnesisFormModel> = {
-      id: true,
-      title: true,
-      description: true,
-      created_at: true,
-      updated_at: true,
-      sections: {
-        id: true,
-        form_id: true,
-        title: true,
-        description: true,
-        order: true,
-        questions: {
-          id: true,
-          section_id: true,
-          question_text: true,
-          question_type: true,
-          options: true,
-        },
-      },
-    };
-
     const query_ = this.anamnesisFormRepository_
       .createQueryBuilder("form")
       .leftJoinAndSelect("form.sections", "section")
       .leftJoinAndSelect("section.questions", "question");
+
     return await query_.where("form.id = :id", { id }).getOne();
-    // return await this.anamnesisFormRepository_.findOne({ where: { id }, relations, select });
   }
 
   async getForms(query: GetEntitiesQuery): Promise<PaginatedResult<AnamnesisFormResultDto>> {
@@ -270,8 +209,6 @@ export class AnamnesisService extends TransactionBaseService {
     if (field && order) {
       query_ = query_.orderBy(`form.${field}`, order.toUpperCase() as "ASC" | "DESC");
     }
-
-    console.log(`form.${field}`, order.toUpperCase() as "ASC" | "DESC");
 
     const [totalItems, data] = await Promise.all([
       query_.getCount(),
@@ -403,10 +340,10 @@ export class AnamnesisService extends TransactionBaseService {
     return id;
   }
 
-  async createFormAssignment(formId: string, emails: string[]): Promise<string[]> {
+  async createFormAssignment(formId: string, emails: string[]): Promise<string[] | null> {
     await this.atomicPhase_(async (transactionManager: EntityManager) => {
       const anamnesisAssignmentRepository = transactionManager.withRepository(this.anamnesisAssignmentRepository_);
-      const customerRepository = transactionManager.withRepository(this.customerRepository);
+      const customerRepository = transactionManager.withRepository(this.customerRepository_);
 
       const [form, customers] = await Promise.all([
         this.getForm(formId),
@@ -419,6 +356,7 @@ export class AnamnesisService extends TransactionBaseService {
       for (const customer of customers) {
         promises.push(
           anamnesisAssignmentRepository.insert({
+            id: uuidv7(),
             form_id: formId,
             user_id: customer.id,
             status: "new",
@@ -529,36 +467,15 @@ export class AnamnesisService extends TransactionBaseService {
   ): Promise<PaginatedResult<AnamnesisResponseResultDto>> {
     const { page = 1, limit = 10, field, order } = query;
 
-    const select = {
-      id: true,
-      created_at: true,
-      updated_at: true,
-      form_id: true,
-      customer_id: true,
-      order_id: true,
-      responses: {
-        question_id: true,
-        answer: true,
-      },
-    };
-
     let query_ = this.anamnesisResponseRepository_
       .createQueryBuilder("response")
-      .leftJoinAndSelect("response.responses", "response");
+      .leftJoinAndSelect("response.customer", "customer");
 
     // Apply id
     query_ = query_.where("response.form_id = :formId", { formId });
 
-    // Apply select
-    for (const key of Object.keys(select)) {
-      if (key !== "responses") {
-        query_ = query_.addSelect(`response.${key}`, key);
-      }
-    }
-
-    for (const key of Object.keys(select.responses)) {
-      query_ = query_.addSelect(`response.${key}`, `response_${key}`);
-    }
+    // Select customer name and email
+    query_ = query_.addSelect(["customer.email", "customer.first_name", "customer.last_name"]);
 
     // Apply sorting
     if (field && order) {
@@ -591,7 +508,7 @@ export class AnamnesisService extends TransactionBaseService {
   ): Promise<string | null> {
     return await this.atomicPhase_(async (transactionManager: EntityManager) => {
       const anamnesisResponseRepository = transactionManager.withRepository(this.anamnesisResponseRepository_);
-      const customerRepository = transactionManager.withRepository(this.customerRepository);
+      const customerRepository = transactionManager.withRepository(this.customerRepository_);
 
       const [form, customer] = await Promise.all([
         this.getForm(formId),
@@ -609,13 +526,29 @@ export class AnamnesisService extends TransactionBaseService {
         };
       });
 
-      await anamnesisResponseRepository.insert({
-        id: responseId,
-        customer_id: customerId,
-        form_id: formId,
-        order_id: data.order_id,
-        responses,
-      });
+      const promises = [];
+      promises.push(
+        anamnesisResponseRepository.insert({
+          id: responseId,
+          customer_id: customerId,
+          form_id: formId,
+          order_id: data.order_id,
+          responses,
+        }),
+      );
+
+      // Update assignment status to done
+      promises.push(
+        this.anamnesisAssignmentRepository_.update(
+          {
+            form_id: formId,
+            user_id: customerId,
+          },
+          { status: "done" },
+        ),
+      );
+
+      await Promise.all(promises);
 
       return responseId;
     });

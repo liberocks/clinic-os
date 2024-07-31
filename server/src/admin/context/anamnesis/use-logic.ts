@@ -11,7 +11,7 @@ export const useLogic = (props: RouteProps) => {
     navigate("/a/anamnesis/new");
   };
 
-  const handleViewForm = (id: string) => {
+  const handleViewForm = (id: string, _: {}) => {
     navigate(`/a/anamnesis/${id}`);
   };
 
