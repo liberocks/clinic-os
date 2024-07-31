@@ -35,7 +35,7 @@ export type UpdateAnamnesisSectionDto = z.infer<typeof UpdateAnamnesisSectionSch
 export type UpdateAnamnesisFormDto = z.infer<typeof UpdateAnamnesisFormSchema>;
 
 // Dto for anamnesis results
-export type AnamnesisFormResultDto = UpdateAnamnesisFormDto & { id?: string };
+export type AnamnesisFormResultDto = UpdateAnamnesisFormDto & { id?: string; status?: string };
 
 // Dto for anamnesis response results
 export type AnamnesisResponseResultDto = AnamnesisResponseDto;

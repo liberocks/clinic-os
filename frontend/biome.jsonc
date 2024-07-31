@@ -28,7 +28,8 @@
 				"noAssignInExpressions": "off"
 			},
 			"style": {
-				"noArguments": "off" 
+				"noArguments": "off" ,
+				"noNonNullAssertion": "off"
 			}
 		}
 	}

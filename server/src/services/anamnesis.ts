@@ -372,43 +372,17 @@ export class AnamnesisService extends TransactionBaseService {
 
   async getFormAssignments(
     customerId: string,
-    status: string,
     query: GetEntitiesQuery,
   ): Promise<PaginatedResult<AnamnesisFormResultDto>> {
     const { page = 1, limit = 10 } = query;
 
-    const select = {
-      id: true,
-      title: true,
-      description: true,
-      created_at: true,
-      updated_at: true,
-      sections: {
-        id: true,
-        form_id: true,
-        title: true,
-        description: true,
-        order: true,
-        questions: {
-          id: true,
-          section_id: true,
-          question_text: true,
-          question_type: true,
-          options: true,
-        },
-      },
-    };
-
     // Find all form assignments for the specified customer id and apply limit and page
     const assignmentQuery_ = this.anamnesisAssignmentRepository_.createQueryBuilder("assignment");
 
-    // Apply customer id
-    assignmentQuery_.where("assignment.user_id = :customerId", { customerId });
-
-    // Apply status if provided
-    if (status) {
-      assignmentQuery_.andWhere("assignment.status = :status", { status });
-    }
+    // Apply customer id and status
+    assignmentQuery_.where("assignment.user_id = :customerId", {
+      customerId,
+    });
 
     const formAssignments = await assignmentQuery_
       .skip((page - 1) * limit)
@@ -425,23 +399,6 @@ export class AnamnesisService extends TransactionBaseService {
       formIds: (formAssignments ?? []).map((assignment) => assignment.form_id),
     });
 
-    // Apply select
-    for (const key of Object.keys(select)) {
-      if (key !== "sections") {
-        query_ = query_.addSelect(`form.${key}`, key);
-      }
-    }
-
-    for (const key of Object.keys(select.sections)) {
-      if (key !== "questions") {
-        query_ = query_.addSelect(`section.${key}`, `section_${key}`);
-      }
-    }
-
-    for (const key of Object.keys(select.sections.questions)) {
-      query_ = query_.addSelect(`question.${key}`, `question_${key}`);
-    }
-
     const [totalItems, data] = await Promise.all([
       assignmentQuery_.getCount(),
       query_
@@ -451,7 +408,10 @@ export class AnamnesisService extends TransactionBaseService {
     ]);
 
     const paginatedResult: PaginatedResult<AnamnesisFormResultDto> = {
-      data,
+      data: data.map((form) => ({
+        ...form,
+        status: formAssignments.find((assignment) => assignment.form_id === form.id)?.status,
+      })),
       currentPage: page,
       limit: limit,
       totalItems: totalItems,

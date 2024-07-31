@@ -278,15 +278,14 @@ interface Parameters {
 
 const WrappedTable: FC<WrappedTableProps> = (props) => {
   const { endpoint, columns, onDelete, onEdit, onView, hideSearch } = props;
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [params, setParams] = useState<Parameters>({ limit: 10, page: 1, search: "", orderBy: "newest" });
-  const query = useDebounce(params.search, 750);
-
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [params, setParams] = useState<Parameters>({ limit: 10, page: 1, search: "", orderBy: "newest" });
 
+  const query = useDebounce(params.search, 750);
   const { client } = useMedusa();
 
   const fetchData = async (newParams: Parameters) => {

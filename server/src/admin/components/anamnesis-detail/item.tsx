@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 
 import { useAnamnesisContext } from "../../context/anamnesis-detail/anamnesis-context";
 import { AnamnesisQuestionType } from "../../types/shared/anamnesis";
-import DotIcon from "../shared/icons/dot";
 import GhostIcon from "../shared/icons/ghost";
 import PlusIcon from "../shared/icons/plus";
 import TrashIcon from "../shared/icons/trash";
@@ -230,9 +229,11 @@ export const Item = React.memo(
                           key={`${containerId}-${question?.id}-${index}`}
                           className="flex flex-row items-center space-x-2"
                         >
-                          <div className="font-semibold text-center border rounded-md size-6 border-emerald-700 hover:border-emerald-90 text-emerald-700">
-                            {String.fromCharCode(65 + index)}
-                          </div>
+                          <input
+                            name={`${question?.id}-${index}`}
+                            type="checkbox"
+                            className="font-semibold text-center border rounded-md accent-emerald-600 size-6 border-emerald-700 hover:border-emerald-90 text-emerald-700"
+                          />
                           <input
                             key={`${containerId}-${question?.id}-${index}-text`}
                             type="text"
@@ -273,18 +274,23 @@ export const Item = React.memo(
                       return (
                         <div
                           key={`${containerId}-${question?.id}-${index}`}
-                          className="flex flex-row items-center space-x-2 text-gray-700 inter-large-regular"
+                          className="flex flex-row items-center justify-between space-x-2 text-gray-700 inter-large-regular"
                         >
-                          <div className="flex-shrink">
-                            <DotIcon size={18} />
+                          <div className="flex flex-row items-center w-fit">
+                            <input
+                              name={`${question?.id}-${index}`}
+                              type="radio"
+                              className="flex-grow px-2 py-2 bg-transparent outline-none size-5 accent-emerald-600"
+                              value={option.label}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Selection option goes here"
+                              className="flex-grow px-2 py-2 bg-transparent outline-none"
+                              value={option.label}
+                              onChange={handleChangeSelectOptionText(containerId, question?.id, index)}
+                            />
                           </div>
-                          <input
-                            type="text"
-                            placeholder="Selection option goes here"
-                            className="flex-grow px-2 py-2 bg-transparent outline-none"
-                            value={option.label}
-                            onChange={handleChangeSelectOptionText(containerId, question?.id, index)}
-                          />
                           <button
                             type="button"
                             className="flex-shrink pl-1 bg-gray-100 rounded-full size-6 hover:bg-gray-200 active:bg-gray-300"

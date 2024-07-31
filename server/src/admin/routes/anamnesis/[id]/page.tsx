@@ -92,6 +92,7 @@ const AnamnesisPage: React.FC<RouteProps> = (props) => {
               onChange={handleChangeDescription}
             />
           </div>
+
           <div className="flex flex-row flex-shrink space-x-4">
             <ShowIf condition={id !== "new"}>
               <Button type="secondary" onClick={() => setShareModalOpened(true)}>

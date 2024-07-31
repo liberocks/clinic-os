@@ -15,6 +15,7 @@ interface UserState {
   firstName: string;
   lastName: string;
   isAuthenticated: boolean;
+  isInitialized: boolean;
 }
 
 export const defaultUserState: UserState = {
@@ -22,6 +23,7 @@ export const defaultUserState: UserState = {
   firstName: "",
   lastName: "",
   isAuthenticated: false,
+  isInitialized: false,
 };
 
 const UserContext = createContext<UserContextValue>(null as unknown as UserContextValue);
@@ -43,9 +45,9 @@ export function UserProvider({ children }: UserWrapperProps) {
   useEffect(() => {
     const user = localStorage.getItem("userState");
     if (user) {
-      setUserState(JSON.parse(user));
+      setUserState({ ...JSON.parse(user), isInitialized: true });
     } else {
-      setUserState(defaultUserState);
+      setUserState({ ...defaultUserState, isInitialized: true });
     }
   }, []);
 

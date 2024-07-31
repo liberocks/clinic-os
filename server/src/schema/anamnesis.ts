@@ -115,7 +115,7 @@ const ResponseItemSchema = z.object({
 export const AnamnesisResponseSchema = z.object({
   ...IdTimestampSchema.shape,
   customer_id: z.string(),
-  order_id: z.string(),
+  order_id: z.string().optional(),
   form_id: z.string(),
   responses: z.array(ResponseItemSchema),
   customer: z
@@ -131,5 +131,5 @@ export const CreateAnamnesisResponseSchema = AnamnesisResponseSchema.omit({
   id: true,
   created_at: true,
   updated_at: true,
-  form_id: true,
+  customer_id: true,
 });

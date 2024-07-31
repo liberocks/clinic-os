@@ -1,8 +1,9 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+
 import { z } from "zod";
 
 import { CreateAnamnesisResponseSchema } from "../../../schema/anamnesis";
-import { GetEntitiesQueryWithStatusSchema, IdSchema } from "../../../schema/generic";
+import { GetEntitiesQuerySchema } from "../../../schema/generic";
 import type AnamnesisService from "../../../services/anamnesis";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -15,10 +16,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     const anamnesisService: AnamnesisService = req.scope.resolve("anamnesisService");
 
-    const validatedQuery = GetEntitiesQueryWithStatusSchema.parse(req.query);
-    const { status, ...query } = validatedQuery;
+    const validatedQuery = GetEntitiesQuerySchema.parse(req.query);
 
-    const paginatedFormAssignments = await anamnesisService.getFormAssignments(customerId, status, query);
+    const paginatedFormAssignments = await anamnesisService.getFormAssignments(customerId, validatedQuery);
 
     return res.status(200).json(paginatedFormAssignments);
   } catch (error) {
@@ -26,6 +26,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       // Handle validation errors
       return res.status(400).json({ errors: error.errors });
     }
+
+    console.log(error);
 
     // Handle other errors
     return res.status(500).json({ error: "Internal server error" });
@@ -42,12 +44,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     const anamnesisService: AnamnesisService = req.scope.resolve("anamnesisService");
 
-    const validatedBody = CreateAnamnesisResponseSchema.parse(req.body);
-    const validatedParams = IdSchema.parse(req.params);
+    const { form_id, ...validatedBody } = CreateAnamnesisResponseSchema.parse(req.body);
 
-    const formId = validatedParams.id;
-
-    const submissionId = await anamnesisService.createFormResponse(customerId, formId, validatedBody);
+    const submissionId = await anamnesisService.createFormResponse(customerId, form_id, validatedBody);
 
     return res.status(201).json({ formId: submissionId });
   } catch (error) {
