@@ -1,5 +1,6 @@
 import type React from "react";
-import type IconProps from "../../../types/shared/icon-type";
+
+import type IconProps from "../../types/icon-type";
 
 const GetStarted: React.FC<IconProps> = ({ size = "40", color = "currentColor", ...attributes }) => {
   return (
