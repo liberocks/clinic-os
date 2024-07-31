@@ -22,6 +22,7 @@ function toVal(mix: ClassValue): string {
       }
     } else {
       for (y in mix) {
+        // @ts-ignore
         if (mix[y]) {
           str && (str += " ");
           str += y;
@@ -41,6 +42,7 @@ export function cx(...inputs: ClassValue[]): string {
   const len = inputs.length;
 
   for (; i < len; i++) {
+    // @ts-ignore
     if ((tmp = inputs[i])) {
       if ((x = toVal(tmp))) {
         str && (str += " ");
