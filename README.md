@@ -120,6 +120,7 @@ The endpoints are divided into two parts: the API for admin and the API for pati
 - POST `/anamnesis`: For the admin to create a new anamnesis form.
 - GET `/anamnesis/:id`: For the admin to get a specific anamnesis form.
 - POST `/anamnesis/:id`: For the admin to update an anamnesis form. It is supposed to be a PUT/PATCH endpoint, but MedusaJs doesn't support it. So, I use POST instead.
+- DELETE `/anamnesis/:id`: For the admin to delete an anamnesis form.
 - POST `/assignment`: For the admin to send an anamnesis form to the patients.
 - GET `/submission`: For the admin to get all submissions of an anamnesis form. This endpoint supports pagination and search queries.
 
