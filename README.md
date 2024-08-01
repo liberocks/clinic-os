@@ -5,18 +5,20 @@
 The project comprises two parts: the Medusa Platform and a frontend application for patients. The Medusa Platform is a backend application that serves as the API for the Admin Dashboard and Patients application. In the Admin Dashboard, the admin can manage the anamnesis form and send them to the patients' app. As for the frontend application, it is a React application that is used by patients to give responses to the questions asked by the doctors/medical staff.
 
 ## Tech Stack
-For the backend, we are using the following technologies:
+For the backend, I am using the following technologies:
 - **Database**: PostgreSQL
 - **Server**: Medusa (Awilix, Express, TypeORM)
 - **Cache**: Redis
 - **Static page**: Webpack
 - **Other UI frameworks**: React Table (v7), dnd-kit
+- **Icon**: Lucide
 
-For the frontend, we are using the following technologies:
+For the frontend, I am using the following technologies:
 - **Framework**: React with Vite
 - **Styling**: TailwindCSS
 - **Routing**: React Router
 - **Rest API Client**: Medusa
+- **Icon**: Lucide
 
 ## Data flow
 The data flow in the application is as follows:
@@ -88,7 +90,7 @@ The endpoints are divided into two parts: the API for admin and the API for pati
 - GET `/anamnesis`: For the admin to get all anamnesis forms. This endpoint supports pagination and search queries.
 - POST `/anamnesis`: For the admin to create a new anamnesis form.
 - GET `/anamnesis/:id`: For the admin to get a specific anamnesis form.
-- POST `/anamnesis/:id`: For the admin to update an anamnesis form. It is supposed to be a PUT/PATCH endpoint, but MedusaJs doesn't support it. So, we use POST instead.
+- POST `/anamnesis/:id`: For the admin to update an anamnesis form. It is supposed to be a PUT/PATCH endpoint, but MedusaJs doesn't support it. So, I use POST instead.
 - POST `/assignment`: For the admin to send an anamnesis form to the patients.
 - GET `/submission`: For the admin to get all submissions of an anamnesis form. This endpoint supports pagination and search queries.
 
