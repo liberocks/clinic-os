@@ -1,5 +1,24 @@
 # Clinic OS
 
+## Table of Contents
+- [Clinic OS](#clinic-os)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [Tech Stack](#tech-stack)
+  - [Data flow](#data-flow)
+  - [State Management](#state-management)
+  - [Running on your local](#running-on-your-local)
+    - [Setting up your environment variables](#setting-up-your-environment-variables)
+    - [Building the Medusa project](#building-the-medusa-project)
+    - [Database migration](#database-migration)
+    - [Starting the frontend](#starting-the-frontend)
+  - [Endpoints](#endpoints)
+  - [Screens](#screens)
+  - [Known issues](#known-issues)
+    - [Railway Hibernating Issue](#railway-hibernating-issue)
+    - [Routing Issue on Railway](#routing-issue-on-railway)
+    - [Medusa Admin Build Issue](#medusa-admin-build-issue)
+
 ## Getting Started
 
 The project comprises two parts: the Medusa Platform and a frontend application for patients. The Medusa Platform is a backend application that serves as the API for the Admin Dashboard and Patients application. In the Admin Dashboard, the admin can manage the anamnesis form and send them to the patients' app. As for the frontend application, it is a React application that is used by patients to give responses to the questions asked by the doctors/medical staff.
@@ -19,6 +38,7 @@ For the frontend, I am using the following technologies:
 - **Routing**: React Router
 - **Rest API Client**: Medusa
 - **Icon**: Lucide
+- **State management**: React Context and React Hook
 
 ## Data flow
 The data flow in the application is as follows:
@@ -27,7 +47,16 @@ The data flow in the application is as follows:
 - The admin then sends the form to the patients. To do this, go to the anamnesis page and click on the "Share" button. A modal will open where you can select the patients by email to whom you want to send the form. Once you click the "Send" button, the form will be sent to the patients.
 - In the admin's anamnesis page, you can see the list of forms that have been created, along with their title, description, and other details.
 - On the patient's side, they will see the list of forms that have been sent to them. They can then click on a form to start answering the questions. Once they are done, they can click the "Submit" button.
-- The admin can then see the responses in the anamnesis page. To view the responses, go to the anamnesis page and click on the "View Responses" button. This will open the anamnesis detail page, where you can switch the tab from "Editor" to "Submission" to see the responses from the patients. On this page, you will find a table that contains the responses of the patients.
+- The admin can then see the responses in the anamnesis page. To view the responses, go to the anamnesis page and click on the "View Responses" button. This will open the anamnesis detail page, where you can switch the tab from "Editor" to "Submission" to see the responses from the patients. On this page, you will find a table that contains the responses of the patients. Because the responses are stored in a JSON format, I made a modal to show the prettified JSON data. This can later be improved in a table view or other visualization.
+
+## State Management
+
+The frontend is almost completely stateless because every time the user requests data, the backend will send them the latest data (cached in Redis if there is no change). Exceptions are made in the following areas:
+- When the patient signs in, I store the access token in the cookies and store the patient's name and email in local storage. The data in the local storage will be rehydrated when the patient open the app and put in the user context. This way all pages that need the user data can access it by using simple hooks.
+- When the patient submits the form, the form data will be stored in the form ref and sent to the backend when the patient clicks the submit button.
+- Managing the drag-and-drop experience is a bit tricky because there is a lot of state that needs to be maintained and the structure of the components is nested. To avoid complexity by using props drilling, I use React Context to manage the state of the drag-and-drop experience. This way, child components can access the state without having to pass props from the parent component.
+- The state management for non-complex components is managed using simple React Hooks.
+
 
 ## Running on your local
 
@@ -116,6 +145,9 @@ The application has the following screens:
 
 
 ## Known issues
+
+### Railway Hibernating Issue
+The plan I am using on Railway is the free plan, which means the application will hibernate after 30 minutes of inactivity. If you encounter a 502 error when accessing the application, it is likely that the application has hibernated. To fix this, you can wake up the application by accessing the URL again.
 
 ### Routing Issue on Railway
 If you try the Patient's live application in the Railway app, you won't be able to navigate around by editing the URL directly from the browser or do a hard refresh unless you do it from the root route. The issue is caused by the way the Railway app handles routing. The issue doesn't occur when you run the application locally.
