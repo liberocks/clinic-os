@@ -74,7 +74,7 @@ REDIS_URL=
 
 Create a `.env` file in the `frontend` directory and add the following environment variables:
 ```
-VITE_APP_BASE_URL=http://localhost:5173
+VITE_APP_BASE_URL=http://localhost:8000
 VITE_APP_MEDUSA_BACKEND_URL=http://localhost:9000
 ```
 
